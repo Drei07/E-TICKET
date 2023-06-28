@@ -12,7 +12,7 @@ if(isset($_POST['btn-forgot-password']))
  $email = $_POST['email'];
  
  $stmt = $user->runQuery("SELECT id, tokencode FROM users WHERE email=:email AND user_type = :user_type LIMIT 1");
- $stmt->execute(array(":email"=>$email, "user_type" => 0));
+ $stmt->execute(array(":email"=>$email, "user_type" => 1));
  $row = $stmt->fetch(PDO::FETCH_ASSOC); 
  if($stmt->rowCount() == 1)
  {
@@ -20,15 +20,72 @@ if(isset($_POST['btn-forgot-password']))
   $code = ($row['tokencode']);
   
   $message= "
-       Hello , $email
-       <br /><br />
-       We got requested to reset your password, if you do this then just click the following link to reset your password, if not just ignore this email,
-       <br /><br />
-       Click Following Link To Reset Your Password 
-       <br /><br />
-       <a href='$main_url/dashboard/superadmin/authentication/superadmin-reset-password?id=$id&code=$code'>click here to reset your password</a>
-       <br /><br />
-       thank you :)
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset='UTF-8'>
+      <title>Password Reset</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f5f5f5;
+              margin: 0;
+              padding: 0;
+          }
+          
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 30px;
+              background-color: #ffffff;
+              border-radius: 4px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+          
+          h1 {
+              color: #333333;
+              font-size: 24px;
+              margin-bottom: 20px;
+          }
+          
+          p {
+              color: #666666;
+              font-size: 16px;
+              margin-bottom: 10px;
+          }
+          
+          .button {
+              display: inline-block;
+              padding: 12px 24px;
+              background-color: #0088cc;
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 4px;
+              font-size: 16px;
+              margin-top: 20px;
+          }
+          .logo {
+            display: block;
+            text-align: `center`;
+            margin-bottom: 30px;
+        }
+          
+      </style>
+  </head>
+  <body>
+      <div class='container'>
+      <div class='logo'>
+      <img src='cid:logo' alt='Logo' width='150'>
+      </div>
+          <h1>Password Reset</h1>
+          <p>Hello, $email</p>
+          <p>We have received a request to reset your password. If you made this request, please click the following link to reset your password:</p>
+          <p><a class='button' href='$main_url/dashboard/superadmin/authentication/superadmin-reset-password?id=$id&code=$code'>Reset Password</a></p>
+          <p>If you didn't make this request, you can safely ignore this email.</p>
+          <p>Thank you!</p>
+      </div>
+  </body>
+  </html>
        ";
   $subject = "Password Reset";
   

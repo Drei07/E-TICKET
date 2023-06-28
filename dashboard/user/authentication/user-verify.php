@@ -1,6 +1,6 @@
 <?php
 require_once 'user-class.php';
-$user = new ALUMNI();
+$user = new USER();
 
 if(empty($_GET['id']) && empty($_GET['code']))
 {

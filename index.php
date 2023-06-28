@@ -35,19 +35,19 @@ $config = new SystemConfig();
 									<label for="email">E-mail</label>
 									<input id="email" type="email" class="form-control" name="email" required autofocus>
 									<div class="invalid-feedback">
-										E-mail is invalid
+										E-mail is invalid!
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label for="password">Password
-										<a href="public/user/forgot-password" class="float-right">
+										<a href="forgot-password" class="float-right">
 											Forgot Password?
 										</a>
 									</label>
 									<input id="password" type="password" autocomplete="off" class="form-control" name="password" required data-eye>
 								    <div class="invalid-feedback">
-								    	Password is required
+								    	Password is required!
 							    	</div>
 								</div>
 
@@ -59,7 +59,7 @@ $config = new SystemConfig();
 							</form>
 						</div>
 					</div>
-					<footer>&copy; <?php echo $config->getSystemCopyright() ?></footer>
+					<footer><?php echo $config->getSystemCopyright() ?></footer>
 				</div>
 			</div>
 		</div>

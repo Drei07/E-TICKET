@@ -223,62 +223,6 @@ $('.save').on('click', function (e) {
 		});
 })
 
-//Applied Profile
-$('.applied').on('click', function (e) {
-	e.preventDefault();
-	const href = $(this).attr('href')
-
-	swal({
-		title: "Apply?",
-		text: "Do you want to apply to this job?",
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	})
-		.then((willDelete) => {
-			if (willDelete) {
-				document.location.href = href;
-			}
-		});
-})
-
-//accept Profile
-$('.accept').on('click', function (e) {
-	e.preventDefault();
-	const href = $(this).attr('href')
-
-	swal({
-		title: "Accept?",
-		text: "Do you want to accept this applicant?",
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	})
-		.then((willDelete) => {
-			if (willDelete) {
-				document.location.href = href;
-			}
-		});
-})
-
-//reject Profile
-$('.reject').on('click', function (e) {
-	e.preventDefault();
-	const href = $(this).attr('href')
-
-	swal({
-		title: "Reject?",
-		text: "Do you want to reject this applicant?",
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	})
-		.then((willDelete) => {
-			if (willDelete) {
-				document.location.href = href;
-			}
-		});
-})
 // Signout
 $('.btn-signout').on('click', function (e) {
 	e.preventDefault();
@@ -307,3 +251,22 @@ $('.numbers').keypress(function (e) {
 	else
 		return false;
 });
+
+		// Buttons Profile
+		function edit(){
+			document.getElementById('Edit').style.display = 'block';
+			document.getElementById('password').style.display = 'none';
+			document.getElementById('avatar').style.display = 'none';
+		}
+
+		function avatar(){
+			document.getElementById('avatar').style.display = 'block';
+			document.getElementById('Edit').style.display = 'none';
+			document.getElementById('password').style.display = 'none';
+		}
+
+		function password(){
+			document.getElementById('password').style.display = 'block';
+			document.getElementById('avatar').style.display = 'none';
+			document.getElementById('Edit').style.display = 'none';
+		}

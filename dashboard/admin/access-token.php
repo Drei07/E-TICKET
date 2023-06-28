@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Dashboard</title>
+	<title>Access Token</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@ include_once 'header.php';
 			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
-			<li  class="active">
+			<li>
 				<a href="./">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
@@ -39,7 +39,7 @@ include_once 'header.php';
 					<span class="text">Events logs</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="access-token">
                     <i class='bx bxs-key' ></i>
 					<span class="text">Access Token</span>
@@ -101,14 +101,14 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
+					<h1>Access Tokens</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Dashboard</a>
+							<a href="">Access Tokens</a>
 						</li>
 					</ul>
 				</div>

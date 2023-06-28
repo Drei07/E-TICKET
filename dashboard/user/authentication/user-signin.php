@@ -2,7 +2,7 @@
 include_once __DIR__. '/../../../src/api/api.php';
 require_once 'user-class.php';
 
-$user = new ALUMNI();
+$user = new USER();
 $site_secret_key = $user->siteSecretKey();
 
 if($user->isUserLoggedIn()!="")

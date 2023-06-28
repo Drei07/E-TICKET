@@ -21,12 +21,23 @@ if(isset($_GET['id']) && isset($_GET['code']))
  {
   if(isset($_POST['btn-update-password']))
   {
-   $npass = $_POST['new-password'];
-   
-    $code = md5(uniqid(rand()));
-    $npass = md5($npass);
-    $stmt = $user->runQuery("UPDATE users SET password=:upass, tokencode=:token WHERE id=:uid");
-    $stmt->execute(array(":token"=>$code,":upass"=>$npass,":uid"=>$rows['id']));
+   	$new_password 		= trim($_POST['password']);
+	$confirm_password   = trim($_POST['confirm_password']);
+    $code 				= md5(uniqid(rand()));
+    $new_hash_password 	= md5($new_password);
+
+	if($new_password != $confirm_password) {
+        $_SESSION['status_title'] = "Oops!";
+        $_SESSION['status'] = "Passwords do not match. Please try again.";
+        $_SESSION['status_code'] = "error";
+        $_SESSION['status_timer'] = 100000;
+		$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // Get the current URL
+		header("Location: $url"); // Add this line to redirect back to the same page
+        exit();
+    }
+
+    $stmt = $user->runQuery("UPDATE users SET password=:password, tokencode=:token WHERE id=:uid");
+    $stmt->execute(array(":token"=>$code,":password"=>$new_hash_password,":uid"=>$rows['id']));
     
     $_SESSION['status_title'] = "Success !";
     $_SESSION['status'] = "Password is updated. Redirecting to Sign in.";
@@ -58,37 +69,48 @@ if(isset($_GET['id']) && isset($_GET['code']))
     <link rel="stylesheet" href="../../../src/css/signin.css?v=<?php echo time(); ?>">
     <title>Reset Password?</title>
 </head>
+
+
 <body class="my-login-page">
 	<section class="h-100">
 		<div class="container h-100">
-			<div class="row justify-content-md-center h-100">
+			<div class="row justify-content-md-center align-items-center h-100">
 				<div class="card-wrapper">
 					<div class="brand">
 						<img src="../../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
 					</div>
 					<div class="card fat">
-                        <div class="card-body">
-							<h4 class="card-title">Reset Password?</h4>
-                            <a href="<?php echo $main_url->getUrl() ?>" class="close"><img src="../../../src/img/caret-right-fill.svg" alt="close-btn" width="24" height="24"></a>
-							<form action="" method="POST" class="my-login-validation" novalidate="">
-								<div class="form-group">
-									<label for="email">New Password</label>
-									<input id="email" type="password" class="form-control" name="new-password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter new password" required autofocus data-eye>
+						<div class="card-body">
+							<h4 class="card-title">Reset Password</h4>
+                            <a href="../../../private/superadmin/" class="close"><img src="../../../src/img/caret-right-fill.svg" alt="close-btn" width="24" height="24"></a>
+                            <form action="" method="POST" class="my-login-validation" novalidate="">
+							<div class="form-group">
+								<label for="email">Password</label>
+								<input id="password" type="password" class="form-control" name="password" autocapitalize="on" autocorrect="off" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter your password" required autofocus data-eye>
+								<div class="invalid-feedback">
+									Password is required
+								</div>
+							</div>	
+							<div class="form-group">
+									<label for="new-password">Confirm Password</label>
+									<input id="confirm_password" type="password" class="form-control" name="confirm_password" autocapitalize="on" autocorrect="off" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Confirm your password" required autofocus data-eye>
 									<div class="invalid-feedback">
-										Password must be atleast 8 characters and capital letters.
+										Password is required
+									</div>
+									<div class="form-text text-muted">
+										Make sure your password is contain capital letter and number with a minumum of 8 words.
 									</div>
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit" name="btn-update-password" class="btn btn-primary btn-block">
-										Reset
+									<button type="submit" name="btn-update-password" class="btn btn-dark btn-block">
+										Reset Password
 									</button>
 								</div>
-
 							</form>
 						</div>
 					</div>
-					<footer>&copy; <?php echo $config->getSystemCopyright() ?></footer>
+					<footer><?php echo $config->getSystemCopyright() ?></footer>
 				</div>
 			</div>
 		</div>

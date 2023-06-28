@@ -42,7 +42,7 @@ $config = new SystemConfig();
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit" name="btn-forgot-password" class="btn btn-primary btn-block">
+									<button type="submit" name="btn-forgot-password" class="btn btn-dark btn-block">
 										Send
 									</button>
 								</div>
@@ -50,7 +50,7 @@ $config = new SystemConfig();
 							</form>
 						</div>
 					</div>
-					<footer>&copy; <?php echo $config->getSystemCopyright() ?></footer>
+					<footer><?php echo $config->getSystemCopyright() ?></footer>
 				</div>
 			</div>
 		</div>

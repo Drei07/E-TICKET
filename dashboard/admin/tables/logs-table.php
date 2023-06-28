@@ -1,15 +1,14 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/employer-class.php';
+require_once '../authentication/admin-class.php';
 include_once __DIR__.'/../../../database/dbconfig2.php';
 
-$user = new EMPLOYER();
+$user = new ADMIN();
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../../private/employer/');
+ $user->redirect('../../../private/admin/');
 }
-
 
 
 function get_total_row($pdoConnect)
@@ -31,13 +30,13 @@ else
 }
 
 $query = "
-SELECT * FROM application WHERE jobs_id = :jobs_id AND status = :status
+SELECT * FROM logs
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  AND id LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE activity LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
@@ -46,11 +45,11 @@ $query .= 'ORDER BY id DESC ';
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":jobs_id" => $_GET['jobs_id'], ":status" => "pending"));
+$statement->execute();
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":jobs_id" => $_GET['jobs_id'], ":status" => "pending"));
+$statement->execute();
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
@@ -58,8 +57,10 @@ if($total_data > 0)
 $output = '
 
     <thead>
-    <th>APPLICANT</th>
-    <th>ACTION</th>
+    <th>ACTIVITY ID</th>
+    <th>USER</th>
+    <th>ACTIVITY</th>
+    <th>DATE</th>
     </thead>
 ';
   while($row=$statement->fetch(PDO::FETCH_ASSOC))
@@ -72,22 +73,19 @@ $output = '
     $pdoResult->execute(array(":id" => $user_id));
     $user_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
-    $user_fullname  = $user_data['last_name'] . ", " . $user_data['first_name'] . " " .$user_data['middle_name'];
-
-
     $output .= '
     <tr>
-      <td>'.$user_fullname.'</td>
-      <td>
-      <button type="button" class="btn btn-primary V"><a href="user-profile?id='.$row["user_id"].'&applicants_id='.$row["id"].'" class="view">View</a></button>&nbsp;&nbsp;
-      </td>        
+      <td>'.$row["id"].'</td>
+      <td>'.$user_data["email"].'</td>
+      <td>'.$row["activity"].'</td>
+      <td>'.$row["created_at"].'</td>
     </tr>
     ';
   }
 }
 else
 {
-  echo '<h1>No Applicants Found</h1>';
+  echo '<h1>No Data Found</h1>';
 }
 
 $output .= '
@@ -214,8 +212,25 @@ $output .= '
 echo $output;
 
 ?>
-
 <script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../src/js/form.js"></script>
+<script>
+$('.view').on('click', function(e){
+  e.preventDefault();
+  const href = $(this).attr('href')
 
+        swal({
+        title: "View?",
+        text: "Do you want to view more?",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          document.location.href = href;
+        }
+      });
+})
+
+</script>
 </table>

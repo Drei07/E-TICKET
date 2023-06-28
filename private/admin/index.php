@@ -16,7 +16,7 @@ $config = new SystemConfig();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $config->getSKey() ?>"></script>
     <link rel="stylesheet" href="../../src/css/signin.css?v=<?php echo time(); ?>">
-    <title>Sign In</title>
+    <title>Admin | Sign In</title>
 </head>
 <body class="my-login-page">
 	<section class="h-100">
@@ -35,7 +35,7 @@ $config = new SystemConfig();
 									<label for="email">E-mail</label>
 									<input id="email" type="email" class="form-control" name="email" required autofocus>
 									<div class="invalid-feedback">
-										E-mail is invalid
+										E-mail is invalid!
 									</div>
 								</div>
 
@@ -45,28 +45,21 @@ $config = new SystemConfig();
 											Forgot Password?
 										</a>
 									</label>
-									<input id="password" type="password" class="form-control" name="password" required data-eye>
+									<input id="password" type="password" autocomplete="off" class="form-control" name="password" required data-eye>
 								    <div class="invalid-feedback">
-								    	Password is required
+								    	Password is required!
 							    	</div>
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit"  id="submit" class="btn btn-primary btn-block" name="btn-signin">
+									<button type="submit"  id="submit" class="btn btn-dark btn-block" name="btn-signin">
 										Sign In
 									</button>
-								</div>
-								<div class="form-group create">
-									<label for="create-account">
-										<a href="create-account" class="float-left">
-											Create an Account?
-										</a>
-									</label>
 								</div>
 							</form>
 						</div>
 					</div>
-					<footer>&copy; <?php echo $config->getSystemCopyright() ?></footer>
+					<footer><?php echo $config->getSystemCopyright() ?></footer>
 				</div>
 			</div>
 		</div>
