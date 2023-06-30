@@ -1,4 +1,5 @@
 <?php
+include_once '../../database/dbconfig2.php';
 require_once 'authentication/admin-class.php';
 include_once '../../configuration/settings-configuration.php';
 

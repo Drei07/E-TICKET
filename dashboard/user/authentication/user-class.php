@@ -8,7 +8,7 @@ include_once __DIR__.'/../../../configuration/settings-configuration.php';
 require_once __DIR__. '/../../vendor/autoload.php';
 
 
-class USER
+class SUB_ADMIN
 {
 
  private $conn;
@@ -74,20 +74,22 @@ public function systemLogo(){
   return $stmt;
  }
  
- public function register($email, $upass, $tokencode, $user_type)
+ public function register($first_name, $middle_name, $last_name, $phone_number, $email, $hash_password, $tokencode, $user_type)
  {
   try
   {       
-   $password = md5($upass);
-   $stmt = $this->conn->prepare("INSERT INTO users(email, password, tokencode, user_type) 
-                                        VALUES(:email, :password, :tokencode, :user_type)");
+   $password = md5($hash_password);
+   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, phone_number, email, password, tokencode, user_type) 
+                                        VALUES(:first_name, :middle_name, :last_name, :phone_number, :email, :password, :tokencode, :user_type)");
    
-
+   $stmt->bindparam(":first_name",$first_name);
+   $stmt->bindparam(":middle_name",$middle_name);
+   $stmt->bindparam(":last_name",$last_name);
+   $stmt->bindparam(":phone_number",$phone_number);
    $stmt->bindparam(":email",$email);
    $stmt->bindparam(":password",$password);
    $stmt->bindparam(":tokencode",$tokencode);
    $stmt->bindparam(":user_type",$user_type);
-
    $stmt->execute(); 
    return $stmt;
   }
@@ -96,23 +98,21 @@ public function systemLogo(){
    echo $ex->getMessage();
   }
  }
-
-
  
- public function login($email,$upass)
+ public function login($email,$hash_password)
  {
   try
   {
-    $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=:email_id AND account_status=:account_status AND user_type=:user_type");
-    $stmt->execute(array(":email_id"=>$email , ":account_status" => "active", ":user_type" => 2));
-    $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
-    
+   $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=:email_id AND account_status = :account_status AND user_type = :user_type");
+   $stmt->execute(array(":email_id"=>$email , ":account_status" => "active", "user_type" => 2));
+   $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+   
 
    if($stmt->rowCount() == 1)
    {
     if($userRow['status']=="Y")
     {
-     if($userRow['password']==md5($upass))
+     if($userRow['password']==md5($hash_password))
      {
       DATE_DEFAULT_TIMEZONE_SET('Asia/Manila');
       $activity = "Has successfully signed in";
@@ -121,7 +121,7 @@ public function systemLogo(){
   
       $stmt = $this->conn->prepare("INSERT INTO logs (user_id, activity) VALUES (:user_id, :activity)");
       $stmt->execute(array(":user_id"=>$user_id,":activity"=>$activity));
-      $_SESSION['alumniSession'] = $userRow['id'];
+      $_SESSION['sub_adminSession'] = $userRow['id'];
       return true;
      }
      else
@@ -141,7 +141,7 @@ public function systemLogo(){
       $_SESSION['status'] = "Entered email is not verify, please go to your email and verify it. Thank you !";
       $_SESSION['status_code'] = "error";
       $_SESSION['status_timer'] = 10000000;
-     header("Location: ../../..");
+     header("Location: ../../../");
      exit;
     } 
    }
@@ -151,7 +151,7 @@ public function systemLogo(){
     $_SESSION['status'] = "No account found or your account has been remove!";
     $_SESSION['status_code'] = "error";
     $_SESSION['status_timer'] = 10000000;
-   header("Location: ../../..");
+   header("Location: ../../../");
     exit;
    }  
   }
@@ -164,7 +164,7 @@ public function systemLogo(){
  
  public function isUserLoggedIn()
  {
-  if(isset($_SESSION['alumniSession']))
+  if(isset($_SESSION['sub_adminSession']))
   {
    return true;
   }
@@ -177,9 +177,9 @@ public function systemLogo(){
  
  public function logout()
  {
-  unset($_SESSION['alumniSession']);
+  unset($_SESSION['sub_adminSession']);
  }
- 
+
  function send_mail($email,$message,$subject,$smtp_email,$smtp_password,$system_name)
  {      
   $mail = new PHPMailer();

@@ -30,6 +30,7 @@ ol, ul {
 	--dark-main:#966abd;
 	--button:#f675c7;
 	--icon-pink:#f38ece;
+	--light-pink:#e37eba8e;
 	--light-blue: #add5fc;
 	--dark-blue: #3d36a3da;
 	--grey: #eee;
@@ -69,9 +70,6 @@ body {
 	color: var(--light);
 }
 
-.button:hover {
-	background-color: var(--dark-main);
-}
 
 .button-cancel{
 	color: #726E6D;
@@ -578,7 +576,7 @@ border-right-color: var(--main);
 
 #content main .card .head {
 	padding: 17px;
-	background-color: var(--light-blue);
+	background-color: var(--light);
 	height: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -594,24 +592,25 @@ border-right-color: var(--main);
 }
 
 #content main .card .head img {
-	max-width: 100px;
-	min-width: 100px;
-	max-height: 100px;
-	min-height: 100px;
+	max-width: 70px;
+	min-width: 70px;
+	max-height: 70px;
+	min-height: 70px;
 	border-radius: 50%;
 	margin-right: 20px;
 }
 
 #content main .card .head h2 {
-	color: var(--dark-blue);
-	font-size: 20px;
+	color: var(--main);
+	font-size: 15px;
 	font-weight: 700;
-	letter-spacing: 2px;
+	letter-spacing: 1px;
 }
 #content main .card .head h2 label{
-	font-size: 15px;
-	font-weight: 50;
-	color: var(--dark-blue);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--main);
+	padding-top: 10px;
 	letter-spacing: 2px;
 }
 

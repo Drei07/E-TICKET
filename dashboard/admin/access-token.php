@@ -51,6 +51,18 @@ include_once 'header.php';
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
+			<li>
+				<a href="course">
+					<i class='bx bxs-book-alt'></i>
+					<span class="text">Course</span>
+				</a>
+			</li>
+			<li>
+				<a href="year-level">
+					<i class='bx bxs-graduation' ></i>
+					<span class="text">Year Level</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>

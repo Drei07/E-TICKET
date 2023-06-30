@@ -1,6 +1,6 @@
 <?php
 require_once 'user-class.php';
-$user = new USER();
+$user = new SUB_ADMIN();
 
 if(!$user->isUserLoggedIn())
 {

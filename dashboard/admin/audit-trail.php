@@ -51,6 +51,18 @@ include_once 'header.php';
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
+			<li>
+				<a href="course">
+					<i class='bx bxs-book-alt'></i>
+					<span class="text">Course</span>
+				</a>
+			</li>
+			<li>
+				<a href="year-level">
+					<i class='bx bxs-graduation' ></i>
+					<span class="text">Year Level</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>
@@ -117,7 +129,7 @@ include_once 'header.php';
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3>Audit Trail</h3>
+						<h3><i class='bx bxl-blogger'></i> Audit Trail</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">

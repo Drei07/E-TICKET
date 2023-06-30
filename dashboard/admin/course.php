@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Sub-Admin</title>
+	<title>Course</title>
 </head>
 <body>
 
@@ -45,13 +45,13 @@ include_once 'header.php';
 					<span class="text">Access Token</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
@@ -113,25 +113,25 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Sub-Admin</h1>
+					<h1>Course</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Sub-Admin</a>
+							<a href="">Course</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-            <div class="modal-button">
-				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Sub-Admin</button>
+		<div class="modal-button">
+			<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Course</button>
 			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Sub-Admin</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of Course</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">
@@ -217,6 +217,7 @@ include_once 'header.php';
 			</div>
 		</div>
 		<!-- MAIN -->
+		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 
@@ -234,7 +235,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/sub-admin-table.php",
+		url:"tables/course-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)
@@ -258,7 +259,6 @@ include_once 'header.php';
 	});
 
 	</script>
-
 		<!-- SWEET ALERT -->
 		<?php
 

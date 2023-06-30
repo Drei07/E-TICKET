@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Dashboard</title>
+	<title>Year Level</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@ include_once 'header.php';
 			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
-			<li  class="active">
+			<li>
 				<a href="./">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
@@ -57,7 +57,7 @@ include_once 'header.php';
 					<span class="text">Course</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
@@ -113,14 +113,14 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
+					<h1>Year Level</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Dashboard</a>
+							<a href="">Year Level</a>
 						</li>
 					</ul>
 				</div>
