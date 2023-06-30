@@ -73,14 +73,16 @@ $output = '
 
     if ($row["account_status"] == "active") {
       $buttons = '<button type="button" class="btn btn-danger V"><a href="controller/user-controller?id='.$row["id"].'&disabled_sub_admin=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $status = '<button type="button" class="btn btn-success V" style="width: 80px;">Active</button>';
     
     } else if ($row["account_status"] == "disabled") {
       $buttons = '<button type="button" class="btn btn-warning V"><a href="controller/user-controller?id='.$row["id"].'&activate_sub_admin=1" class="activate">Activate</a></button>';
+      $status = '<button type="button" class="btn btn-danger V" style="width: 80px;">Disabled</button>';
     }
 
     $output .= '
     <tr>
-      <td>'.$row["status"].'</td>
+      <td>'.$status.'</td>
       <td>'.$row["last_name"].', '.$row["first_name"].' '.$row["middle_name"].'</td>
       <td>'.$row["phone_number"].'</td>
       <td>'.$row["email"].'</td>

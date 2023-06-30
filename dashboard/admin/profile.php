@@ -220,6 +220,11 @@ include_once 'header.php';
                                             </div>
                                         </div>
 
+                                        <div class="col-md-12">
+                                            <label for="email" class="form-label">Email<span> *</span></label>
+                                            <input type="email" disabled class="form-control" autocapitalize="off" autocomplete="off" name="" id="" required value="<?php  echo $user_email  ?>">
+                                        </div>
+
                                     </div>
 
                                     <div class="addBtn">

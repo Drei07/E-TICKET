@@ -58,6 +58,8 @@ if($total_data > 0)
 $output = '
 
     <thead>
+    <th>DEPARTMENT</th>
+    <th>DEPARTMENT</th>
     <th>COURSE NAME</th>
     <th>ACTION</th>
     </thead>
@@ -73,9 +75,10 @@ $output = '
 
     $output .= '
     <tr>
+      <td>'.$row["college"].'</td>
       <td>'.$row["course"].'</td>
       <td>
-      <button type="button" class="btn btn-success V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>
