@@ -2,7 +2,7 @@
 include_once '../../../configuration/settings-configuration.php';
 include_once __DIR__.'/../../../database/dbconfig.php';
 
-class Course {
+class YearLevel {
     private $conn;
 
     public function __construct() 
@@ -12,17 +12,16 @@ class Course {
         $this->conn = $db;
     }
 
-    //add course
-    public function addCourse($course_name, $department){
-        $stmt = $this->runQuery('INSERT INTO course (department_id, course) VALUES (:department_id, :course)');
+    //add year level
+    public function addyearLevel($year_level_name){
+        $stmt = $this->runQuery('INSERT INTO year_level (year_level) VALUES (:year_level)');
         $exec = $stmt->execute(array(
-            ":department_id"  => $department,
-            ":course"         => $course_name,
+            ":year_level"  => $year_level_name
         ));
 
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Course added successfully';
+            $_SESSION['status'] = 'Year Level added successfully';
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
         } else {
@@ -32,42 +31,40 @@ class Course {
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course');
+        header('Location: ../year-level');
     }
     
-    //edit course
-    public function editCourse($course_id, $course_name, $department) {
-        // Check if the course name and department have actually changed
-        $old_data_stmt = $this->runQuery('SELECT course, department_id FROM course WHERE id=:id');
+    //edit year level
+    public function edityearLevel($year_level_id, $year_level_name) {
+        // Check if the year level name and department have actually changed
+        $old_data_stmt = $this->runQuery('SELECT year_level FROM year_level WHERE id=:id');
         $old_data_stmt->execute(array(
-            ":id" => $course_id,
+            ":id" => $year_level_id,
         ));
         $old_data = $old_data_stmt->fetch(PDO::FETCH_ASSOC);
-        $old_name = $old_data['course'];
-        $old_department = $old_data['department_id'];
+        $old_name = $old_data['year_level'];
         
-        if ($old_name == $course_name && $old_department == $department) {
-            // Course name and department have not changed, don't need to update
+        if ($old_name == $year_level_name ) {
+            // year level name  have not changed, don't need to update
             $_SESSION['status_title'] = 'Oops!';
             $_SESSION['status'] = 'No changes were made.';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 40000;
             
-            header('Location: ../course');
+            header('Location: ../year-level');
             exit();
         }
         
-        // Course name or department has changed, execute UPDATE query
-        $stmt = $this->runQuery('UPDATE course SET department_id=:department_id, course=:course WHERE id=:id');
+        // year level name  has changed, execute UPDATE query
+        $stmt = $this->runQuery('UPDATE year_level SET year_level=:year_level WHERE id=:id');
         $exec = $stmt->execute(array(
-            ":id" => $course_id,
-            ":department_id" => $department,
-            ":course" => $course_name,
+            ":id" => $year_level_id,
+            ":year_level" => $year_level_name,
         ));
         
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Course successfully updated!';
+            $_SESSION['status'] = 'Year Level successfully updated!';
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
         } else {
@@ -77,22 +74,22 @@ class Course {
             $_SESSION['status_timer'] = 100000;
         }
         
-        header('Location: ../course');
+        header('Location: ../year-level');
         exit();
     }    
 
-    //delete course
-    public function deleteCourse($course_id){
+    //delete year level
+    public function deleteyearLevel($year_level_id){
         $disabled = "disabled";
-        $stmt = $this->runQuery('UPDATE course SET status=:status WHERE id=:id');
+        $stmt = $this->runQuery('UPDATE year_level SET status=:status WHERE id=:id');
         $exec = $stmt->execute(array(
-            ":id"        => $course_id,
+            ":id"        => $year_level_id,
             ":status"   => $disabled,
         ));
 
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Course successfully deleted!';
+            $_SESSION['status'] = 'Year Level successfully deleted!';
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
         } else {
@@ -102,23 +99,23 @@ class Course {
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course');
+        header('Location: ../year-level');
         exit();
 
     }
 
-    //activate course
-    public function activateCourse($course_id){
+    //activate year level
+    public function activateyearLevel($year_level_id){
         $active = "active";
-        $stmt = $this->runQuery('UPDATE course SET status=:status WHERE id=:id');
+        $stmt = $this->runQuery('UPDATE year_level SET status=:status WHERE id=:id');
         $exec = $stmt->execute(array(
-            ":id"        => $course_id,
+            ":id"        => $year_level_id,
             ":status"   => $active,
         ));
 
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Course successfully activated!';
+            $_SESSION['status'] = 'Year Level successfully activated!';
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
         } else {
@@ -128,19 +125,19 @@ class Course {
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course');
+        header('Location: ../year-level');
     }
 
-        //permanent delete course
-        public function permanentDeleteCourse($course_id){
-            $stmt = $this->runQuery('DELETE FROM course WHERE id=:id');
+        //permanent delete year level
+        public function permanentDeleteyearLevel($year_level_id){
+            $stmt = $this->runQuery('DELETE FROM year_level WHERE id=:id');
             $exec = $stmt->execute(array(
-                ":id" => $course_id
+                ":id" => $year_level_id
             ));
         
             if ($exec) {
                 $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Course successfully deleted!';
+                $_SESSION['status'] = 'Year Level successfully deleted!';
                 $_SESSION['status_code'] = 'success';
                 $_SESSION['status_timer'] = 40000;
             } else {
@@ -150,7 +147,7 @@ class Course {
                 $_SESSION['status_timer'] = 100000;
             }
         
-            header('Location: ../archives/course');
+            header('Location: ../archives/year-level');
             exit();
         }
 
@@ -163,46 +160,44 @@ class Course {
 }
 
 //add
-if (isset($_POST['btn-add-course'])) {
-    $department      = trim($_POST['department']);
-    $course_name     = trim($_POST['course']);
+if (isset($_POST['btn-add-year-level'])) {
+    $year_level_name     = trim($_POST['year_level']);
 
-    $add_Course = new Course();
-    $add_Course->addCourse($course_name, $department);
+    $add_year_level = new YearLevel();
+    $add_year_level->addyearLevel($year_level_name);
 }
 
 //edit
-if (isset($_POST['btn-edit-course'])) {
-    $course_id       = $_GET["id"];
-    $department      = trim($_POST['department']);
-    $course_name     = trim($_POST['course']);
+if (isset($_POST['btn-edit-year-level'])) {
+    $year_level_id       = $_GET["id"];
+    $year_level_name     = trim($_POST['year_level']);
 
-    $edit_course = new Course();
-    $edit_course->editCourse($course_id, $course_name, $department );
+    $edit_year_level = new YearLevel();
+    $edit_year_level->edityearLevel($year_level_id, $year_level_name);
 }
 
 //delete
-if (isset($_GET['delete_course'])) {
-    $course_id = $_GET["id"];
+if (isset($_GET['delete_year_level'])) {
+    $year_level_id = $_GET["id"];
 
-    $delete_course = new Course();
-    $delete_course->deleteCourse($course_id);
+    $delete_year_level = new YearLevel();
+    $delete_year_level->deleteyearLevel($year_level_id);
 }
 
 //activate
-if (isset($_GET['activate_course'])) {
-    $course_id = $_GET["id"];
+if (isset($_GET['activate_year_level'])) {
+    $year_level_id = $_GET["id"];
 
-    $activate_course = new Course();
-    $activate_course->activateCourse($course_id);
+    $activate_year_level = new YearLevel();
+    $activate_year_level->activateyearLevel($year_level_id);
 }
 
 //permanent delete
-if (isset($_GET['permanent_delete_course'])) {
-    $course_id = $_GET["id"];
+if (isset($_GET['permanent_delete_year_level'])) {
+    $year_level_id = $_GET["id"];
 
-    $permanent_delete_course = new Course();
-    $permanent_delete_course->permanentDeleteCourse($course_id);
+    $permanent_delete_year_level = new YearLevel();
+    $permanent_delete_year_level->permanentDeleteyearLevel($year_level_id);
 }
 
 

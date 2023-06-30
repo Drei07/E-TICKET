@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Audit Trail</title>
+	<title>Department</title>
 </head>
 <body>
 
@@ -51,7 +51,7 @@ include_once 'header.php';
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
@@ -77,7 +77,7 @@ include_once 'header.php';
 					<span class="text">Settings</span>
 				</a>
 			</li>
-			<li  class="active">
+			<li>
 				<a href="audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
@@ -119,48 +119,88 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Audit Trail</h1>
+					<h1>Department</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Audit Trail</a>
+							<a href="">Department</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
+			<div class="modal-button">
+			<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Department</button>
+			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxl-blogger'></i> Audit Trail</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of Department</h3>
 					</div>
+						<button type="button" onclick="location.href='archives/department'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search department . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
                         <div id="dynamic_content">
                         </div>
-
                     </section>
 				</div>
 			</div>
 		</main>
-		<!-- MAIN -->
+
+				<!-- MODALS -->
+		<div class="class-modal">
+			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+					<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-book' ></i> Add Department</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<section class="data-form-modals">
+							<div class="registration">
+								<form action="controller/department-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+									<div class="row gx-5 needs-validation">
+										
+                                        <div class="col-md-12">
+											<label for="first_name" class="form-label">Department Name<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="department" id="department" required>
+											<div class="invalid-feedback">
+											Please provide a Department Name.
+											</div>
+										</div>
+
+									</div>
+
+									<div class="addBtn">
+										<button type="submit" class="btn-dark" name="btn-add-department" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
+									</div>
+								</form>
+							</div>
+						</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 
 	<?php
     include_once '../../configuration/footer.php';
     ?>
+
 	<script>
 
-//live search---------------------------------------------------------------------------------------//
+	//live search---------------------------------------------------------------------------------------//
 	$(document).ready(function(){
 
 	load_data(1);
@@ -168,7 +208,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/logs-table.php",
+		url:"tables/department-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)

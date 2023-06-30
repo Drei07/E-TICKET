@@ -52,6 +52,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="department">
+				<i class='bx bxs-buildings'></i>
+				<span class="text">Department</span>
+				</a>
+			</li>
+			<li>
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
@@ -176,6 +182,9 @@ include_once 'header.php';
 										<div class="col-md-6">
 											<label for="middle_name" class="form-label">Middle Name</label>
 											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="middle_name" id="middle_name">
+										</div>
+										<div class="invalid-feedback">
+											Please provide a Middle Name.
 										</div>
 
 

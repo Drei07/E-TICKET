@@ -72,11 +72,11 @@ $output = '
   {
 
     if ($row["account_status"] == "active") {
-      $buttons = '<button type="button" class="btn btn-danger V"><a href="controller/user-controller?id='.$row["id"].'&disabled_sub_admin=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="controller/user-controller?id='.$row["id"].'&disabled_sub_admin=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
       $status = '<button type="button" class="btn btn-success V" style="width: 80px;">Active</button>';
     
     } else if ($row["account_status"] == "disabled") {
-      $buttons = '<button type="button" class="btn btn-warning V"><a href="controller/user-controller?id='.$row["id"].'&activate_sub_admin=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="controller/user-controller?id='.$row["id"].'&activate_sub_admin=1" class="activate">Activate</a></button>';
       $status = '<button type="button" class="btn btn-danger V" style="width: 80px;">Disabled</button>';
     }
 
@@ -88,7 +88,7 @@ $output = '
       <td>'.$row["email"].'</td>
       <td>
       <button type="button" class="btn btn-primary V"><a href="edit-sub-admin?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      '.$buttons.'
+      '.$button.'
       </td>        
     </tr>
     ';

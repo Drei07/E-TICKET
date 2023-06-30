@@ -1,13 +1,13 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/admin-class.php';
-include_once __DIR__.'/../../../database/dbconfig2.php';
+require_once '../../authentication/admin-class.php';
+include_once __DIR__.'/../../../../database/dbconfig2.php';
 
 $user = new ADMIN();
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../../private/admin/');
+ $user->redirect('../../../../private/admin/');
 }
 
 
@@ -31,36 +31,33 @@ else
 }
 
 $query = "
-SELECT * FROM course WHERE status = :status
+SELECT * FROM year_level WHERE status = :status
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  AND course LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND year_level LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
-$query .= 'ORDER BY course ASC ';
+$query .= 'ORDER BY year_level ASC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":status" => "disabled"));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":status" => "disabled"));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
 {
 $output = '
-
     <thead>
-    <th>DEPARTMENT LOGO</th>
-    <th>DEPARTMENT NAME</th>
-    <th>COURSE / PROGRAM</th>
+    <th>YEAR LEVEL</th>
     <th>ACTION</th>
     </thead>
 ';
@@ -68,29 +65,19 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/course-controller?id='.$row["id"].'&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="../controller/year-level-controller?id='.$row["id"].'&delete_year_level=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="controller/course-controller?id='.$row["id"].'&activate_course=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="../controller/year-level-controller?id='.$row["id"].'&activate_year_level=1" class="activate">Activate</a></button>';
     }
-    
-    $department_id = $row['department_id'];
-    $pdoQuery = "SELECT * FROM department WHERE id = :id";
-    $pdoResult = $pdoConnect->prepare($pdoQuery);
-    $pdoExec = $pdoResult->execute(array(":id" => $department_id));
-    $department_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
 
     $output .= '
     
     <tr>
+      <td>'.$row["year_level"].'</td>
       <td>
-      <img src="../../src/img/'.$department_data["department_logo"].'">
-      </td>
-      <td>'.$department_data["department"].'</td>
-      <td>'.$row["course"].'</td>
-      <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="../edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-danger V"><a href="../controller/year-level-controller?id='.$row["id"].'&permanent_delete_year_level=1" class="permanent_delete"><i class="bx bxs-trash"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>
@@ -227,7 +214,7 @@ echo $output;
 
 ?>
 
-<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../src/js/form.js"></script>
+<script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../../../src/js/form.js"></script>
 
 </table>

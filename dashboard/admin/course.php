@@ -51,6 +51,12 @@ include_once 'header.php';
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
+			<li>
+				<a href="department">
+				<i class='bx bxs-buildings'></i>
+				<span class="text">Department</span>
+				</a>
+			</li>
 			<li  class="active">
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
@@ -133,16 +139,16 @@ include_once 'header.php';
 					<div class="head">
 						<h3><i class='bx bxs-user-account' ></i> List of Course</h3>
 					</div>
+						<button type="button" onclick="location.href='archives/course'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search course . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
                         <div id="dynamic_content">
                         </div>
-
                     </section>
 				</div>
 			</div>
@@ -155,58 +161,48 @@ include_once 'header.php';
 					<div class="modal-content">
 					<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-user-account' ></i> Add Sub-Admin</h5>
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-book' ></i> Add Course</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 						<section class="data-form-modals">
 							<div class="registration">
-								<form action="controller/user-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+								<form action="controller/course-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
 									<div class="row gx-5 needs-validation">
-
-                                        <div class="col-md-6">
-											<label for="first_name" class="form-label">First Name<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="first_name" id="first_name" required>
-											<div class="invalid-feedback">
-											Please provide a First Name.
-											</div>
-										</div>
-
-
-										<div class="col-md-6">
-											<label for="middle_name" class="form-label">Middle Name</label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="middle_name" id="middle_name">
-										</div>
-
-
-										<div class="col-md-6">
-											<label for="last_name" class="form-label">Last Name<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="last_name" id="last_name" required>
-											<div class="invalid-feedback">
-											Please provide a Last Name.
-											</div>
-										</div>
-
-                                        <div class="col-md-6" >
-                                            <label for="phone_number" class="form-label">Phone Number<span> *</span></label>
-                                            <div class="input-group flex-nowrap">
-                                            <span class="input-group-text" id="addon-wrapping">+63</span>
-                                            <input type="text" class="form-control numbers"  autocapitalize="off" inputmode="numeric" autocomplete="off" name="phone_number" id="phone_number" required minlength="10" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  placeholder="10-digit number">
-                                            </div>
-                                        </div>
-
+										
 										<div class="col-md-12">
-											<label for="email" class="form-label">Email<span> *</span></label>
-											<input type="email" class="form-control" autocapitalize="on"  autocomplete="off" name="email" id="email" required>
+											<label for="services" class="form-label">Department<span> *</span></label>
+											<select type="text" class="form-select form-control"  name="department" id="department"  required>
+											<option selected disabled value="">Select Services</option>
+												<?php
+													$pdoQuery = "SELECT * FROM department ";
+													$pdoResult = $pdoConnect->prepare($pdoQuery);
+													$pdoResult->execute();
+													
+														while($department_data=$pdoResult->fetch(PDO::FETCH_ASSOC)){
+															?>
+															<option value="<?php echo $department_data['id']; ?> " ><?php echo $department_data['department'];  ?></option>
+															<?php
+														}
+												?>
+											</select>
 											<div class="invalid-feedback">
-											Please provide a Email.
+												Please select a Department.
+											</div>
+										</div>
+
+                                        <div class="col-md-12">
+											<label for="first_name" class="form-label">Course Name<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="course" id="course" required>
+											<div class="invalid-feedback">
+											Please provide a Course Name.
 											</div>
 										</div>
 
 									</div>
 
 									<div class="addBtn">
-										<button type="submit" class="btn-dark" name="btn-add-sub-admin" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
+										<button type="submit" class="btn-dark" name="btn-add-course" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
 									</div>
 								</form>
 							</div>

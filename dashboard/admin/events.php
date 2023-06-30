@@ -52,6 +52,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="department">
+				<i class='bx bxs-buildings'></i>
+				<span class="text">Department</span>
+				</a>
+			</li>
+			<li>
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
@@ -149,28 +155,35 @@ include_once 'header.php';
 							<div class="head">
 								<div class="body" onclick="location.href='events?course_id=<?php echo $course_event['course_id'] ?>&year_level_id=<?php echo $course_event['year_level_id'] ?>'">
 									<?php
+										//course data
 										$course_id = $course_event['course_id'];
 										$pdoQuery = "SELECT * FROM course WHERE id = :id";
 										$pdoResult2 = $pdoConnect->prepare($pdoQuery);
 										$pdoExec = $pdoResult2->execute(array(":id" => $course_id));
 										$course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
-									?>
-									<img src="../../src/img/<?php echo $course_data['course_logo']; ?>" alt="course_logo"> 
 
+										//department data
+										$department_id = $course_data['department_id'];
+										$pdoQuery = "SELECT * FROM department WHERE id = :id";
+										$pdoResult3 = $pdoConnect->prepare($pdoQuery);
+										$pdoExec = $pdoResult3->execute(array(":id" => $department_id));
+										$department_data= $pdoResult3->fetch(PDO::FETCH_ASSOC);
+									?>
+									<img src="../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo"> 
 									<h2>
 										<?php echo $course_data['course']; ?>
 										<br>
 										<?php
 											$year_level_id = $course_event['year_level_id'];
 											$pdoQuery = "SELECT * FROM year_level WHERE id = :id";
-											$pdoResult3 = $pdoConnect->prepare($pdoQuery);
-											$pdoExec = $pdoResult3->execute(array(":id" => $year_level_id));
-											$year_level_data= $pdoResult3->fetch(PDO::FETCH_ASSOC);
+											$pdoResult4 = $pdoConnect->prepare($pdoQuery);
+											$pdoExec = $pdoResult4->execute(array(":id" => $year_level_id));
+											$year_level_data= $pdoResult4->fetch(PDO::FETCH_ASSOC);
 										?>
-										<?php echo $year_level_data['department']; ?>
+										<?php echo $year_level_data['year_level']; ?>
 										<br>
 										
-										<label><?php echo $course_data['college'] ?></label>
+										<label><?php echo $department_data['department'] ?></label>
 									</h2>
 								</div>
 								<a href="controller/course-event-controller.php?Id=<?php echo $course_event['id'] ?>" class="delete-baby"><i class='bx bxs-trash icon'></i></a>

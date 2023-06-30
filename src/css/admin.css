@@ -127,6 +127,16 @@ body {
 	padding: 4px 15px;
 }
 
+/*archives */
+.archives{
+	padding: 8px 25px;
+	border: none;
+	border-radius: 7px;
+	font-weight: 600;
+	font-size: 13px;
+	margin-right: 1.5rem;
+}
+
 .tooltip.bs-tooltip-top .tooltip-arrow::before {
 border-top-color: var(--main);
 }
@@ -542,9 +552,12 @@ border-right-color: var(--main);
 }
 
 #content main .modal-button button{
-	padding: 8px 16px;
+	padding: 8px 25px;
 	border: none;
-	border-radius: 10px;
+	border-radius: 7px;
+	font-weight: 600;
+	font-size: 13px;
+	margin-right: 1.5rem;
 }
 
 #content main .info-data {
@@ -582,7 +595,7 @@ border-right-color: var(--main);
 	justify-content: space-between;
 	align-items: flex-start;
 	border-radius: 20px;
-	border-left: 20px solid var(--main);
+	border-left: 10px solid var(--main);
 }
 
 #content main .card .head .body {
@@ -689,7 +702,7 @@ border-right-color: var(--main);
 }
 #content main .table-data .head h3 {
 	margin-right: auto;
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: 600;
 }
 #content main .table-data .head .bx {
@@ -1296,6 +1309,7 @@ border-right-color: var(--main);
     text-align: center;
 	background-color: var(--light);
 	font-weight: 600;
+	font-size: 11px;
 	color: var(--light-black);
 }
 

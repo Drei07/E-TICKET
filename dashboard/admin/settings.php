@@ -52,6 +52,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="department">
+				<i class='bx bxs-buildings'></i>
+				<span class="text">Department</span>
+				</a>
+			</li>
+			<li>
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>

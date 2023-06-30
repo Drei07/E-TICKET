@@ -1,13 +1,13 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/admin-class.php';
-include_once __DIR__.'/../../../database/dbconfig2.php';
+require_once '../../authentication/admin-class.php';
+include_once __DIR__.'/../../../../database/dbconfig2.php';
 
 $user = new ADMIN();
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../../private/admin/');
+ $user->redirect('../../../../private/admin/');
 }
 
 
@@ -46,11 +46,11 @@ $query .= 'ORDER BY course ASC ';
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":status" => "disabled"));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":status" => "disabled"));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
@@ -60,7 +60,7 @@ $output = '
     <thead>
     <th>DEPARTMENT LOGO</th>
     <th>DEPARTMENT NAME</th>
-    <th>COURSE / PROGRAM</th>
+    <th>COURSE</th>
     <th>ACTION</th>
     </thead>
 ';
@@ -68,10 +68,10 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/course-controller?id='.$row["id"].'&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="../controller/course-controller?id='.$row["id"].'&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="controller/course-controller?id='.$row["id"].'&activate_course=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="../controller/course-controller?id='.$row["id"].'&activate_course=1" class="activate">Activate</a></button>';
     }
     
     $department_id = $row['department_id'];
@@ -85,12 +85,13 @@ $output = '
     
     <tr>
       <td>
-      <img src="../../src/img/'.$department_data["department_logo"].'">
+      <img src="../../../src/img/'.$department_data["department_logo"].'">
       </td>
       <td>'.$department_data["department"].'</td>
       <td>'.$row["course"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="../edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-danger V"><a href="../controller/course-controller?id='.$row["id"].'&permanent_delete_course=1" class="permanent_delete"><i class="bx bxs-trash"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>
@@ -227,7 +228,7 @@ echo $output;
 
 ?>
 
-<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../src/js/form.js"></script>
+<script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../../../src/js/form.js"></script>
 
 </table>

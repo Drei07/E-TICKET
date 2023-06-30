@@ -125,6 +125,24 @@ $('.delete').on('click', function (e) {
 			}
 		});
 })
+//Permanent Delete 
+$('.permanent_delete').on('click', function (e) {
+	e.preventDefault();
+	const href = $(this).attr('href')
+
+	swal({
+		title: "Delete?",
+		text: "Do you want to permanent delete this data?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((willDelete) => {
+			if (willDelete) {
+				document.location.href = href;
+			}
+		});
+})
 
 //Delete Profile
 $('.delete2').on('click', function (e) {
