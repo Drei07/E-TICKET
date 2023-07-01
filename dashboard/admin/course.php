@@ -171,7 +171,7 @@ include_once 'header.php';
 									<div class="row gx-5 needs-validation">
 										
 										<div class="col-md-12">
-											<label for="services" class="form-label">Department<span> *</span></label>
+											<label for="department" class="form-label">Department<span> *</span></label>
 											<select type="text" class="form-select form-control"  name="department" id="department"  required>
 											<option selected disabled value="">Select Services</option>
 												<?php
@@ -192,7 +192,7 @@ include_once 'header.php';
 										</div>
 
                                         <div class="col-md-12">
-											<label for="first_name" class="form-label">Course Name<span> *</span></label>
+											<label for="course" class="form-label">Course Name<span> *</span></label>
 											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="course" id="course" required>
 											<div class="invalid-feedback">
 											Please provide a Course Name.

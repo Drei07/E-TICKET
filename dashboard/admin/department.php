@@ -167,16 +167,25 @@ include_once 'header.php';
 						<div class="modal-body">
 						<section class="data-form-modals">
 							<div class="registration">
-								<form action="controller/department-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+								<form action="controller/department-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" enctype="multipart/form-data"  novalidate style="overflow: hidden;">
 									<div class="row gx-5 needs-validation">
 										
                                         <div class="col-md-12">
-											<label for="first_name" class="form-label">Department Name<span> *</span></label>
+											<label for="department" class="form-label">Department Name<span> *</span></label>
 											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="department" id="department" required>
 											<div class="invalid-feedback">
 											Please provide a Department Name.
 											</div>
 										</div>
+
+
+                                        <div class="col-md-12">
+                                            <label for="department_logo" class="form-label">Department Logo<span> *</span></label>
+                                            <input type="file" class="form-control" name="department_logo" id="department_logo" style="height: 33px ;" required>
+                                            <div class="invalid-feedback">
+                                                Please provide a Logo.
+                                            </div>
+                                        </div>
 
 									</div>
 

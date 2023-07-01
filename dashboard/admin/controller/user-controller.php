@@ -155,7 +155,7 @@ class sub_adminRegistration {
     
             $_SESSION['status_title'] = 'Oops!';
             $_SESSION['status'] = 'No changes were made.';
-            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_code'] = 'info';
             $_SESSION['status_timer'] = 40000;
     
             header('Location: ../sub-admin');

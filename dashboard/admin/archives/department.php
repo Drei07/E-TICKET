@@ -1,13 +1,50 @@
 <?php
-include_once 'header.php';
+include_once '../../../database/dbconfig2.php';
+require_once '../authentication/admin-class.php';
+include_once '../../../configuration/settings-configuration.php';
+
+
+// instances of the classes
+$config = new SystemConfig();
+$user = new ADMIN();
+
+if(!$user->isUserLoggedIn())
+{
+ $user->redirect('../../../../private/admin/');
+}
+
+// retrieve user data
+$stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
+$stmt->execute(array(":uid"=>$_SESSION['adminSession']));
+$user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// retrieve profile user and full name
+$user_id                = $user_data['id'];
+$user_profile           = $user_data['profile'];
+$user_fname             = $user_data['first_name'];
+$user_mname             = $user_data['middle_name'];
+$user_lname             = $user_data['last_name'];
+$user_fullname          = $user_data['last_name'] . ", " . $user_data['first_name'];
+$user_sex               = $user_data['sex'];
+$user_birth_date        = $user_data['date_of_birth'];
+$user_age               = $user_data['age'];
+$user_civil_status      = $user_data['civil_status'];
+$user_phone_number      = $user_data['phone_number'];
+$user_email             = $user_data['email'];
+$user_last_update       = $user_data['updated_at'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php
-    include_once '../../configuration/header.php';
-    ?>
-	<title>Year Level</title>
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="../../../src/img/<?php echo $config->getSystemLogo() ?>">
+	<link rel="stylesheet" href="../../../src/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../../src/node_modules/boxicons/css/boxicons.min.css">
+	<link rel="stylesheet" href="../../../src/node_modules/aos/dist/aos.css">
+    <link rel="stylesheet" href="../../../src/css/admin.css?v=<?php echo time(); ?>">
+	<title>Department</title>
 </head>
 <body>
 
@@ -17,54 +54,54 @@ include_once 'header.php';
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="" class="brand">
-			<img src="../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
+			<img src="../../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
 			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="./">
+				<a href="../">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li>
-				<a href="events">
+				<a href="../events">
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">Events</span>
 				</a>
 			</li>
 			<li>
-				<a href="events-logs">
+				<a href="../events-logs">
 					<i class='bx bx-calendar-event'></i>
 					<span class="text">Events logs</span>
 				</a>
 			</li>
 			<li>
-				<a href="access-token">
+				<a href="../access-token">
                     <i class='bx bxs-key' ></i>
 					<span class="text">Access Token</span>
 				</a>
 			</li>
 			<li>
-				<a href="sub-admin">
+				<a href="../sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
-			<li>
-				<a href="department">
+			<li   class="active">
+				<a href="../department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
 				</a>
 			</li>
 			<li>
-				<a href="course">
+				<a href="../course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
 				</a>
 			</li>
-			<li  class="active">
-				<a href="year-level">
+			<li>
+				<a href="../year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
 				</a>
@@ -72,19 +109,19 @@ include_once 'header.php';
 		</ul>
 		<ul class="side-menu top">
 			<li>
-				<a href="settings">
+				<a href="../settings">
 					<i class='bx bxs-cog' ></i>
 					<span class="text">Settings</span>
 				</a>
 			</li>
 			<li>
-				<a href="audit-trail">
+				<a href="../audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
 				</a>
 			</li>
 			<li>
-				<a href="authentication/admin-signout" class="btn-signout">
+				<a href="../authentication/admin-signout" class="btn-signout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Signout</span>
 				</a>
@@ -110,7 +147,7 @@ include_once 'header.php';
                 <span>Hello, <label for=""><?php echo $user_fname ?></label></span>
             </div>
 			<a href="profile" class="profile" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Profile">
-				<img src="../../src/img/<?php echo $user_profile ?>">
+				<img src="../../../src/img/<?php echo $user_profile ?>">
 			</a>
 		</nav>
 		<!-- NAVBAR -->
@@ -119,31 +156,31 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Year Level</h1>
+					<h1>Department</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Year Level</a>
+							<a class="active" href="../department">Department</a>
+						</li>
+						<li>|</li>
+						<li>
+							<a href="">Archives</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-		<div class="modal-button">
-			<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Year Level</button>
-			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Year Level</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of Archives Department</h3>
 					</div>
-						<button type="button" onclick="location.href='archives/year-level'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search year level . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search department . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
@@ -153,52 +190,17 @@ include_once 'header.php';
 				</div>
 			</div>
 		</main>
-
-				<!-- MODALS -->
-		<div class="class-modal">
-			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
-				<div class="modal-dialog modal-dialog-centered modal-lg">
-					<div class="modal-content">
-					<div class="header"></div>
-						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-book' ></i> Add Year Level</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-						<section class="data-form-modals">
-							<div class="registration">
-								<form action="controller/year-level-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
-									<div class="row gx-5 needs-validation">
-
-                                        <div class="col-md-12">
-											<label for="year_level" class="form-label">Year Level<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="year_level" id="year_level" required>
-											<div class="invalid-feedback">
-											Please provide a Year Level.
-											</div>
-										</div>
-
-									</div>
-
-									<div class="addBtn">
-										<button type="submit" class="btn-dark" name="btn-add-year-level" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
-									</div>
-								</form>
-							</div>
-						</section>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- MAIN -->
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 
-	<?php
-    include_once '../../configuration/footer.php';
-    ?>
+    <script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../../../src/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../../../src/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../src/js/loader.js"></script>
+    <script src="../../../src/js/form.js"></script>
+    <script src="../../../src/js/tooltip.js"></script>
+	<script src="../../../src/js/admin.js"></script>
 
 	<script>
 
@@ -210,7 +212,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/year-level-table.php",
+		url:"tables/department-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)

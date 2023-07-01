@@ -33,7 +33,7 @@ class ProfileSettings
             // No changes have been made
             $_SESSION['status_title'] = 'Oopss!';
             $_SESSION['status'] = 'No changes have been made to your profile.';
-            $_SESSION['status_code'] = 'warning';
+            $_SESSION['status_code'] = 'info';
             $_SESSION['status_timer'] = 40000;
 
             header('Location: ../profile');
