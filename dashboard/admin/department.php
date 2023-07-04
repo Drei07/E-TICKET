@@ -34,12 +34,6 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="events-logs">
-					<i class='bx bx-calendar-event'></i>
-					<span class="text">Events logs</span>
-				</a>
-			</li>
-			<li>
 				<a href="access-token">
                     <i class='bx bxs-key' ></i>
 					<span class="text">Access Token</span>
@@ -137,7 +131,7 @@ include_once 'header.php';
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Department</h3>
+						<h3><i class='bx bxs-buildings'></i> List of Department</h3>
 					</div>
 						<button type="button" onclick="location.href='archives/department'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
@@ -161,7 +155,7 @@ include_once 'header.php';
 					<div class="modal-content">
 					<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-book' ></i> Add Department</h5>
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-buildings'></i> Add Department</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">

@@ -33,12 +33,6 @@ include_once 'header.php';
 					<span class="text">Events</span>
 				</a>
 			</li>
-			<li  class="active">
-				<a href="events-logs">
-					<i class='bx bx-calendar-event'></i>
-					<span class="text">Events logs</span>
-				</a>
-			</li>
 			<li>
 				<a href="access-token">
                     <i class='bx bxs-key' ></i>

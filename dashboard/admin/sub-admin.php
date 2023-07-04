@@ -34,12 +34,6 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="events-logs">
-					<i class='bx bx-calendar-event'></i>
-					<span class="text">Events logs</span>
-				</a>
-			</li>
-			<li>
 				<a href="access-token">
                     <i class='bx bxs-key' ></i>
 					<span class="text">Access Token</span>
@@ -209,6 +203,27 @@ include_once 'header.php';
 											<input type="email" class="form-control" autocapitalize="on"  autocomplete="off" name="email" id="email" required>
 											<div class="invalid-feedback">
 											Please provide a Email.
+											</div>
+										</div>
+
+										<div class="col-md-12">
+											<label for="department" class="form-label">Department<span> *</span></label>
+											<select type="text" class="form-select form-control"  name="department" id="department"  required>
+											<option selected disabled value="">Select Department</option>
+												<?php
+													$pdoQuery = "SELECT * FROM department ";
+													$pdoResult = $pdoConnect->prepare($pdoQuery);
+													$pdoResult->execute();
+													
+														while($department_data=$pdoResult->fetch(PDO::FETCH_ASSOC)){
+															?>
+															<option value="<?php echo $department_data['id']; ?> " ><?php echo $department_data['department'];  ?></option>
+															<?php
+														}
+												?>
+											</select>
+											<div class="invalid-feedback">
+												Please select a Department.
 											</div>
 										</div>
 
