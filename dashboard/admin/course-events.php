@@ -5,15 +5,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Retrieve the values from the POST request
 	$courseId = isset($_POST['course_id']) ? $_POST['course_id'] : '';
 	$yearLevelId = isset($_POST['year_level_id']) ? $_POST['year_level_id'] : '';
-  
+
 	// Store the values in session variables
 	$_SESSION['course_id'] = $courseId;
 	$_SESSION['year_level_id'] = $yearLevelId;
-  }
-  
-  // Retrieve the values from session variables
-  $courseId = isset($_SESSION['course_id']) ? $_SESSION['course_id'] : '';
-  $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : '';
+}
+
+// Retrieve the values from session variables
+$courseId = isset($_SESSION['course_id']) ? $_SESSION['course_id'] : '';
+$yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : '';
 
 ?>
 <!DOCTYPE html>
@@ -204,14 +204,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
-						<ul class="box-info">
+						<div class="searchBx">
+							<input type="text" id="search-input-mandatory" placeholder="Search Events . . . . . ." class="search">
+							<button class="searchBtn" type="button" onclick="searchMandatoryEvents()"><i class="bx bx-search icon"></i></button>
+						</div>
+						<ul class="box-info" id="mandatory-events">
 							<?php
 							$pdoQuery = "SELECT * FROM events WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
 							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
 							$pdoResult5->execute(array(
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
-								":event_type"		=> 1,
+								":event_type"		=> "MANDATORY",
 								":status"			=> "active"
 							));
 							if ($pdoResult5->rowCount() >= 1) {
@@ -219,14 +223,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								while ($event_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
 									extract($event_data);
 							?>
-							<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
 
-								<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
-								<h4><?php echo $event_data['event_name'] ?></h4>
-								<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-								<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
+										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+										<h4><?php echo $event_data['event_name'] ?></h4>
+										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
 
-							</li>
+									</li>
 							<?php
 								}
 							}
@@ -247,30 +251,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
-						<ul class="box-info">
-						<ul class="box-info">
+						<div class="searchBx">
+							<input type="text" id="search-input-optional" placeholder="Search Events . . . . . ." class="search">
+							<button class="searchBtn" type="button" onclick="searchOptionalEvents()"><i class="bx bx-search icon"></i></button>
+						</div>
+						<ul class="box-info" id="optional-events">
 							<?php
 							$pdoQuery = "SELECT * FROM events WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
 							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
 							$pdoResult5->execute(array(
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
-								":event_type"		=> 2,
+								":event_type"		=> "OPTIONAL",
 								":status"			=> "active"
 							));
 							if ($pdoResult5->rowCount() >= 1) {
 
 								while ($event_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
-									extract($event_data); 
+									extract($event_data);
 							?>
-							<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
 
-								<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
-								<h4><?php echo $event_data['event_name'] ?></h4>
-								<p>Event Date <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-								<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
+										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+										<h4><?php echo $event_data['event_name'] ?></h4>
+										<p>Event Date <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
 
-							</li>
+									</li>
 							<?php
 								}
 							}
@@ -342,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 											<div class="col-md-12">
 												<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
-												<textarea  onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
+												<textarea onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
 												<div class="invalid-feedback">
 													Please provide a Event Rules.
 												</div>
@@ -352,8 +359,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 												<label for="event_type" class="form-label">Event Type<span> *</span></label>
 												<select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
 													<option selected value="">Select.....</option>
-													<option value="1">MANDATORY</option>
-													<option value="2 ">OPTIONAL</option>
+													<option value="MANDATORY">MANDATORY</option>
+													<option value="OPTIONAL">OPTIONAL</option>
 												</select>
 												<div class="invalid-feedback">
 													Please select a valid Event Type.
@@ -466,7 +473,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	include_once '../../configuration/footer.php';
 	?>
 
-		<script>
+	<script>
 		function setSessionValues(eventId) {
 			fetch('events-details.php', {
 					method: 'POST',
@@ -481,6 +488,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				.catch(error => {
 					console.error('Error:', error);
 				});
+		}
+
+		function searchMandatoryEvents() {
+			var searchInput = document.getElementById('search-input-mandatory').value.trim();
+			var eventItems = document.querySelectorAll('#mandatory-events li');
+
+			eventItems.forEach(function(item) {
+				var eventName = item.querySelector('h4').innerText;
+
+				if (eventName.toLowerCase().includes(searchInput.toLowerCase())) {
+					item.style.display = 'block';
+				} else {
+					item.style.display = 'none';
+				}
+			});
+
+			var noResultsMsg = document.getElementById('no-results-msg-mandatory');
+			if (document.querySelectorAll('#mandatory-events li[style="display: block;"]').length === 0) {
+				noResultsMsg.style.display = 'block';
+			} else {
+				noResultsMsg.style.display = 'none';
+			}
+
+			if (searchInput === '') {
+				eventItems.forEach(function(item) {
+					item.style.display = 'block';
+				});
+				noResultsMsg.style.display = 'none';
+			}
+		}
+
+		function searchOptionalEvents() {
+			var searchInput = document.getElementById('search-input-optional').value.trim();
+			var eventItems = document.querySelectorAll('#optional-events li');
+
+			eventItems.forEach(function(item) {
+				var eventName = item.querySelector('h4').innerText;
+
+				if (eventName.toLowerCase().includes(searchInput.toLowerCase())) {
+					item.style.display = 'block';
+				} else {
+					item.style.display = 'none';
+				}
+			});
+
+			var noResultsMsg = document.getElementById('no-results-msg-optional');
+			if (document.querySelectorAll('#optional-events li[style="display: block;"]').length === 0) {
+				noResultsMsg.style.display = 'block';
+			} else {
+				noResultsMsg.style.display = 'none';
+			}
+
+			if (searchInput === '') {
+				eventItems.forEach(function(item) {
+					item.style.display = 'block';
+				});
+				noResultsMsg.style.display = 'none';
+			}
 		}
 	</script>
 

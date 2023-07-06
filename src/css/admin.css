@@ -1603,4 +1603,114 @@ border-right-color: var(--main);
 	border-radius: 7px;
 	font-weight: 600;
 	font-size: 11px;
+	
+}
+
+/* event details */
+#content main .events-details {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 36px;
+
+}
+#content main .events-details li {
+	padding: 30px;
+	background: var(--light);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	grid-gap: 24px;
+	margin: 0 auto;
+
+}
+
+#content main .events-details li:hover {
+	box-shadow: 7px 5px 10px 1px rgba(0,0,0,0.15);
+}
+
+#content main .events-details li img {
+	width: 260px;
+	height: 380px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+#content main .events-details li .details {
+	padding: 40px;
+	display: block;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+#content main .events-details li .details h1{
+	font-size: 18px;
+	font-weight: 700;
+	text-align: left;
+	padding: 10px 10px 10px 0px;
+	font-family: inherit;
+
+}
+#content main .events-details li .details p{
+	padding: 10px 10px 10px 0px;
+	font-size: 13px;
+}
+
+#content main .events-details li .details p strong{
+	font-size:14px;
+}
+
+#content main .events-details li .details .action .btn {
+	padding: 8px 25px;
+	width: 130px;
+	border: none;
+	border-radius: 7px;
+	font-weight: 550;
+	font-size: 15px;
+	margin-right: 20px;	
+	margin-bottom: 20px;
+}
+
+#content main .events-details li .details .action .btn a{
+	text-decoration: none;
+	color: var(--light);
+}
+
+@media screen and (max-width: 900px){
+	#content main .events-details li {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+	}
+	#content main .events-details li .details {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	#content main .events-details li .details h1{
+		font-size: 18px;
+		font-weight: 700;
+		text-align: center;
+	}
+	#content main .events-details li .details p{
+		text-align: center;
+	}
+	#content main .events-details li .details .action .btn {
+		margin-bottom: 20px;
+		margin-right: 0px;
+		width: 100%;
+
+	}
+}
+@media screen and (max-width: 500px){
+	#content main .events-details li img {
+		width: 200px;
+		height: 320px;
+		
+	}
 }

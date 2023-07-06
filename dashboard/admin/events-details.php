@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $stmt = $user->runQuery("SELECT * FROM events WHERE id=:id");
 $stmt->execute(array(":id"=>$eventId));
-$events_data = $stmt->fetch(PDO::FETCH_ASSOC);
+$event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -143,15 +143,144 @@ $events_data = $stmt->fetch(PDO::FETCH_ASSOC);
 					</ul>
 				</div>
 			</div>
+			<ul class="events-details">
+				<li>
+					<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+					<div class="details">
+						<h1><?php echo $event_data['event_name'] ?></h1>
+						<p><strong>Event Date / Time:</strong> <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?> - <?php echo date("h:i A", strtotime($event_data['event_time'])); ?></p>
+						<p><strong>Event Venue:</strong> <?php echo $event_data['event_venue'] ?></p>
+						<p><strong>Event Rules:</strong> <?php echo $event_data['event_rules'] ?></p>
+						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
 
-			<ul class="box-info">
-				<li onclick="location.href='baby'">
-					<i class='bx bxs-baby-carriage'></i>
-					<h1>helllo</h1>
+						<div class="action">
+							<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
+							<button type="button" class="btn btn-danger"><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&delete_event=1" class="delete"><i class='bx bxs-trash'></i> Delete</a></button>
+						</div>
+					</div>
 				</li>
 			</ul>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3><i class='bx bxs-user-detail'></i> List of Registered</h3>
+					</div>
+						<button type="button" onclick="location.href='archives/'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
+                    <!-- BODY -->
+                    <section class="data-table">
+                        <div class="searchBx">
+                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                        </div>
+
+                        <div class="table">
+                        <div id="dynamic_content">
+                        </div>
+                    </section>
+				</div>
+			</div>
 		</main>
 		<!-- MAIN -->
+		<div class="class-modal">
+			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Edit Events</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<section class="data-form-modals">
+								<div class="registration">
+									<form action="controller/event-controller.php?id=<?php echo $event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" enctype="multipart/form-data" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+										<div class="row gx-5 needs-validation">
+
+											<div class="col-md-12">
+												<label for="event_name" class="form-label">Event Name<span> *</span></label>
+												<input type="text" value="<?php echo $event_data['event_name']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_name" id="event_name" required>
+												<div class="invalid-feedback">
+													Please provide a Event Name.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_date" class="form-label">Event Date<span> *</span></label>
+												<input type="date" value="<?php echo $event_data['event_date']?>" class="form-control" autocomplete="off" name="event_date" id="event_date" required>
+												<div class="invalid-feedback">
+													Please provide a Event Date.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_time" class="form-label">Event Time<span> *</span></label>
+												<input type="time" value="<?php echo $event_data['event_time']?>" class="form-control" autocomplete="off" name="event_time" id="event_time" required>
+												<div class="invalid-feedback">
+													Please provide a Event Time.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_venue" class="form-label">Event Venue<span> *</span></label>
+												<input type="text" value="<?php echo $event_data['event_venue']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_venue" id="event_venue" required>
+												<div class="invalid-feedback">
+													Please provide a Event Venue.
+												</div>
+											</div>
+
+											<!-- please add numbers only -->
+											<div class="col-md-6">
+												<label for="event_max_guest" class="form-label">Event Max Guest<span> *</span></label>
+												<input type="numbers" value="<?php echo $event_data['event_max_guest']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_max_guest" id="event_max_guest">
+												<div class="invalid-feedback">
+													Please provide a Event Max Guest.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
+												<textarea value="<?php echo $event_data['event_rules']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"><?php echo $event_data['event_rules']?></textarea>
+												<div class="invalid-feedback">
+													Please provide a Event Rules.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_type" class="form-label">Event Type<span> *</span></label>
+												<select class="form-select form-control"  name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
+													<option selected value="<?php echo $event_data['event_type']?>"><?php echo $event_data['event_type']?></option>
+													<option value="1">MANDATORY</option>
+													<option value="2 ">OPTIONAL</option>
+												</select>
+												<div class="invalid-feedback">
+													Please select a valid Event Type.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_poster" class="form-label">Event Poster<span> *</span></label>
+												<input type="file"  class="form-control" name="event_poster" id="event_poster" style="height: 33px;">
+												<div class="invalid-feedback">
+													Please provide an Event Poster.
+												</div>
+											</div>
+											<?php if (!empty($event_data['event_poster'])) { ?>
+                                                <img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="Event poster" style="width: 50%;">
+                                            <?php } ?>
+
+										</div>
+
+										<div class="addBtn">
+											<button type="submit" class="btn-dark" name="btn-edit-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Update</button>
+										</div>
+									</form>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
