@@ -62,6 +62,7 @@ $output = '
 
     <thead>
     <th>STATUS</th>
+    <th>DEPARTMENT</th>
     <th>NAME</th>
     <th>PHONE NUMBER</th>
     <th>EMAIL</th>
@@ -80,9 +81,16 @@ $output = '
       $status = '<button type="button" class="btn btn-danger V" style="width: 80px;">Disabled</button>';
     }
 
+    $department_id = $row['department'];
+    $pdoQuery = "SELECT * FROM department WHERE id = :id";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    $pdoExec = $pdoResult->execute(array(":id" => $department_id));
+    $department_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
     $output .= '
     <tr>
       <td>'.$status.'</td>
+      <td>'.$department_data["department"].'</td>
       <td>'.$row["last_name"].', '.$row["first_name"].' '.$row["middle_name"].'</td>
       <td>'.$row["phone_number"].'</td>
       <td>'.$row["email"].'</td>

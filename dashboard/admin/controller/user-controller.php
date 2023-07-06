@@ -25,7 +25,7 @@ class sub_adminRegistration {
     }
 
     // add sub-admin
-    public function registerSub_admin($first_name, $middle_name, $last_name, $phone_number, $email, $hash_password, $tokencode, $user_type)
+    public function registerSub_admin($first_name, $middle_name, $last_name, $phone_number, $email, $department, $hash_password, $tokencode, $user_type)
     {
         $stmt = $this->sub_admin->runQuery("SELECT * FROM users WHERE email=:email");
         $stmt->execute(array(":email"=>$email));
@@ -39,7 +39,7 @@ class sub_adminRegistration {
             header('Location: ../sub-admin');
             exit();
         } else {
-            if ($this->sub_admin->register($first_name, $middle_name, $last_name, $phone_number, $email, $hash_password, $tokencode, $user_type)) {
+            if ($this->sub_admin->register($first_name, $middle_name, $last_name, $phone_number, $email, $department, $hash_password, $tokencode, $user_type)) {
                 $id = $this->sub_admin->lasdID();
                 $key = base64_encode($id);
                 $id = $key;
@@ -142,16 +142,17 @@ class sub_adminRegistration {
     }
 
     //edit sub-admin
-    public function editSub_admin($user_id, $first_name, $middle_name, $last_name, $phone_number) {
+    public function editSub_admin($user_id, $first_name, $middle_name, $last_name, $phone_number, $department) {
 
-        $stmt = $this->sub_admin->runQuery('SELECT first_name, middle_name, last_name, phone_number FROM users WHERE id=:id');
+        $stmt = $this->sub_admin->runQuery('SELECT first_name, middle_name, last_name, phone_number, department FROM users WHERE id=:id');
         $stmt->execute(array(':id' => $user_id));
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if ($result['first_name'] === $first_name &&
             $result['middle_name'] === $middle_name &&
             $result['last_name'] === $last_name &&
-            $result['phone_number'] === $phone_number) {
+            $result['phone_number'] === $phone_number &&
+            $result['department'] === $department) {
     
             $_SESSION['status_title'] = 'Oops!';
             $_SESSION['status'] = 'No changes were made.';
@@ -162,13 +163,14 @@ class sub_adminRegistration {
             exit();
         }
     
-        $stmt = $this->sub_admin->runQuery('UPDATE users SET first_name=:first_name, middle_name=:middle_name, last_name=:last_name, phone_number=:phone_number WHERE id=:id');
+        $stmt = $this->sub_admin->runQuery('UPDATE users SET first_name=:first_name, middle_name=:middle_name, last_name=:last_name, phone_number=:phone_number, department=:department WHERE id=:id');
         $exec = $stmt->execute(array(
             ':id'             => $user_id,
             ':first_name'     => $first_name,
             ':middle_name'    => $middle_name,
             ':last_name'      => $last_name,
             ':phone_number'   => $phone_number,
+            ':department'     => $department,
         ));
     
         if ($exec) {
@@ -251,6 +253,7 @@ if(isset($_POST['btn-add-sub-admin'])) {
     $last_name          = trim($_POST['last_name']);
     $phone_number       = trim($_POST['phone_number']);
     $email              = trim($_POST['email']);
+    $department         = trim($_POST['department']);
     $user_type          = 2;
     $tokencode          = md5(uniqid(rand()));
 
@@ -261,7 +264,7 @@ if(isset($_POST['btn-add-sub-admin'])) {
     $hash_password      = substr($shuffle,0,8);
 
     $sub_adminRegistration = new sub_adminRegistration();
-    $sub_adminRegistration->registerSub_admin($first_name, $middle_name, $last_name, $phone_number, $email, $hash_password, $tokencode, $user_type);
+    $sub_adminRegistration->registerSub_admin($first_name, $middle_name, $last_name, $phone_number, $email, $department, $hash_password, $tokencode, $user_type);
 }
 
 //edit sub-admin
@@ -271,9 +274,10 @@ if(isset($_POST['btn-edit-sub-admin'])) {
     $middle_name        = trim($_POST['middle_name']);
     $last_name          = trim($_POST['last_name']);
     $phone_number       = trim($_POST['phone_number']);
+    $department         = trim($_POST['department']);
 
     $sub_adminUpdate = new sub_adminRegistration();
-    $sub_adminUpdate->editSub_admin($user_id, $first_name, $middle_name, $last_name, $phone_number);
+    $sub_adminUpdate->editSub_admin($user_id, $first_name, $middle_name, $last_name, $phone_number, $department);
 }
 
 //disabled sub-admin

@@ -34,12 +34,6 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="access-token">
-                    <i class='bx bxs-key' ></i>
-					<span class="text">Access Token</span>
-				</a>
-			</li>
-			<li>
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
@@ -242,18 +236,15 @@ include_once 'header.php';
 
                                         <div class="col-md-12">
                                             <label for="avatar" class="form-label">Update Avatar<span> *</span></label>
-                                            <input type="file" class="form-control" name="avatar" id="avatar" style="height: 33px ;" required>
+                                            <input type="file" class="form-control" name="avatar" id="avatar" style="height: 33px ;" required onchange="previewImage(event)">
                                             <div class="invalid-feedback">
                                                 Please provide a Logo.
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12" style="opacity: 0;">
-                                            <label for="email" class="form-label">Default Email<span> *</span></label>
-                                            <input type="email" class="form-control">
-                                            <div class="invalid-feedback">
-                                                Please provide a valid Email.
-                                            </div>
+                                        <div class="col-md-12">
+                                            <label for="event_poster" class="form-label">Preview</label>
+                                            <img id="poster-preview" style="max-width: 50%; margin-top: 10px; display: none;">
                                         </div>
 
                                         <div class="col-md-12" style="opacity: 0; padding-bottom: 1.3rem;">

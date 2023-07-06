@@ -288,3 +288,17 @@ $('.numbers').keypress(function (e) {
 			document.getElementById('avatar').style.display = 'none';
 			document.getElementById('Edit').style.display = 'none';
 		}
+
+//image preview
+function previewImage(event) {
+	var input = event.target;
+	var reader = new FileReader();
+
+	reader.onload = function() {
+		var imgElement = document.getElementById("poster-preview");
+		imgElement.src = reader.result;
+		imgElement.style.display = "block";
+	};
+
+	reader.readAsDataURL(input.files[0]);
+}

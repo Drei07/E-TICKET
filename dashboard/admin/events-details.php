@@ -1,5 +1,22 @@
 <?php
 include_once 'header.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	// Retrieve the values from the POST request
+	$eventId = isset($_POST['event_id']) ? $_POST['event_id'] : '';
+  
+	// Store the values in session variables
+	$_SESSION['event_id'] = $eventId;
+  }
+  
+  // Retrieve the values from session variables
+  $eventId = isset($_SESSION['event_id']) ? $_SESSION['event_id'] : '';
+
+$stmt = $user->runQuery("SELECT * FROM events WHERE id=:id");
+$stmt->execute(array(":id"=>$eventId));
+$events_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +24,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Access Token</title>
+	<title>Event Details</title>
 </head>
 <body>
 
@@ -27,16 +44,10 @@ include_once 'header.php';
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="events">
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">Events</span>
-				</a>
-			</li>
-			<li  class="active">
-				<a href="access-token">
-                    <i class='bx bxs-key' ></i>
-					<span class="text">Access Token</span>
 				</a>
 			</li>
 			<li>
@@ -108,24 +119,39 @@ include_once 'header.php';
 			</a>
 		</nav>
 		<!-- NAVBAR -->
-
 		<!-- MAIN -->
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Access Tokens</h1>
+					<h1>Event Details</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="home">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Access Tokens</a>
+							<a class="active" href="events">Course Events</a>
+						</li>
+						<li>|</li>
+						<li>
+							<a class="active" href="course-events">Events</a>
+						</li>
+                        <li>|</li>
+                        <li>
+							<a href="">Events Details</a>
 						</li>
 					</ul>
 				</div>
 			</div>
+
+			<ul class="box-info">
+				<li onclick="location.href='baby'">
+					<i class='bx bxs-baby-carriage'></i>
+					<h1>helllo</h1>
+				</li>
+			</ul>
 		</main>
+		<!-- MAIN -->
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
@@ -133,7 +159,6 @@ include_once 'header.php';
 	<?php
     include_once '../../configuration/footer.php';
     ?>
-
 		<!-- SWEET ALERT -->
 		<?php
 

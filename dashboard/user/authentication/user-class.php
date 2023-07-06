@@ -74,19 +74,20 @@ public function systemLogo(){
   return $stmt;
  }
  
- public function register($first_name, $middle_name, $last_name, $phone_number, $email, $hash_password, $tokencode, $user_type)
+ public function register($first_name, $middle_name, $last_name, $phone_number, $email, $department, $hash_password, $tokencode, $user_type)
  {
   try
   {       
    $password = md5($hash_password);
-   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, phone_number, email, password, tokencode, user_type) 
-                                        VALUES(:first_name, :middle_name, :last_name, :phone_number, :email, :password, :tokencode, :user_type)");
+   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, phone_number, email, department password, tokencode, user_type) 
+                                        VALUES(:first_name, :middle_name, :last_name, :phone_number, :email, :department, :password, :tokencode, :user_type)");
    
    $stmt->bindparam(":first_name",$first_name);
    $stmt->bindparam(":middle_name",$middle_name);
    $stmt->bindparam(":last_name",$last_name);
    $stmt->bindparam(":phone_number",$phone_number);
    $stmt->bindparam(":email",$email);
+   $stmt->bindparam(":department",$department);
    $stmt->bindparam(":password",$password);
    $stmt->bindparam(":tokencode",$tokencode);
    $stmt->bindparam(":user_type",$user_type);

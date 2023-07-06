@@ -73,7 +73,7 @@ public function editCourseEvent($course_event_id, $year_level, $course) {
         $_SESSION['status_code'] = 'info';
         $_SESSION['status_timer'] = 40000;
 
-        header("Location: ../course-events?course_id=$course&year_level_id=$year_level");
+        header("Location: ../course-events");
         exit();
     }
 
@@ -116,7 +116,7 @@ public function editCourseEvent($course_event_id, $year_level, $course) {
         $_SESSION['status_timer'] = 100000;
     }
 
-    header("Location: ../course-events?course_id=$course&year_level_id=$year_level");
+    header("Location: ../course-events");
     exit();
 }
 

@@ -33,12 +33,6 @@ include_once 'header.php';
 					<span class="text">Events</span>
 				</a>
 			</li>
-			<li>
-				<a href="access-token">
-                    <i class='bx bxs-key' ></i>
-					<span class="text">Access Token</span>
-				</a>
-			</li>
 			<li class="active">
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>

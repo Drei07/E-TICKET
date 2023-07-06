@@ -10,8 +10,6 @@ if(!$user->isUserLoggedIn())
  $user->redirect('../../../private/admin/');
 }
 
-
-
 function get_total_row($pdoConnect)
 {
 
@@ -55,15 +53,14 @@ $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
 {
-$output = '
-
+  $output = '
     <thead>
-    <th>DEPARTMENT LOGO</th>
-    <th>DEPARTMENT NAME</th>
-    <th>COURSE / PROGRAM</th>
-    <th>ACTION</th>
+      <th>DEPARTMENT LOGO</th>
+      <th>DEPARTMENT NAME</th>
+      <th>COURSE / PROGRAM</th>
+      <th>ACTION</th>
     </thead>
-';
+  ';
   while($row=$statement->fetch(PDO::FETCH_ASSOC))
   {
 
@@ -82,18 +79,17 @@ $output = '
 
 
     $output .= '
-    
-    <tr>
-      <td>
-      <img src="../../src/img/'.$department_data["department_logo"].'">
-      </td>
-      <td>'.$department_data["department"].'</td>
-      <td>'.$row["course"].'</td>
-      <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      '.$button.'
-      </td>        
-    </tr>
+      <tr>
+        <td>
+          <img src="../../src/img/'.$department_data["department_logo"].'">
+        </td>
+        <td>'.$department_data["department"].'</td>
+        <td>'.$row["course"].'</td>
+        <td>
+          <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+          '.$button.'
+        </td>        
+      </tr>
     ';
   }
 }
@@ -112,8 +108,6 @@ $total_links = ceil($total_data/$limit);
 $previous_link = '';
 $next_link = '';
 $page_link = '';
-
-//echo $total_links;
 
 if($total_links > 5)
 {
@@ -219,7 +213,6 @@ for($count = 0; $count < count($page_array); $count++)
 $output .= $previous_link . $page_link . $next_link;
 $output .= '
   </ul>
-
 </div>
 ';
 

@@ -1,5 +1,20 @@
 <?php
 include_once 'header.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	// Retrieve the values from the POST request
+	$courseId = isset($_POST['course_id']) ? $_POST['course_id'] : '';
+	$yearLevelId = isset($_POST['year_level_id']) ? $_POST['year_level_id'] : '';
+  
+	// Store the values in session variables
+	$_SESSION['course_id'] = $courseId;
+	$_SESSION['year_level_id'] = $yearLevelId;
+  }
+  
+  // Retrieve the values from session variables
+  $courseId = isset($_SESSION['course_id']) ? $_SESSION['course_id'] : '';
+  $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : '';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,12 +50,6 @@ include_once 'header.php';
 				<a href="events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Events</span>
-				</a>
-			</li>
-			<li>
-				<a href="access-token">
-					<i class='bx bxs-key'></i>
-					<span class="text">Access Token</span>
 				</a>
 			</li>
 			<li>
@@ -134,7 +143,7 @@ include_once 'header.php';
 				</div>
 			</div>
 			<div class="modal-button">
-				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Event</button>
+				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Events</button>
 			</div>
 			<div class="info-data">
 
@@ -142,7 +151,7 @@ include_once 'header.php';
 
 				$pdoQuery = "SELECT * FROM course_event WHERE course_id = :course_id AND year_level_id = :year_level_id";
 				$pdoResult = $pdoConnect->prepare($pdoQuery);
-				$pdoExec = $pdoResult->execute(array(":course_id" => $_GET['course_id'], ":year_level_id" => $_GET['year_level_id']));
+				$pdoExec = $pdoResult->execute(array(":course_id" => $courseId, ":year_level_id" => $yearLevelId));
 				$course_event_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 				?>
 
@@ -187,91 +196,191 @@ include_once 'header.php';
 				</div>
 
 			</div>
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3><i class='bx bxs-calendar'></i> Mandatory Events</h3>
+					</div>
+					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
+					<!-- BODY -->
+					<section class="data-table">
+						<ul class="box-info">
+							<?php
+							$pdoQuery = "SELECT * FROM events WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
+							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
+							$pdoResult5->execute(array(
+								":course_id" 		=> $courseId,
+								":year_level_id" 	=> $yearLevelId,
+								":event_type"		=> 1,
+								":status"			=> "active"
+							));
+							if ($pdoResult5->rowCount() >= 1) {
+
+								while ($event_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
+									extract($event_data);
+							?>
+							<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+
+								<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+								<h4><?php echo $event_data['event_name'] ?></h4>
+								<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+								<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
+
+							</li>
+							<?php
+								}
+							}
+							?>
+
+							<li data-bs-toggle="modal" data-bs-target="#classModal">
+								<i class='bx bxs-calendar-plus'></i>
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3><i class='bx bxs-calendar'></i> Optional Events</h3>
+					</div>
+					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
+					<!-- BODY -->
+					<section class="data-table">
+						<ul class="box-info">
+						<ul class="box-info">
+							<?php
+							$pdoQuery = "SELECT * FROM events WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
+							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
+							$pdoResult5->execute(array(
+								":course_id" 		=> $courseId,
+								":year_level_id" 	=> $yearLevelId,
+								":event_type"		=> 2,
+								":status"			=> "active"
+							));
+							if ($pdoResult5->rowCount() >= 1) {
+
+								while ($event_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
+									extract($event_data); 
+							?>
+							<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+
+								<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+								<h4><?php echo $event_data['event_name'] ?></h4>
+								<p>Event Date <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+								<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
+
+							</li>
+							<?php
+								}
+							}
+							?>
+
+							<li data-bs-toggle="modal" data-bs-target="#classModal">
+								<i class='bx bxs-calendar-plus'></i>
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
 		</main>
 		<div class="class-modal">
 			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
-					<div class="header"></div>
+						<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar' ></i> Add Events</h5>
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Add Events</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-						<section class="data-form-modals">
-							<div class="registration">
-								<form action="controller/course-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
-									<div class="row gx-5 needs-validation">
-										
-                                        <div class="col-md-12">
-											<label for="event_name" class="form-label">Event Name<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="event_name" id="event_name" required>
-											<div class="invalid-feedback">
-											Please provide a Event Name.
+							<section class="data-form-modals">
+								<div class="registration">
+									<form action="controller/event-controller.php?course_id=<?php echo $courseId ?>&year_level_id=<?php echo $yearLevelId ?>" method="POST" class="row gx-5 needs-validation" enctype="multipart/form-data" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+										<div class="row gx-5 needs-validation">
+
+											<div class="col-md-12">
+												<label for="event_name" class="form-label">Event Name<span> *</span></label>
+												<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_name" id="event_name" required>
+												<div class="invalid-feedback">
+													Please provide a Event Name.
+												</div>
 											</div>
+
+											<div class="col-md-6">
+												<label for="event_date" class="form-label">Event Date<span> *</span></label>
+												<input type="date" class="form-control" autocomplete="off" name="event_date" id="event_date" required>
+												<div class="invalid-feedback">
+													Please provide a Event Date.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_time" class="form-label">Event Time<span> *</span></label>
+												<input type="time" class="form-control" autocomplete="off" name="event_time" id="event_time" required>
+												<div class="invalid-feedback">
+													Please provide a Event Time.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_venue" class="form-label">Event Venue<span> *</span></label>
+												<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_venue" id="event_venue" required>
+												<div class="invalid-feedback">
+													Please provide a Event Venue.
+												</div>
+											</div>
+
+											<!-- please add numbers only -->
+											<div class="col-md-6">
+												<label for="event_max_guest" class="form-label">Event Max Guest<span> *</span></label>
+												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_max_guest" id="event_max_guest">
+												<div class="invalid-feedback">
+													Please provide a Event Max Guest.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
+												<textarea  onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
+												<div class="invalid-feedback">
+													Please provide a Event Rules.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_type" class="form-label">Event Type<span> *</span></label>
+												<select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
+													<option selected value="">Select.....</option>
+													<option value="1">MANDATORY</option>
+													<option value="2 ">OPTIONAL</option>
+												</select>
+												<div class="invalid-feedback">
+													Please select a valid Event Type.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_poster" class="form-label">Event Poster<span> *</span></label>
+												<input type="file" class="form-control" name="event_poster" id="event_poster" style="height: 33px;" required onchange="previewImage(event)">
+												<div class="invalid-feedback">
+													Please provide an Event Poster.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_poster" class="form-label">Preview</label>
+												<img id="poster-preview" style="max-width: 50%; margin-top: 10px; display: none;">
+											</div>
+
 										</div>
 
-										<div class="col-md-6">
-											<label for="event_date" class="form-label">Event Date<span> *</span></label>
-											<input type="date"  class="form-control"  autocomplete="off" name="event_date" id="event_date" required>
-											<div class="invalid-feedback">
-											Please provide a Event Date.
-											</div>
+										<div class="addBtn">
+											<button type="submit" class="btn-dark" name="btn-add-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
 										</div>
-
-										<div class="col-md-6">
-											<label for="event_time" class="form-label">Event Time<span> *</span></label>
-											<input type="time"  class="form-control"  autocomplete="off" name="event_time" id="event_time" required>
-											<div class="invalid-feedback">
-											Please provide a Event Time.
-											</div>
-										</div>
-
-										<div class="col-md-12">
-											<label for="event_venue" class="form-label">Event Venue<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="event_venue" id="event_venue" required>
-											<div class="invalid-feedback">
-											Please provide a Event Venue.
-											</div>
-										</div>
-
-
-										<div class="col-md-12">
-											<label for="event_max_guest" class="form-label">Event Max Guest<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="event_max_guest" id="event_max_guest" required>
-											<div class="invalid-feedback">
-											Please provide a Event Max Guest.
-											</div>
-										</div>
-
-										<div class="col-md-12">
-											<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
-											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="event_rules" id="event_rules" required>
-											<div class="invalid-feedback">
-											Please provide a Event Rules.
-											</div>
-										</div>
-
-										<div class="col-md-12">
-                                            <label for="event_type" class="form-label">Event Type<span> *</span></label>
-                                            <select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
-                                                <option selected value="">Select.....</option>
-                                                <option value="1">MANDATORY</option>
-                                                <option value="2 ">OPTIONAL</option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Please select a valid Event Type.
-                                            </div>
-                                        </div>
-
-									</div>
-
-									<div class="addBtn">
-										<button type="submit" class="btn-dark" name="btn-add-course" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
-									</div>
-								</form>
-							</div>
-						</section>
+									</form>
+								</div>
+							</section>
 						</div>
 					</div>
 				</div>
@@ -283,67 +392,67 @@ include_once 'header.php';
 			<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
-					<div class="header"></div>
+						<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="editModalLabel"><i class='bx bxs-calendar' ></i> Edit Course Event</h5>
+							<h5 class="modal-title" id="editModalLabel"><i class='bx bxs-calendar'></i> Edit Course Event</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-						<section class="data-form-modals">
-							<div class="registration">
-								<form action="controller/course-event-controller.php?id=<?php echo $course_event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
-									<div class="row gx-5 needs-validation">
+							<section class="data-form-modals">
+								<div class="registration">
+									<form action="controller/course-event-controller.php?id=<?php echo $course_event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+										<div class="row gx-5 needs-validation">
 
-										<div class="col-md-12">
-											<label for="year_level" class="form-label">Year Level<span> *</span></label>
-											<select type="text" class="form-select form-control"  name="year_level" id="year_level"  required>
-											<option selected value="<?php echo $year_level_data['id']?>"><?php echo $year_level_data['year_level']?></option>
-												<?php
+											<div class="col-md-12">
+												<label for="year_level" class="form-label">Year Level<span> *</span></label>
+												<select type="text" class="form-select form-control" name="year_level" id="year_level" required>
+													<option selected value="<?php echo $year_level_data['id'] ?>"><?php echo $year_level_data['year_level'] ?></option>
+													<?php
 													$pdoQuery = "SELECT * FROM year_level ";
-													$pdoResult = $pdoConnect->prepare($pdoQuery);
-													$pdoResult->execute();
-													
-														while($year_level_data2=$pdoResult->fetch(PDO::FETCH_ASSOC)){
-															?>
-															<option value="<?php echo $year_level_data2['id']; ?> " ><?php echo $year_level_data2['year_level'];  ?></option>
-															<?php
-														}
-												?>
-											</select>
-											<div class="invalid-feedback">
-												Please select a Year Level.
-											</div>
-										</div>
+													$pdoResult6 = $pdoConnect->prepare($pdoQuery);
+													$pdoResult6->execute();
 
-										<div class="col-md-12">
-											<label for="course" class="form-label">Course / Program<span> *</span></label>
-											<select type="text" class="form-select form-control"  name="course" id="course"  required>
-											<option selected value="<?php echo $course_data['id'] ?>"><?php echo $course_data['course'] ?></option>
-												<?php
+													while ($year_level_data2 = $pdoResult6->fetch(PDO::FETCH_ASSOC)) {
+													?>
+														<option value="<?php echo $year_level_data2['id']; ?> "><?php echo $year_level_data2['year_level'];  ?></option>
+													<?php
+													}
+													?>
+												</select>
+												<div class="invalid-feedback">
+													Please select a Year Level.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="course" class="form-label">Course / Program<span> *</span></label>
+												<select type="text" class="form-select form-control" name="course" id="course" required>
+													<option selected value="<?php echo $course_data['id'] ?>"><?php echo $course_data['course'] ?></option>
+													<?php
 													$pdoQuery = "SELECT * FROM course ";
-													$pdoResult = $pdoConnect->prepare($pdoQuery);
-													$pdoResult->execute();
-													
-														while($course_data2=$pdoResult->fetch(PDO::FETCH_ASSOC)){
-															?>
-															<option value="<?php echo $course_data2['id']; ?> " ><?php echo $course_data2['course'];  ?></option>
-															<?php
-														}
-												?>
-											</select>
-											<div class="invalid-feedback">
-												Please select a Course.
+													$pdoResult7 = $pdoConnect->prepare($pdoQuery);
+													$pdoResult7->execute();
+
+													while ($course_data2 = $pdoResult7->fetch(PDO::FETCH_ASSOC)) {
+													?>
+														<option value="<?php echo $course_data2['id']; ?> "><?php echo $course_data2['course'];  ?></option>
+													<?php
+													}
+													?>
+												</select>
+												<div class="invalid-feedback">
+													Please select a Course.
+												</div>
 											</div>
+
 										</div>
 
-									</div>
-
-									<div class="addBtn">
-										<button type="submit" class="btn-dark" name="btn-edit-course-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Update</button>
-									</div>
-								</form>
-							</div>
-						</section>
+										<div class="addBtn">
+											<button type="submit" class="btn-dark" name="btn-edit-course-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Update</button>
+										</div>
+									</form>
+								</div>
+							</section>
 						</div>
 					</div>
 				</div>
@@ -356,6 +465,24 @@ include_once 'header.php';
 	<?php
 	include_once '../../configuration/footer.php';
 	?>
+
+		<script>
+		function setSessionValues(eventId) {
+			fetch('events-details.php', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'event_id=' + encodeURIComponent(eventId),
+				})
+				.then(response => {
+					window.location.href = 'events-details';
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+	</script>
 
 	<!-- SWEET ALERT -->
 	<?php
