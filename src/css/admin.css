@@ -455,7 +455,7 @@ border-right-color: var(--main);
 	flex-wrap: wrap;
 }
 #content main .head-title .left h1 {
-	font-size: 30px;
+	font-size: 20px;
 	font-weight: 600;
 	margin-bottom: 10px;
 	color: var(--dark);
@@ -556,39 +556,40 @@ border-right-color: var(--main);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 10rem;
-	font-size: 30px;
+	font-size: 15px;
 	font-weight: bold;
+	padding: 50px;
 	color: var(--dark-main);
 	opacity: 0.5;
 }
 #content main .info-data .card {
 	border-radius: 20px;
 	border: none;
+	
 }
 
 #content main .info-data .card:hover {
 	box-shadow: 7px 5px 10px 1px rgba(0,0,0,0.15);
 }
 
-#content main .card .head {
-	padding: 17px;
-	background-color: var(--light);
+#content main .card .head2 {
+	padding: 22px;
 	height: 100%;
 	display: flex;
+	text-align: left;
 	justify-content: space-between;
 	align-items: flex-start;
 	border-radius: 20px;
 	border-left: 10px solid var(--main);
 }
 
-#content main .card .head .body {
+#content main .card .head2 .body {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
 }
 
-#content main .card .head img {
+#content main .card .head2 img {
 	max-width: 70px;
 	min-width: 70px;
 	max-height: 70px;
@@ -597,13 +598,13 @@ border-right-color: var(--main);
 	margin-right: 20px;
 }
 
-#content main .card .head h2 {
+#content main .card .head2 h2 {
 	color: var(--main);
 	font-size: 15px;
 	font-weight: 700;
 	letter-spacing: 1px;
 }
-#content main .card .head h2 label{
+#content main .card .head2 h2 label{
 	font-size: 12px;
 	font-weight: 500;
 	color: var(--main);
@@ -611,7 +612,7 @@ border-right-color: var(--main);
 	letter-spacing: 2px;
 }
 
-#content main .card .head .icon {
+#content main .card .head2 .icon {
 	font-size: 20px;
 	color: var(--light);
 	background-color: var(--main);
@@ -620,38 +621,57 @@ border-right-color: var(--main);
 	opacity: 0.5;
 }
 
-#content main .card .head .icon:hover{
+#content main .card .head2 .icon:hover{
 	opacity: 1;
 }
+
+#content main .card .head2 .icon-2 {
+	font-size: 20px;
+	color: var(--light);
+	background-color: var(--red);
+	padding: 8px;
+	border-radius: 10px;
+	opacity: 0.5;
+}
+
+#content main .card .head2 .icon-2:hover{
+	opacity: 1;
+}
+
 
 #content main .card .card-body{
 	cursor: pointer;
 }
 
 @media screen and (max-width:570px){
-	#content main .card .head{
+	#content main .card .head2{
 		padding: 8px;
 		border-radius: 10px
 	}
-	#content main .card .head img {
+	#content main .card .head2 img {
 		max-width: 40px;
 		min-height: 40px;
 		margin-right: 10px;
 	}
-	#content main .card .head h2 {
+	#content main .card .head2 h2 {
 		font-size: 10px;
 		margin-right: 10px;
 	}
-	#content main .card .head h2 label{
+	#content main .card .head2 h2 label{
 		font-size: 8px;
 	}
-	#content main .card .head .icon {
+	#content main .card .head2 .icon {
+		font-size: 10px;
+		padding: 6px;
+		border-radius: 5px;
+	}
+	#content main .card .head2 .icon-2 {
 		font-size: 10px;
 		padding: 6px;
 		border-radius: 5px;
 	}
 	#content main .head-title .left h1{
-		font-size: 30px;
+		font-size: 15px;
 	}
 	#content main .modal-button button {
 		padding: 5px 13px;

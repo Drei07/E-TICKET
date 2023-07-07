@@ -129,7 +129,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<h1>Course Events</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="home">Home</a>
+							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -156,7 +156,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				?>
 
 				<div class="card">
-					<div class="head">
+					<div class="head2">
 						<div class="body">
 							<?php
 							//course data

@@ -150,28 +150,6 @@ public function editDepartment($department_id, $department_name, $department_log
         header('Location: ../department');
     }
 
-        //permanent delete department
-        public function permanentDeleteDepartment($department_id){
-            $stmt = $this->runQuery('DELETE FROM department WHERE id=:id');
-            $exec = $stmt->execute(array(
-                ":id" => $department_id
-            ));
-        
-            if ($exec) {
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Department successfully deleted!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
-            } else {
-                $_SESSION['status_title'] = 'Oops!';
-                $_SESSION['status'] = 'Something went wrong, please try again!';
-                $_SESSION['status_code'] = 'error';
-                $_SESSION['status_timer'] = 100000;
-            }
-        
-            header('Location: ../archives/department');
-            exit();
-        }
 
     public function runQuery($sql)
     {
@@ -214,14 +192,6 @@ if (isset($_GET['activate_department'])) {
 
     $activate_department = new Department();
     $activate_department->activateDepartment($department_id);
-}
-
-//permanent delete
-if (isset($_GET['permanent_delete_department'])) {
-    $department_id = $_GET["id"];
-
-    $permanent_delete_department = new Department();
-    $permanent_delete_department->permanentDeleteDepartment($department_id);
 }
 
 

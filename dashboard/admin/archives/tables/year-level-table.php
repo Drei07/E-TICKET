@@ -77,7 +77,6 @@ $output = '
       <td>'.$row["year_level"].'</td>
       <td>
       <button type="button" class="btn btn-primary V"><a href="../edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      <button type="button" class="btn btn-danger V"><a href="../controller/year-level-controller?id='.$row["id"].'&permanent_delete_year_level=1" class="permanent_delete"><i class="bx bxs-trash"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>

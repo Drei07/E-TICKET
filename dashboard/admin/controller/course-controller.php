@@ -131,28 +131,6 @@ class Course {
         header('Location: ../course');
     }
 
-        //permanent delete course
-        public function permanentDeleteCourse($course_id){
-            $stmt = $this->runQuery('DELETE FROM course WHERE id=:id');
-            $exec = $stmt->execute(array(
-                ":id" => $course_id
-            ));
-        
-            if ($exec) {
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Course successfully deleted!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
-            } else {
-                $_SESSION['status_title'] = 'Oops!';
-                $_SESSION['status'] = 'Something went wrong, please try again!';
-                $_SESSION['status_code'] = 'error';
-                $_SESSION['status_timer'] = 100000;
-            }
-        
-            header('Location: ../archives/course');
-            exit();
-        }
 
     public function runQuery($sql)
     {
@@ -195,14 +173,6 @@ if (isset($_GET['activate_course'])) {
 
     $activate_course = new Course();
     $activate_course->activateCourse($course_id);
-}
-
-//permanent delete
-if (isset($_GET['permanent_delete_course'])) {
-    $course_id = $_GET["id"];
-
-    $permanent_delete_course = new Course();
-    $permanent_delete_course->permanentDeleteCourse($course_id);
 }
 
 

@@ -82,7 +82,6 @@ $output = '
       <td>'.$row["department"].'</td>
       <td>
       <button type="button" class="btn btn-primary V"><a href="../edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      <button type="button" class="btn btn-danger V"><a href="../controller/department-controller?id='.$row["id"].'&permanent_delete_department=1" class="permanent_delete"><i class="bx bxs-trash"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>

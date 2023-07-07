@@ -44,7 +44,7 @@ $user_last_update       = $user_data['updated_at'];
 	<link rel="stylesheet" href="../../../src/node_modules/boxicons/css/boxicons.min.css">
 	<link rel="stylesheet" href="../../../src/node_modules/aos/dist/aos.css">
     <link rel="stylesheet" href="../../../src/css/admin.css?v=<?php echo time(); ?>">
-	<title>Year Level</title>
+	<title>Year Level Archives</title>
 </head>
 <body>
 
@@ -68,18 +68,6 @@ $user_last_update       = $user_data['updated_at'];
 				<a href="../events">
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">Events</span>
-				</a>
-			</li>
-			<li>
-				<a href="../events-logs">
-					<i class='bx bx-calendar-event'></i>
-					<span class="text">Events logs</span>
-				</a>
-			</li>
-			<li>
-				<a href="../access-token">
-                    <i class='bx bxs-key' ></i>
-					<span class="text">Access Token</span>
 				</a>
 			</li>
 			<li>
@@ -156,10 +144,10 @@ $user_last_update       = $user_data['updated_at'];
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Year Level</h1>
+					<h1>Year Level Archives</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="home">Home</a>
+							<a class="active" href="../">Home</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -175,7 +163,7 @@ $user_last_update       = $user_data['updated_at'];
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Archives Year Leve</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of Archives Year Level</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">

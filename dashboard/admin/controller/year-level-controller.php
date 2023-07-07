@@ -128,28 +128,6 @@ class YearLevel {
         header('Location: ../year-level');
     }
 
-        //permanent delete year level
-        public function permanentDeleteyearLevel($year_level_id){
-            $stmt = $this->runQuery('DELETE FROM year_level WHERE id=:id');
-            $exec = $stmt->execute(array(
-                ":id" => $year_level_id
-            ));
-        
-            if ($exec) {
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Year Level successfully deleted!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
-            } else {
-                $_SESSION['status_title'] = 'Oops!';
-                $_SESSION['status'] = 'Something went wrong, please try again!';
-                $_SESSION['status_code'] = 'error';
-                $_SESSION['status_timer'] = 100000;
-            }
-        
-            header('Location: ../archives/year-level');
-            exit();
-        }
 
     public function runQuery($sql)
     {
@@ -191,15 +169,6 @@ if (isset($_GET['activate_year_level'])) {
     $activate_year_level = new YearLevel();
     $activate_year_level->activateyearLevel($year_level_id);
 }
-
-//permanent delete
-if (isset($_GET['permanent_delete_year_level'])) {
-    $year_level_id = $_GET["id"];
-
-    $permanent_delete_year_level = new YearLevel();
-    $permanent_delete_year_level->permanentDeleteyearLevel($year_level_id);
-}
-
 
 
 ?>

@@ -126,7 +126,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 					<h1>Event Details</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="home">Home</a>
+							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -152,11 +152,17 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Event Venue:</strong> <?php echo $event_data['event_venue'] ?></p>
 						<p><strong>Event Rules:</strong> <?php echo $event_data['event_rules'] ?></p>
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
-
-						<div class="action">
-							<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
-							<button type="button" class="btn btn-danger"><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&delete_event=1" class="delete"><i class='bx bxs-trash'></i> Delete</a></button>
-						</div>
+						<?php if ($event_data['status'] == 'active') { ?>
+					<div class="action">
+						<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
+						<button type="button" class="btn btn-danger"><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&delete_event=1" class="delete"><i class='bx bxs-trash'></i> Delete</a></button>
+					</div>
+				<?php } else if ($event_data['status'] == 'disabled') { ?>
+					<div class="action">
+						<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
+						<button type="button" class="btn btn-success" ><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&activate_event=1" class="activate" ><i class='bx bxs-check-circle'></i> Activate</a></button>
+					</div>
+				<?php } ?>
 					</div>
 				</li>
 			</ul>

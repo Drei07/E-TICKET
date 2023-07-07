@@ -110,7 +110,7 @@ include_once 'header.php';
 					<h1>Course</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="home">Home</a>
+							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -163,9 +163,9 @@ include_once 'header.php';
 											<select type="text" class="form-select form-control"  name="department" id="department"  required>
 											<option selected disabled value="">Select Department</option>
 												<?php
-													$pdoQuery = "SELECT * FROM department ";
+													$pdoQuery = "SELECT * FROM department WHERE status = :status";
 													$pdoResult = $pdoConnect->prepare($pdoQuery);
-													$pdoResult->execute();
+													$pdoResult->execute(array(":status" => "active"));
 													
 														while($department_data=$pdoResult->fetch(PDO::FETCH_ASSOC)){
 															?>

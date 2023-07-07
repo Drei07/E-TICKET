@@ -149,6 +149,32 @@ public function editEvent($event_id, $event_name, $event_date, $event_time, $eve
             exit();
     
         }
+
+
+    //activate event
+    public function activateEvent($event_id){
+        $active = "active";
+        $stmt = $this->runQuery('UPDATE events SET status=:status WHERE id=:id');
+        $exec = $stmt->execute(array(
+            ":id"        => $event_id,
+            ":status"   => $active,
+        ));
+
+
+        if ($exec) {
+            $_SESSION['status_title'] = 'Success!';
+            $_SESSION['status'] = 'Events successfully activated!';
+            $_SESSION['status_code'] = 'success';
+            $_SESSION['status_timer'] = 40000;
+        } else {
+            $_SESSION['status_title'] = 'Oops!';
+            $_SESSION['status'] = 'Something went wrong, please try again!';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+        }
+
+        header('Location: ../course-events');
+    }
     
 
     public function runQuery($sql)
@@ -202,6 +228,10 @@ if (isset($_GET['delete_event'])) {
     $delete_event->deleteEvent($event_id);
 }
 
+//activate
+if (isset($_GET['activate_event'])) {
+    $event_id = $_GET["id"];
 
-
-?>
+    $activate_event = new Event();
+    $activate_event->activateEvent($event_id);
+}

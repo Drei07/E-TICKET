@@ -148,17 +148,18 @@ public function editCourseEvent($course_event_id, $year_level, $course) {
     }
 
     //activate course
-    public function activateCourse($course_id){
+    public function activateCourseEvent($course_event_id){
         $active = "active";
-        $stmt = $this->runQuery('UPDATE course SET status=:status WHERE id=:id');
+        $stmt = $this->runQuery('UPDATE course_event SET status=:status WHERE id=:id');
         $exec = $stmt->execute(array(
-            ":id"        => $course_id,
+            ":id"        => $course_event_id,
             ":status"   => $active,
         ));
 
+
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Course successfully activated!';
+            $_SESSION['status'] = 'Course event successfully activated!';
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
         } else {
@@ -168,31 +169,9 @@ public function editCourseEvent($course_event_id, $year_level, $course) {
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course');
+        header('Location: ../events');
     }
 
-        //permanent delete course
-        public function permanentDeleteCourse($course_id){
-            $stmt = $this->runQuery('DELETE FROM course WHERE id=:id');
-            $exec = $stmt->execute(array(
-                ":id" => $course_id
-            ));
-        
-            if ($exec) {
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Course successfully deleted!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
-            } else {
-                $_SESSION['status_title'] = 'Oops!';
-                $_SESSION['status'] = 'Something went wrong, please try again!';
-                $_SESSION['status_code'] = 'error';
-                $_SESSION['status_timer'] = 100000;
-            }
-        
-            header('Location: ../archives/course');
-            exit();
-        }
 
     public function runQuery($sql)
     {
@@ -229,18 +208,10 @@ if (isset($_GET['delete_course_event'])) {
     $delete_course_event->deleteCourseEvent($course_event_id);
 }
 
-// //activate
-// if (isset($_GET['activate_course'])) {
-//     $course_id = $_GET["id"];
+//activate
+if (isset($_GET['activate_course_event'])) {
+    $course_event_id = $_GET["id"];
 
-//     $activate_course = new Course();
-//     $activate_course->activateCourse($course_id);
-// }
-
-// //permanent delete
-// if (isset($_GET['permanent_delete_course'])) {
-//     $course_id = $_GET["id"];
-
-//     $permanent_delete_course = new Course();
-//     $permanent_delete_course->permanentDeleteCourse($course_id);
-// }
+    $activate_course_event = new CourseEvent();
+    $activate_course_event->activateCourseEvent($course_event_id);
+}

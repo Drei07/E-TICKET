@@ -91,7 +91,6 @@ $output = '
       <td>'.$row["course"].'</td>
       <td>
       <button type="button" class="btn btn-primary V"><a href="../edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      <button type="button" class="btn btn-danger V"><a href="../controller/course-controller?id='.$row["id"].'&permanent_delete_course=1" class="permanent_delete"><i class="bx bxs-trash"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>

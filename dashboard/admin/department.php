@@ -114,7 +114,7 @@ include_once 'header.php';
 					<h1>Department</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="home">Home</a>
+							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
