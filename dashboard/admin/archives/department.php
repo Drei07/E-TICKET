@@ -163,7 +163,7 @@ $user_last_update       = $user_data['updated_at'];
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Archives Department</h3>
+						<h3><i class='bx bxs-buildings' ></i> List of Archives Department</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">

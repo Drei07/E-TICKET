@@ -340,22 +340,22 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 
 											<!-- please add numbers only -->
 											<div class="col-md-6">
-												<label for="event_max_guest" class="form-label">Event Max Guest<span> *</span></label>
+												<label for="event_max_guest" class="form-label">Event Max Guest</label>
 												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_max_guest" id="event_max_guest">
 												<div class="invalid-feedback">
 													Please provide a Event Max Guest.
 												</div>
 											</div>
 
-											<div class="col-md-12">
-												<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
-												<textarea onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
+											<div class="col-md-6">
+												<label for="event_price" class="form-label">Event Price <span> *</span></label>
+												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_price" id="event_price" required>
 												<div class="invalid-feedback">
-													Please provide a Event Rules.
+													Please provide a Event Price.
 												</div>
 											</div>
 
-											<div class="col-md-12">
+											<div class="col-md-6">
 												<label for="event_type" class="form-label">Event Type<span> *</span></label>
 												<select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
 													<option selected value="">Select.....</option>
@@ -364,6 +364,14 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 												</select>
 												<div class="invalid-feedback">
 													Please select a valid Event Type.
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<label for="event_rules" class="form-label">Event Rules</label>
+												<textarea onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
+												<div class="invalid-feedback">
+													Please provide a Event Rules.
 												</div>
 											</div>
 

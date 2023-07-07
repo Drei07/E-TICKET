@@ -151,6 +151,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Event Date / Time:</strong> <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?> - <?php echo date("h:i A", strtotime($event_data['event_time'])); ?></p>
 						<p><strong>Event Venue:</strong> <?php echo $event_data['event_venue'] ?></p>
 						<p><strong>Event Rules:</strong> <?php echo $event_data['event_rules'] ?></p>
+						<p><strong>Event Price:</strong> <?php echo $event_data['event_price'] ?></p>
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
 						<?php if ($event_data['status'] == 'active') { ?>
 					<div class="action">
@@ -236,15 +237,23 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 											<!-- please add numbers only -->
 											<div class="col-md-6">
-												<label for="event_max_guest" class="form-label">Event Max Guest<span> *</span></label>
+												<label for="event_max_guest" class="form-label">Event Max Guest</label>
 												<input type="numbers" value="<?php echo $event_data['event_max_guest']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_max_guest" id="event_max_guest">
 												<div class="invalid-feedback">
 													Please provide a Event Max Guest.
 												</div>
 											</div>
 
-											<div class="col-md-12">
-												<label for="event_rules" class="form-label">Event Rules<span> *</span></label>
+											<div class="col-md-6">
+												<label for="event_price" class="form-label">Event Price <span> *</span></label>
+												<input type="numbers" value="<?php echo $event_data['event_price']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_price" id="event_price" required>
+												<div class="invalid-feedback">
+													Please provide a Event Price.
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<label for="event_rules" class="form-label">Event Rules</label>
 												<textarea value="<?php echo $event_data['event_rules']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"><?php echo $event_data['event_rules']?></textarea>
 												<div class="invalid-feedback">
 													Please provide a Event Rules.

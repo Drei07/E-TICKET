@@ -13,10 +13,10 @@ class Event {
     }
 
     //add event
-    public function addEvent($event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $course_id, $year_level_id){
+    public function addEvent($event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $event_price, $course_id, $year_level_id){
         $folder = "../../../src/img/" . basename($event_poster);
         chmod($folder, 0755);
-        $stmt = $this->runQuery('INSERT INTO events (event_name, event_date, event_time, event_venue, event_max_guest, event_rules, event_type, event_poster, course_id, year_level_id) VALUES (:event_name, :event_date, :event_time, :event_venue, :event_max_guest, :event_rules, :event_type, :event_poster, :course_id, :year_level_id)');
+        $stmt = $this->runQuery('INSERT INTO events (event_name, event_date, event_time, event_venue, event_max_guest, event_rules, event_type, event_poster, event_price, course_id, year_level_id) VALUES (:event_name, :event_date, :event_time, :event_venue, :event_max_guest, :event_rules, :event_type, :event_poster, :event_price, :course_id, :year_level_id)');
         $exec = $stmt->execute(array(
             ":event_name" => $event_name,
             ":event_date" => $event_date,
@@ -26,6 +26,7 @@ class Event {
             ":event_rules" => $event_rules,
             ":event_type" => $event_type,
             ":event_poster" => $event_poster,
+            ":event_price" => $event_price,
             ":course_id" => $course_id,
             ":year_level_id" => $year_level_id
         ));
@@ -46,8 +47,8 @@ class Event {
     }
 
  // EDIT
-public function editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster){
-    $stmt = $this->runQuery('SELECT event_name, event_date, event_time, event_venue, event_max_guest, event_rules, event_type FROM events WHERE id=:id');
+public function editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $event_price){
+    $stmt = $this->runQuery('SELECT event_name, event_date, event_time, event_venue, event_max_guest, event_rules, event_type, event_price FROM events WHERE id=:id');
     $stmt->execute(array(":id" => $event_id));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $current_event_name = $row['event_name'];
@@ -57,6 +58,8 @@ public function editEvent($event_id, $event_name, $event_date, $event_time, $eve
     $current_event_max_guest = $row['event_max_guest'];
     $current_event_rules = $row['event_rules'];
     $current_event_type = $row['event_type'];
+    $current_event_price = $row['event_price'];
+
 
     if ($current_event_name != $event_name ||
         $current_event_date != $event_date ||
@@ -64,9 +67,10 @@ public function editEvent($event_id, $event_name, $event_date, $event_time, $eve
         $current_event_venue != $event_venue ||
         $current_event_max_guest != $event_max_guest ||
         $current_event_rules != $event_rules ||
-        $current_event_type != $event_type)
+        $current_event_type != $event_type ||
+        $current_event_price != $event_price)
     {
-        $stmt = $this->runQuery('UPDATE events SET event_name=:event_name, event_date=:event_date, event_time=:event_time, event_venue=:event_venue, event_max_guest=:event_max_guest, event_rules=:event_rules, event_type=:event_type WHERE id=:id');
+        $stmt = $this->runQuery('UPDATE events SET event_name=:event_name, event_date=:event_date, event_time=:event_time, event_venue=:event_venue, event_max_guest=:event_max_guest, event_rules=:event_rules, event_type=:event_type, event_price=:event_price WHERE id=:id');
         $exec = $stmt->execute(array(
             ":id" => $event_id,
             ":event_name" => $event_name,
@@ -76,6 +80,8 @@ public function editEvent($event_id, $event_name, $event_date, $event_time, $eve
             ":event_max_guest" => $event_max_guest,
             ":event_rules" => $event_rules,
             ":event_type" => $event_type,
+            ":event_price" => $event_price,
+
         ));
     
         if ($exec) {
@@ -195,13 +201,14 @@ if (isset($_POST['btn-add-event'])) {
     $event_rules        = trim($_POST['event_rules']);
     $event_type         = trim($_POST['event_type']);
     $event_poster       = $_FILES['event_poster']['name'];
+    $event_price        = trim($_POST['event_price']);
     $course_id          = $_GET['course_id'];
     $year_level_id      = $_GET['year_level_id'];
 
 
 
     $add_event = new Event();
-    $add_event->addEvent($event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $course_id, $year_level_id);
+    $add_event->addEvent($event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $event_price, $course_id, $year_level_id);
 }
 
 //edit
@@ -211,13 +218,14 @@ if (isset($_POST['btn-edit-event'])) {
     $event_date         = trim($_POST['event_date']);
     $event_time         = trim($_POST['event_time']);
     $event_venue        = trim($_POST['event_venue']);
-    $event_max_guest    = trim($_POST['event_max_guest']);
+    $event_max_guest    = trim($_POST['event_max_guest']);   
     $event_rules        = trim($_POST['event_rules']);
     $event_type         = trim($_POST['event_type']);
     $event_poster       = $_FILES['event_poster']['name'];
+    $event_price        = trim($_POST['event_price']);
 
     $edit_event = new Event();
-    $edit_event->editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster);
+    $edit_event->editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_type, $event_poster, $event_price);
 }
 
 //delete
