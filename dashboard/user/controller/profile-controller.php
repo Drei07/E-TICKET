@@ -13,7 +13,7 @@ class ProfileSettings
         $this->conn = $db;
     }
     // Update user profile
-    public function updateProfile($user_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status, $course_id, $batch)
+    public function updateProfile($user_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status)
     {
         // Retrieve current user profile data
         $stmt = $this->runQuery('SELECT * FROM users WHERE id=:id');
@@ -28,14 +28,12 @@ class ProfileSettings
             $row['sex'] == $sex &&
             $row['date_of_birth'] == $date_of_birth &&
             $row['age'] == $age &&
-            $row['civil_status'] == $civil_status &&
-            $row['course_id'] == $course_id &&
-            $row['batch'] == $batch
+            $row['civil_status'] == $civil_status
         ) {
             // No changes have been made
             $_SESSION['status_title'] = 'Oopss!';
             $_SESSION['status'] = 'No changes have been made to your profile.';
-            $_SESSION['status_code'] = 'warning';
+            $_SESSION['status_code'] = 'info';
             $_SESSION['status_timer'] = 40000;
 
             header('Location: ../profile');
@@ -60,7 +58,7 @@ class ProfileSettings
         }
 
         // Update user profile data in the database
-        $stmt = $this->runQuery('UPDATE users SET first_name=:first_name, middle_name=:middle_name, last_name=:last_name, sex=:sex, date_of_birth=:date_of_birth, age=:age, civil_status=:civil_status, course_id=:course_id, batch=:batch WHERE id=:id');
+        $stmt = $this->runQuery('UPDATE users SET first_name=:first_name, middle_name=:middle_name, last_name=:last_name, sex=:sex, date_of_birth=:date_of_birth, age=:age, civil_status=:civil_status WHERE id=:id');
         $exec = $stmt->execute(array(
             ":id"            => $user_id,
             ":first_name"   => $first_name,
@@ -69,9 +67,7 @@ class ProfileSettings
             ":sex"          => $sex,
             ":date_of_birth" => $date_of_birth,
             ":age"          => $age,
-            ":civil_status" => $civil_status,
-            ":course_id"    => $course_id,
-            ":batch"        => $batch
+            ":civil_status" => $civil_status
         ));
 
         // Set status message based on success or failure of the database update
@@ -212,11 +208,9 @@ if (isset($_POST['btn-update-profile'])) {
     $date_of_birth  = trim($_POST['date_of_birth']);
     $age  = trim($_POST['age']);
     $civil_status  = trim($_POST['civil_status']);
-    $course_id  = trim($_POST['course']);
-    $batch  = trim($_POST['batch']);
 
     $ProfileSettings = new ProfileSettings();
-    $ProfileSettings->updateProfile($user_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status, $course_id, $batch);
+    $ProfileSettings->updateProfile($user_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status);
 }
 
 if (isset($_POST['btn-update-avatar'])) {
