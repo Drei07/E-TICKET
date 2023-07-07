@@ -128,7 +128,7 @@ class sub_adminRegistration {
                 exit();
             } else {
                 // Error reporting
-                $error = $sub_admin->getLastError();
+                $error = $this->sub_admin->getLastError();
                 echo "Error: ".$error;
 
                 $_SESSION['status_title'] = "Sorry !";

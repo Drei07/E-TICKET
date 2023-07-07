@@ -215,6 +215,27 @@ include_once 'header.php';
 										<div class="row gx-5 needs-validation">
 
 											<div class="col-md-12">
+												<label for="course" class="form-label">Course / Program<span> *</span></label>
+												<select type="text" class="form-select form-control" name="course" id="course" required>
+													<option selected disabled value="">Select Course</option>
+													<?php
+													$pdoQuery = "SELECT * FROM course WHERE status = :status";
+													$pdoResult2 = $pdoConnect->prepare($pdoQuery);
+													$pdoResult2->execute(array(":status" => "active"));
+
+													while ($course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC)) {
+													?>
+														<option value="<?php echo $course_data['id']; ?> "><?php echo $course_data['course'];  ?></option>
+													<?php
+													}
+													?>
+												</select>
+												<div class="invalid-feedback">
+													Please select a Course.
+												</div>
+											</div>
+
+											<div class="col-md-12">
 												<label for="year_level" class="form-label">Year Level<span> *</span></label>
 												<select type="text" class="form-select form-control" name="year_level" id="year_level" required>
 													<option selected disabled value="">Select Year Level</option>
@@ -235,26 +256,6 @@ include_once 'header.php';
 												</div>
 											</div>
 
-											<div class="col-md-12">
-												<label for="course" class="form-label">Course / Program<span> *</span></label>
-												<select type="text" class="form-select form-control" name="course" id="course" required>
-													<option selected disabled value="">Select Course</option>
-													<?php
-													$pdoQuery = "SELECT * FROM course WHERE status = :status";
-													$pdoResult2 = $pdoConnect->prepare($pdoQuery);
-													$pdoResult2->execute(array(":status" => "active"));
-
-													while ($course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC)) {
-													?>
-														<option value="<?php echo $course_data['id']; ?> "><?php echo $course_data['course'];  ?></option>
-													<?php
-													}
-													?>
-												</select>
-												<div class="invalid-feedback">
-													Please select a Course.
-												</div>
-											</div>
 
 										</div>
 

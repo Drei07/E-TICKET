@@ -79,7 +79,7 @@ public function systemLogo(){
   try
   {       
    $password = md5($hash_password);
-   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, phone_number, email, department password, tokencode, user_type) 
+   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, phone_number, email, department, password, tokencode, user_type) 
                                         VALUES(:first_name, :middle_name, :last_name, :phone_number, :email, :department, :password, :tokencode, :user_type)");
    
    $stmt->bindparam(":first_name",$first_name);

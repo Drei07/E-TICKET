@@ -493,14 +493,15 @@ border-right-color: var(--main);
 
 
 
-#content main .box-info {
+
+#content main .dashboard_data {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 	grid-gap: 24px;
 	margin-top: 36px;
 
 }
-#content main .box-info li {
+#content main .dashboard_data li {
 	padding: 24px;
 	background: var(--light);
 	border-radius: 20px;
@@ -510,11 +511,11 @@ border-right-color: var(--main);
 	grid-gap: 24px;
 }
 
-#content main .box-info li:hover {
+#content main .dashboard_data li:hover {
 	box-shadow: 7px 5px 10px 1px rgba(0,0,0,0.15);
 }
 
-#content main .box-info li .bx {
+#content main .dashboard_data li .bx {
 	width: 80px;
 	height: 80px;
 	border-radius: 10px;
@@ -522,14 +523,17 @@ border-right-color: var(--main);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	background: var(--light-main);
+	color: var(--main);
 }
-#content main .box-info li .text h3 {
+#content main .dashboard_data li .text h3 {
 	font-size: 24px;
 	font-weight: 600;
 	color: var(--dark);
 }
-#content main .box-info li .text p {
+#content main .dashboard_data li .text p {
 	color: var(--dark);	
+	font-weight: 700;
 }
 
 #content main .modal-button {
