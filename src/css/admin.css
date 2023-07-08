@@ -137,6 +137,10 @@ body {
 	margin-right: 1.5rem;
 }
 
+.swal-text{
+	text-align: center;
+}
+
 .tooltip.bs-tooltip-top .tooltip-arrow::before {
 border-top-color: var(--main);
 }

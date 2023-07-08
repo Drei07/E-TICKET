@@ -202,6 +202,25 @@ $('.activate').on('click', function (e) {
 		});
 })
 
+//print
+$('.print').on('click', function (e) {
+	e.preventDefault();
+	const href = $(this).attr('href')
+
+	swal({
+		title: "Print?",
+		text: "Do you want to print the access token?",
+		icon: "info",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((willDelete) => {
+			if (willDelete) {
+				document.location.href = href;
+			}
+		});
+})
+
 //Back Profile
 $('.back').on('click', function (e) {
 	e.preventDefault();
