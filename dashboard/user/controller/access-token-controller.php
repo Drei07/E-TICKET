@@ -1,16 +1,17 @@
 <?php
 include_once '../../../configuration/settings-configuration.php';
-include_once __DIR__.'/../../../database/dbconfig.php';
+include_once __DIR__ . '/../../../database/dbconfig.php';
 
 require __DIR__ . "/vendor/autoload.php";
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class AccessToken {
+class AccessToken
+{
     private $conn;
 
-    public function __construct() 
+    public function __construct()
     {
         $database = new Database();
         $db = $database->dbConnection();
@@ -44,7 +45,7 @@ class AccessToken {
             $values[] = "(:user_id, :event_id, :token_$token)";
         }
         $sql .= implode(', ', $values);
-        
+
         $stmt = $this->runQuery($sql);
         $stmt->bindValue(':user_id', $user_id);
         $stmt->bindValue(':event_id', $event_id);
@@ -88,7 +89,7 @@ class AccessToken {
         //select event name
         $stmt = $this->runQuery('SELECT * FROM events WHERE id = :id');
         $stmt->execute(array(':id' => $event_id));
-        $event_data = $stmt->fetch(PDO::FETCH_ASSOC);    
+        $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Select access tokens with matching event_id, active status, and pending print_status
         $stmt = $this->runQuery('SELECT * FROM access_token WHERE event_id = :event_id AND status = "active" AND print_status = "pending"');
@@ -146,7 +147,7 @@ class AccessToken {
                     </tr>
                 </thead>
                 <tbody>';
-        
+
             $number = 1;
             foreach ($tokens as $token) {
                 $datePrinted = date('m/d/y (h:i:s A)', time());
@@ -158,13 +159,13 @@ class AccessToken {
                     </tr>';
                 $number++;
             }
-        
+
             $html .= '
                 </tbody>
             </table>
             ';
-        
-        
+
+
 
             // Create a new Dompdf instance
             $options = new Options();
@@ -174,38 +175,44 @@ class AccessToken {
 
             // Render the HTML content to PDF
             $dompdf->render();
+
+            // Save the PDF file
+            $eventName = str_replace(' ', '_', $event_data['event_name']);
+            $timestamp = time();
+            $filename = ''.$eventName.'_access_tokens_'.$timestamp.'.pdf';
+            $output = $dompdf->output();
+            file_put_contents($filename, $output);
+
+            // Specify the backup folder path
+            $backupFolderPath = '../../pdf/';
+
+            // Move the PDF file to the backup folder
+            $backupFilename = $backupFolderPath . $filename;
+            rename($filename, $backupFilename);
+
+            // Update the print_status of the generated tokens
+            $tokenIds = array_column($tokens, 'id');
+            $this->updatePrintStatus($tokenIds);
+
+            // Save the PDF filename in the database
+            $this->savePdfFilenameToDatabase($event_id, $filename);
+
+            // Provide the link to download the PDF file
+            if (file_exists($backupFilename)) {
+                // Download the PDF file
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment;filename=' . basename($backupFilename));
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($backupFilename));
+                ob_clean();
+                flush();
             
-// Save the PDF file
-$filename = 'access_tokens.pdf';
-$output = $dompdf->output();
-file_put_contents($filename, $output);
-
-// Specify the backup folder path
-$backupFolderPath = '../../pdf/';
-
-// Move the PDF file to the backup folder
-$backupFilename = $backupFolderPath . $filename;
-rename($filename, $backupFilename);
-
-// Update the print_status of the generated tokens
-$tokenIds = array_column($tokens, 'id');
-$this->updatePrintStatus($tokenIds);
-
-// Provide the link to download the PDF file
-if (file_exists($backupFilename)) {
-    // Download the PDF file
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="' . basename($backupFilename) . '"');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($backupFilename));
-    ob_clean();
-    flush();
-    readfile($backupFilename);
-    
-    exit();
+                // Read the file and output its contents
+                readfile($backupFilename);
+        
+                exit();
             } else {
                 $_SESSION['status_title'] = 'Oops!';
                 $_SESSION['status'] = 'Something went wrong, please try again!';
@@ -233,6 +240,17 @@ if (file_exists($backupFilename)) {
         $stmt->execute($tokenIds);
     }
 
+    public function savePdfFilenameToDatabase($event_id, $filename)
+    {
+        $stmt = $this->runQuery('INSERT INTO pdf_file (event_id, file_name) VALUES (:event_id, :file_name)');
+        $exec = $stmt->execute(array(
+            ":event_id"  => $event_id,
+            ":file_name"         => $filename,
+        ));
+    
+    }
+
+
     public function runQuery($sql)
     {
         $stmt = $this->conn->prepare($sql);
@@ -258,3 +276,4 @@ if (isset($_GET['print_access_tokens'])) {
     $print_access_token = new AccessToken();
     $print_access_token->generateAccessTokensPDF($event_id);
 }
+?>
