@@ -221,6 +221,26 @@ $('.print').on('click', function (e) {
 		});
 })
 
+//print
+$('.view').on('click', function (e) {
+	e.preventDefault();
+	const href = $(this).attr('href')
+
+	swal({
+		title: "View?",
+		text: "Do you want to view this file?",
+		icon: "info",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((willDelete) => {
+			if (willDelete) {
+				document.location.href = href;
+			}
+		});
+})
+
+
 //Back Profile
 $('.back').on('click', function (e) {
 	e.preventDefault();

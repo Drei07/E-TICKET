@@ -53,43 +53,13 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 				</a>
 			</li>
 			<li>
-				<a href="sub-admin">
-					<i class='bx bxs-user-plus'></i>
-					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-			<li>
-				<a href="department">
-					<i class='bx bxs-buildings'></i>
-					<span class="text">Department</span>
-				</a>
-			</li>
-			<li>
-				<a href="course">
-					<i class='bx bxs-book-alt'></i>
-					<span class="text">Course</span>
-				</a>
-			</li>
-			<li>
-				<a href="year-level">
-					<i class='bx bxs-graduation'></i>
-					<span class="text">Year Level</span>
+				<a href="access-tokens">
+					<i class='bx bxs-key' ></i>
+					<span class="text">Access Tokens</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu top">
-			<li>
-				<a href="settings">
-					<i class='bx bxs-cog'></i>
-					<span class="text">Settings</span>
-				</a>
-			</li>
-			<li>
-				<a href="audit-trail">
-					<i class='bx bxl-blogger'></i>
-					<span class="text">Audit Trail</span>
-				</a>
-			</li>
 			<li>
 				<a href="authentication/user-signout" class="btn-signout">
 					<i class='bx bxs-log-out-circle'></i>

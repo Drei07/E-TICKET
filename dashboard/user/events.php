@@ -37,6 +37,12 @@ include_once 'header.php';
 					<span class="text">Events</span>
 				</a>
 			</li>
+			<li>
+				<a href="access-tokens">
+					<i class='bx bxs-key' ></i>
+					<span class="text">Access Tokens</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>
