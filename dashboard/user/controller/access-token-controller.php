@@ -84,63 +84,7 @@ class AccessToken {
         return ($count > 0);
     }
     
-    public function printAccessTokens($event_id)
-    {
-        // Select access tokens with matching event_id, active status, and pending print_status
-        $stmt = $this->runQuery('SELECT * FROM access_token WHERE event_id = :event_id AND status = "active" AND print_status = "pending"');
-        $stmt->execute(array(':event_id' => $event_id));
-        $tokens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-        if (count($tokens) > 0) {
-            // Create a new Spreadsheet object
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
-    
-            // Set the header row
-            $sheet->setCellValue('A1', 'Access Token');
-    
-            // Set the data rows
-            $row = 2;
-            foreach ($tokens as $token) {
-                $sheet->setCellValue('A' . $row, $token['token']);
-                $row++;
-            }
-    
-            // Create a PDF writer using Mpdf
-            $writer = new PdfWriter($spreadsheet);
-    
-            // Save the PDF file
-            $filename = 'access_tokens.pdf';
-            $writer->save($filename);
-    
-            // Update the print_status of the printed tokens
-            $tokenIds = array_column($tokens, 'id');
-            $this->updatePrintStatus($tokenIds);
-    
-            $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Successfully printed access tokens';
-            $_SESSION['status_code'] = 'success';
-            $_SESSION['status_timer'] = 40000;
-        } else {
-            $_SESSION['status_title'] = 'Oops!';
-            $_SESSION['status'] = 'Something went wrong, please try again!';
-            $_SESSION['status_code'] = 'error';
-            $_SESSION['status_timer'] = 100000;
-        }
-    
-        header('Location: ../events-details');
-        exit();
-    }
-    
-    public function updatePrintStatus($tokenIds)
-    {
-        // Update the print_status of the given token IDs to "printed"
-        $placeholders = implode(',', array_fill(0, count($tokenIds), '?'));
-        $sql = "UPDATE access_token SET print_status = 'printed' WHERE id IN ($placeholders)";
-        $stmt = $this->runQuery($sql);
-        $stmt->execute($tokenIds);
-    }
-    
+
     public function runQuery($sql)
     {
         $stmt = $this->conn->prepare($sql);
@@ -157,14 +101,6 @@ if (isset($_POST['btn-add-access-token'])) {
 
     $add_access_token = new AccessToken();
     $generated_tokens = $add_access_token->addAccessToken($user_id, $event_id, $number_of_tokens);
-}
-
-// Print access tokens and update print_status
-if (isset($_GET['print-access-tokens'])) {
-    $event_id = $_GET["event_id"];
-
-    $print_access_token = new AccessToken();
-    $print_access_token->printAccessTokens($event_id);
 }
 
 ?>
