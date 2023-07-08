@@ -39,7 +39,7 @@ include_once 'header.php';
 			</li>
 			<li>
 				<a href="access-tokens">
-					<i class='bx bxs-key' ></i>
+					<i class='bx bxs-key'></i>
 					<span class="text">Access Tokens</span>
 				</a>
 			</li>
@@ -97,7 +97,7 @@ include_once 'header.php';
 				<div class="order">
 					<div class="head">
 						<h3><i class='bx bxs-book'></i> List of Course Events</h3>
-					</div>					<!-- BODY -->
+					</div> <!-- BODY -->
 					<section class="data-table">
 						<div class="info-data">
 							<div class="searchBx">
@@ -105,57 +105,70 @@ include_once 'header.php';
 								<button class="searchBtn" type="button" onclick="searchCourseEvents()"><i class="bx bx-search icon"></i></button>
 							</div>
 							<?php
-							$pdoQuery = "SELECT * FROM course_event WHERE status = :status AND course_id = :course_id ORDER BY id DESC";
-							$pdoResult = $pdoConnect->prepare($pdoQuery);
-							$pdoResult->execute(array(":status" => "active", ":course_id" => $course_id));
-							if ($pdoResult->rowCount() >= 1) {
-								while ($course_event = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-									extract($course_event);
-							?>
-									<div class="card">
-										<div class="head2">
-											<div class="body" onclick="setSessionValues(<?php echo $course_event['course_id'] ?>, <?php echo $course_event['year_level_id'] ?>)">
-												<?php
-												//course data
-												$course_id = $course_event['course_id'];
-												$pdoQuery = "SELECT * FROM course WHERE id = :id";
-												$pdoResult2 = $pdoConnect->prepare($pdoQuery);
-												$pdoExec = $pdoResult2->execute(array(":id" => $course_id));
-												$course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
+							$stmt = $user->runQuery("SELECT * FROM course WHERE department_id=:department_id");
+							$stmt->execute(array(":department_id" => $user_department));
+							$course_data = $stmt->fetch(PDO::FETCH_ASSOC);
+							$course_id = $course_data['id'];
 
-												//department data
-												$department_id = $course_data['department_id'];
-												$pdoQuery = "SELECT * FROM department WHERE id = :id";
-												$pdoResult3 = $pdoConnect->prepare($pdoQuery);
-												$pdoExec = $pdoResult3->execute(array(":id" => $department_id));
-												$department_data = $pdoResult3->fetch(PDO::FETCH_ASSOC);
-												?>
-												<img src="../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo">
-												<h2>
-													<?php echo $course_data['course']; ?>
-													<br>
+							$pdoQuery = "SELECT * FROM course WHERE department_id=:department_id";
+							$pdoResult0 = $pdoConnect->prepare($pdoQuery);
+							$pdoResult0->execute(array(":department_id" => $user_department));
+
+							while ($course_data = $pdoResult0->fetch(PDO::FETCH_ASSOC)) {
+								$course_id = $course_data['id'];
+
+								$pdoQuery = "SELECT * FROM course_event WHERE status = :status AND course_id = :course_id ORDER BY id DESC";
+								$pdoResult = $pdoConnect->prepare($pdoQuery);
+								$pdoResult->execute(array(":status" => "active", ":course_id" => $course_id));
+								if ($pdoResult->rowCount() >= 1) {
+									while ($course_event = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+										extract($course_event);
+							?>
+										<div class="card">
+											<div class="head2">
+												<div class="body" onclick="setSessionValues(<?php echo $course_event['course_id'] ?>, <?php echo $course_event['year_level_id'] ?>)">
 													<?php
-													//year level data
-													$year_level_id = $course_event['year_level_id'];
-													$pdoQuery = "SELECT * FROM year_level WHERE id = :id";
-													$pdoResult4 = $pdoConnect->prepare($pdoQuery);
-													$pdoExec = $pdoResult4->execute(array(":id" => $year_level_id));
-													$year_level_data = $pdoResult4->fetch(PDO::FETCH_ASSOC);
+													//course data
+													$course_id = $course_event['course_id'];
+													$pdoQuery = "SELECT * FROM course WHERE id = :id";
+													$pdoResult2 = $pdoConnect->prepare($pdoQuery);
+													$pdoExec = $pdoResult2->execute(array(":id" => $course_id));
+													$course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
+
+													//department data
+													$department_id = $course_data['department_id'];
+													$pdoQuery = "SELECT * FROM department WHERE id = :id";
+													$pdoResult3 = $pdoConnect->prepare($pdoQuery);
+													$pdoExec = $pdoResult3->execute(array(":id" => $department_id));
+													$department_data = $pdoResult3->fetch(PDO::FETCH_ASSOC);
 													?>
-													<?php echo $year_level_data['year_level']; ?>
-													<br>
-													<label><?php echo $department_data['department'] ?></label>
-												</h2>
+													<img src="../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo">
+													<h2>
+														<?php echo $course_data['course']; ?>
+														<br>
+														<?php
+														//year level data
+														$year_level_id = $course_event['year_level_id'];
+														$pdoQuery = "SELECT * FROM year_level WHERE id = :id";
+														$pdoResult4 = $pdoConnect->prepare($pdoQuery);
+														$pdoExec = $pdoResult4->execute(array(":id" => $year_level_id));
+														$year_level_data = $pdoResult4->fetch(PDO::FETCH_ASSOC);
+														?>
+														<?php echo $year_level_data['year_level']; ?>
+														<br>
+														<label><?php echo $department_data['department'] ?></label>
+													</h2>
+												</div>
+												<a href="controller/course-event-controller.php?id=<?php echo $course_event['id'] ?>&delete_course_event" class="delete"><i class='bx bxs-trash icon-2'></i></a>
 											</div>
-											<a href="controller/course-event-controller.php?id=<?php echo $course_event['id'] ?>&delete_course_event" class="delete"><i class='bx bxs-trash icon-2'></i></a>
 										</div>
-									</div>
-								<?php
-								}
-							} else {
-								?>
-								<h1 class="no-data">No Course Found</h1>
+									<?php
+									}
+								} else {
+									?>
+									<h1 class="no-data">No Course Found</h1>
 							<?php
+								}
 							}
 							?>
 						</div>

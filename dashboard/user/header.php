@@ -33,9 +33,4 @@ $user_email             = $user_data['email'];
 $user_department        = $user_data['department'];
 $user_last_update       = $user_data['updated_at'];
 
-$stmt = $user->runQuery("SELECT * FROM course WHERE department_id=:department_id");
-$stmt->execute(array(":department_id"=>$user_department));
-$course_data = $stmt->fetch(PDO::FETCH_ASSOC);
-$course_id = $course_data['id'];
-
 ?>

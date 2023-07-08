@@ -18,7 +18,7 @@ class AccessToken
         $this->conn = $db;
     }
 
-    public function addAccessToken($user_id, $event_id, $number_of_tokens)
+    public function addAccessTokenMandatory($user_id, $course_id, $year_level_id, $number_of_tokens)
     {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $tokenLength = 10;
@@ -33,22 +33,24 @@ class AccessToken
                 $accessToken .= $characters[$randomIndex];
             }
 
-            if (!$this->isTokenExists($accessToken)) {
+            if (!$this->isTokenExistsMandatory($accessToken)) {
                 $accessTokens[] = $accessToken;
             }
         }
 
         // Insert the generated tokens into the database
         $values = array();
-        $sql = 'INSERT INTO access_token (user_id, event_id, token) VALUES ';
+        $sql = 'INSERT INTO access_token (user_id, course_id, year_level_id, token) VALUES ';
         foreach ($accessTokens as $token) {
-            $values[] = "(:user_id, :event_id, :token_$token)";
+            $values[] = "(:user_id, :course_id, :year_level_id, :token_$token)";
         }
         $sql .= implode(', ', $values);
 
         $stmt = $this->runQuery($sql);
         $stmt->bindValue(':user_id', $user_id);
-        $stmt->bindValue(':event_id', $event_id);
+        $stmt->bindValue(':course_id', $course_id);
+        $stmt->bindValue(':year_level_id', $year_level_id);
+
 
         foreach ($accessTokens as $index => $token) {
             $param = ":token_$token";
@@ -69,13 +71,13 @@ class AccessToken
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../events-details');
+        header('Location: ../course-events');
         exit();
 
         return $accessTokens;
     }
 
-    public function isTokenExists($accessToken)
+    public function isTokenExistsMandatory($accessToken)
     {
         $stmt = $this->runQuery('SELECT COUNT(*) FROM access_token WHERE token = :token');
         $stmt->execute(array(':token' => $accessToken));
@@ -84,16 +86,21 @@ class AccessToken
         return ($count > 0);
     }
 
-    public function generateAccessTokensPDF($event_id)
+    public function generateAccessTokensPDFMandatory($course_id, $year_level_id)
     {
-        //select event name
-        $stmt = $this->runQuery('SELECT * FROM events WHERE id = :id');
-        $stmt->execute(array(':id' => $event_id));
-        $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
+        //select course name
+        $stmt = $this->runQuery('SELECT * FROM course WHERE id = :id');
+        $stmt->execute(array(':id' => $course_id));
+        $course_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Select access tokens with matching event_id, active status, and pending print_status
-        $stmt = $this->runQuery('SELECT * FROM access_token WHERE event_id = :event_id AND status = "active" AND print_status = "pending"');
-        $stmt->execute(array(':event_id' => $event_id));
+        //select year level id
+        $stmt = $this->runQuery('SELECT * FROM year_level WHERE id = :id');
+        $stmt->execute(array(':id' => $year_level_id));
+        $year_level_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Select access tokens with matching course, year, active status, and pending print_status
+        $stmt = $this->runQuery('SELECT * FROM access_token WHERE course_id = :course_id AND year_level_id = :year_level_id AND status = "active" AND print_status = "pending"');
+        $stmt->execute(array(':course_id' => $course_id, ':year_level_id' => $year_level_id));
         $tokens = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (count($tokens) > 0) {
             // Create the HTML content for the PDF
@@ -135,8 +142,9 @@ class AccessToken
                 </div>
             </div>
             <div class="title">
-            <h2>' . $event_data['event_name'] . '</h2>
-                <h3>ACCESS TOKENS</h3>
+            <h2>' . $course_data['course'] . '</h2>
+                <h3>' . $year_level_data['year_level'] . '</h3>
+                <h4>MANDATORY EVENT ACCESS TOKENS</h4>
             </div>
             <table>
                 <thead>
@@ -177,9 +185,10 @@ class AccessToken
             $dompdf->render();
 
             // Save the PDF file
-            $eventName = str_replace(' ', '_', $event_data['event_name']);
+            $courseName = str_replace(' ', '_', $course_data['course']);
+            $yearLevel = str_replace(' ', '_', $year_level_data['year_level']);
             $timestamp = time();
-            $filename = ''.$eventName.'_access_tokens_'.$timestamp.'.pdf';
+            $filename = ''.$courseName.'_'.$yearLevel.'_access_tokens_'.$timestamp.'.pdf';
             $output = $dompdf->output();
             file_put_contents($filename, $output);
 
@@ -192,10 +201,10 @@ class AccessToken
 
             // Update the print_status of the generated tokens
             $tokenIds = array_column($tokens, 'id');
-            $this->updatePrintStatus($tokenIds);
+            $this->updatePrintStatusMandatory($tokenIds);
 
             // Save the PDF filename in the database
-            $this->savePdfFilenameToDatabase($event_id, $filename);
+            $this->savePdfFilenameToDatabaseMandatory($course_id, $year_level_id, $filename);
 
             // Provide the link to download the PDF file
             if (file_exists($backupFilename)) {
@@ -218,7 +227,7 @@ class AccessToken
                 $_SESSION['status'] = 'Something went wrong, please try again!';
                 $_SESSION['status_code'] = 'error';
                 $_SESSION['status_timer'] = 100000;
-                header('Location: ../events-details');
+                header('Location: ../course-events');
                 exit();
             }
         } else {
@@ -226,12 +235,12 @@ class AccessToken
             $_SESSION['status'] = 'Access token are printed already, try to generate again thank you!';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
-            header('Location: ../events-details');
+            header('Location: ../course-events');
             exit();
         }
     }
 
-    public function updatePrintStatus($tokenIds)
+    public function updatePrintStatusMandatory($tokenIds)
     {
         // Update the print_status of the given token IDs to "printed"
         $placeholders = implode(',', array_fill(0, count($tokenIds), '?'));
@@ -240,11 +249,12 @@ class AccessToken
         $stmt->execute($tokenIds);
     }
 
-    public function savePdfFilenameToDatabase($event_id, $filename)
+    public function savePdfFilenameToDatabaseMandatory($course_id, $year_level_id, $filename)
     {
-        $stmt = $this->runQuery('INSERT INTO pdf_file (event_id, file_name) VALUES (:event_id, :file_name)');
+        $stmt = $this->runQuery('INSERT INTO pdf_file (course_id, year_level_id, file_name) VALUES (:course_id, :year_level_id, :file_name)');
         $exec = $stmt->execute(array(
-            ":event_id"  => $event_id,
+            ":course_id"  => $course_id,
+            ":year_level_id"  => $year_level_id,
             ":file_name"         => $filename,
         ));
     
@@ -259,21 +269,22 @@ class AccessToken
 }
 
 // Add access tokens
-if (isset($_POST['btn-add-access-token'])) {
+if (isset($_POST['btn-add-access-token-mandatory'])) {
     $user_id = $_GET["user_id"];
-    $event_id = $_GET["event_id"];
-
+    $course_id = $_GET["course_id"];
+    $year_level_id = $_GET["year_level_id"];
     $number_of_tokens = trim($_POST['access_token']);
 
     $add_access_token = new AccessToken();
-    $generated_tokens = $add_access_token->addAccessToken($user_id, $event_id, $number_of_tokens);
+    $generated_tokens = $add_access_token->addAccessTokenMandatory($user_id, $course_id, $year_level_id, $number_of_tokens);
 }
 
 // Generate access tokens PDF and provide download link
-if (isset($_GET['print_access_tokens'])) {
-    $event_id = $_GET["event_id"];
+if (isset($_GET['print_access_tokens-mandatory'])) {
+    $course_id = $_GET["course_id"];
+    $year_level_id = $_GET["year_level_id"];
 
     $print_access_token = new AccessToken();
-    $print_access_token->generateAccessTokensPDF($event_id);
+    $print_access_token->generateAccessTokensPDFMandatory($course_id, $year_level_id);
 }
 ?>

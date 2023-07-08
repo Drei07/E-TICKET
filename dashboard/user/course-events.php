@@ -167,6 +167,8 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 					<div class="head">
 						<h3><i class='bx bxs-calendar'></i> Mandatory Events</h3>
 					</div>
+					<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="archives btn-warning"><i class='bx bxs-key' ></i> Generate Access Token</button><br><br>
+					<button type="button" class="archives btn-primary"><a href="controller/access-token-controller.php?course_id=<?php echo $courseId ?>&year_level_id=<?php echo $yearLevelId ?>&print_access_tokens-mandatory=1" class="print" style="color: #FFFF;"><i class='bx bxs-printer'></i> Print Access Token</a></button><br><br>
 					<!-- BODY -->
 					<section class="data-table">
 						<div class="searchBx">
@@ -255,179 +257,34 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 				</div>
 			</div>
 		</main>
+
+		<!-- EDIT MODAL -->
 		<div class="class-modal">
 			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
 						<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Add Events</h5>
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-key'></i> Generate Access Token</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<section class="data-form-modals">
 								<div class="registration">
-									<form action="controller/event-controller.php?course_id=<?php echo $courseId ?>&year_level_id=<?php echo $yearLevelId ?>" method="POST" class="row gx-5 needs-validation" enctype="multipart/form-data" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+									<form action="controller/access-token-controller.php?user_id=<?php echo $user_id ?>&course_id=<?php echo $courseId ?>&year_level_id=<?php echo $yearLevelId ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
 										<div class="row gx-5 needs-validation">
 
 											<div class="col-md-12">
-												<label for="event_name" class="form-label">Event Name<span> *</span></label>
-												<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_name" id="event_name" required>
+												<label for="access_token" class="form-label">Input numbers of token will generated<span> *</span></label>
+												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="access_token" id="access_token" required>
 												<div class="invalid-feedback">
-													Please provide a Event Name.
+													Please provide a Number.
 												</div>
 											</div>
-
-											<div class="col-md-6">
-												<label for="event_date" class="form-label">Event Date<span> *</span></label>
-												<input type="date" class="form-control" autocomplete="off" name="event_date" id="event_date" required>
-												<div class="invalid-feedback">
-													Please provide a Event Date.
-												</div>
-											</div>
-
-											<div class="col-md-6">
-												<label for="event_time" class="form-label">Event Time<span> *</span></label>
-												<input type="time" class="form-control" autocomplete="off" name="event_time" id="event_time" required>
-												<div class="invalid-feedback">
-													Please provide a Event Time.
-												</div>
-											</div>
-
-											<div class="col-md-6">
-												<label for="event_venue" class="form-label">Event Venue<span> *</span></label>
-												<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_venue" id="event_venue" required>
-												<div class="invalid-feedback">
-													Please provide a Event Venue.
-												</div>
-											</div>
-
-											<!-- please add numbers only -->
-											<div class="col-md-6">
-												<label for="event_max_guest" class="form-label">Event Max Guest</label>
-												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_max_guest" id="event_max_guest">
-												<div class="invalid-feedback">
-													Please provide a Event Max Guest.
-												</div>
-											</div>
-
-											<div class="col-md-6">
-												<label for="event_price" class="form-label">Event Price <span> *</span></label>
-												<input type="numbers" onkeyup="this.value = this.value.toUpperCase();" class="form-control numbers" inputmode="numeric" autocapitalize="on" autocomplete="off" name="event_price" id="event_price" required>
-												<div class="invalid-feedback">
-													Please provide a Event Price.
-												</div>
-											</div>
-
-											<div class="col-md-6">
-												<label for="event_type" class="form-label">Event Type<span> *</span></label>
-												<select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
-													<option selected value="">Select.....</option>
-													<option value="MANDATORY">MANDATORY</option>
-													<option value="OPTIONAL">OPTIONAL</option>
-												</select>
-												<div class="invalid-feedback">
-													Please select a valid Event Type.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="event_rules" class="form-label">Event Rules</label>
-												<textarea onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"></textarea>
-												<div class="invalid-feedback">
-													Please provide a Event Rules.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="event_poster" class="form-label">Event Poster<span> *</span></label>
-												<input type="file" class="form-control" name="event_poster" id="event_poster" style="height: 33px;" required onchange="previewImage(event)">
-												<div class="invalid-feedback">
-													Please provide an Event Poster.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="event_poster" class="form-label">Preview</label>
-												<img id="poster-preview" style="max-width: 50%; margin-top: 10px; display: none;">
-											</div>
-
 										</div>
 
 										<div class="addBtn">
-											<button type="submit" class="btn-dark" name="btn-add-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- EDIT MODAL -->
-		<div class="class-modal">
-			<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static">
-				<div class="modal-dialog modal-dialog-centered modal-lg">
-					<div class="modal-content">
-						<div class="header"></div>
-						<div class="modal-header">
-							<h5 class="modal-title" id="editModalLabel"><i class='bx bxs-calendar'></i> Edit Course Event</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<section class="data-form-modals">
-								<div class="registration">
-									<form action="controller/course-event-controller.php?id=<?php echo $course_event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
-										<div class="row gx-5 needs-validation">
-
-											<div class="col-md-12">
-												<label for="year_level" class="form-label">Year Level<span> *</span></label>
-												<select type="text" class="form-select form-control" name="year_level" id="year_level" required>
-													<option selected value="<?php echo $year_level_data['id'] ?>"><?php echo $year_level_data['year_level'] ?></option>
-													<?php
-													$pdoQuery = "SELECT * FROM year_level ";
-													$pdoResult6 = $pdoConnect->prepare($pdoQuery);
-													$pdoResult6->execute();
-
-													while ($year_level_data2 = $pdoResult6->fetch(PDO::FETCH_ASSOC)) {
-													?>
-														<option value="<?php echo $year_level_data2['id']; ?> "><?php echo $year_level_data2['year_level'];  ?></option>
-													<?php
-													}
-													?>
-												</select>
-												<div class="invalid-feedback">
-													Please select a Year Level.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="course" class="form-label">Course / Program<span> *</span></label>
-												<select type="text" class="form-select form-control" name="course" id="course" required>
-													<option selected value="<?php echo $course_data['id'] ?>"><?php echo $course_data['course'] ?></option>
-													<?php
-													$pdoQuery = "SELECT * FROM course ";
-													$pdoResult7 = $pdoConnect->prepare($pdoQuery);
-													$pdoResult7->execute();
-
-													while ($course_data2 = $pdoResult7->fetch(PDO::FETCH_ASSOC)) {
-													?>
-														<option value="<?php echo $course_data2['id']; ?> "><?php echo $course_data2['course'];  ?></option>
-													<?php
-													}
-													?>
-												</select>
-												<div class="invalid-feedback">
-													Please select a Course.
-												</div>
-											</div>
-
-										</div>
-
-										<div class="addBtn">
-											<button type="submit" class="btn-dark" name="btn-edit-course-event" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Update</button>
+											<button type="submit" class="btn-dark" name="btn-add-access-token-mandatory" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Generate</button>
 										</div>
 									</form>
 								</div>
