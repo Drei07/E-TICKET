@@ -31,7 +31,7 @@ class Event {
             ":year_level_id" => $year_level_id
         ));
 
-        if ($$exec && move_uploaded_file($_FILES['event_poster']['tmp_name'], $folder)) {
+        if ($exec && move_uploaded_file($_FILES['event_poster']['tmp_name'], $folder)) {
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Event added successfully';
             $_SESSION['status_code'] = 'success';

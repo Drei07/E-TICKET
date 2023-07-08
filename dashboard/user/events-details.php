@@ -56,7 +56,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 			</li>
 			<li>
 				<a href="access-tokens">
-					<i class='bx bxs-key' ></i>
+					<i class='bx bxs-key'></i>
 					<span class="text">Access Tokens</span>
 				</a>
 			</li>
@@ -127,10 +127,18 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Event Rules:</strong> <?php echo $event_data['event_rules'] ?></p>
 						<p><strong>Event Price:</strong> <?php echo $event_data['event_price'] ?></p>
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
-						<div class="action">
-							<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn2 btn-warning"><i class='bx bxs-key'></i> Generate Access Token</button>
-							<button type="button" class="btn2 btn-primary"><a href="controller/access-token-controller.php?event_id=<?php echo $eventId ?>&print_access_tokens=1" class="print"><i class='bx bxs-printer'></i> Print Access Token</a></button>
-						</div>
+						<?php
+						if ($event_data['event_type'] == "MANDATORY") {
+						?>
+
+						<?php
+						} else if ($event_data['event_type'] == "OPTIONAL") {
+						?>
+
+							<div class="action">
+								<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn2 btn-warning"><i class='bx bxs-key'></i> Generate Access Token</button>
+								<button type="button" class="btn2 btn-primary"><a href="controller/access-token-controller.php?event_id=<?php echo $eventId ?>&print_access_tokens_optional=1" class="print"><i class='bx bxs-printer'></i> Print Access Token</a></button>
+							</div>
 					</div>
 				</li>
 			</ul>
@@ -152,6 +160,9 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 					</section>
 				</div>
 			</div>
+		<?php
+						}
+		?>
 		</main>
 
 		<div class="class-modal">
@@ -179,7 +190,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 										</div>
 
 										<div class="addBtn">
-											<button type="submit" class="btn-dark" name="btn-add-access-token" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Generate</button>
+											<button type="submit" class="btn-dark" name="btn-add-access-token-optional" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Generate</button>
 										</div>
 									</form>
 								</div>
