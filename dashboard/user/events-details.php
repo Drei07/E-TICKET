@@ -49,9 +49,9 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 				</a>
 			</li>
 			<li class="active">
-				<a href="events">
+				<a href="course-events">
 					<i class='bx bxs-calendar'></i>
-					<span class="text">Events</span>
+					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -108,7 +108,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="course-events">Events</a>
+							<a class="active" href="course-events-list">Events List</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -128,11 +128,17 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Event Price:</strong> <?php echo $event_data['event_price'] ?></p>
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
 						<?php
-						if ($event_data['event_type'] == "MANDATORY") {
+							$event_id = $event_data['id'];
+						    $pdoQuery = "SELECT * FROM event_per_course WHERE event_id = :event_id";
+							$pdoResult = $pdoConnect->prepare($pdoQuery);
+							$pdoExec = $pdoResult->execute(array(":event_id" => $event_id));
+							$event_data_per_course = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+						if ($event_data_per_course['event_type'] == 1) {
 						?>
 
 						<?php
-						} else if ($event_data['event_type'] == "OPTIONAL") {
+						} else if ($event_data_per_course['event_type'] == 2) {
 						?>
 
 							<div class="action">

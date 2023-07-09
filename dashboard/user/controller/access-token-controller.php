@@ -71,7 +71,7 @@ class AccessTokenMandatory
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course-events');
+        header('Location: ../course-events-list');
         exit();
 
         return $accessTokens;
@@ -227,7 +227,7 @@ class AccessTokenMandatory
                 $_SESSION['status'] = 'Something went wrong, please try again!';
                 $_SESSION['status_code'] = 'error';
                 $_SESSION['status_timer'] = 100000;
-                header('Location: ../course-events');
+                header('Location: ../course-events-list');
                 exit();
             }
         } else {
@@ -235,7 +235,7 @@ class AccessTokenMandatory
             $_SESSION['status'] = 'Access token are printed already, try to generate again thank you!';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
-            header('Location: ../course-events');
+            header('Location: ../course-events-list');
             exit();
         }
     }

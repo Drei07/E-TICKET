@@ -68,17 +68,23 @@ $output = '
   while($row=$statement->fetch(PDO::FETCH_ASSOC))
   {
 
-    $event_id = $row['event_id'];
-    $pdoQuery = "SELECT * FROM events WHERE id = :id";
-    $pdoResult = $pdoConnect->prepare($pdoQuery);
-    $pdoExec = $pdoResult->execute(array(":id" => $event_id));
-    $event_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    if($row['event_id'] == NULL){
+      $event_name ='MANDATORY';
+    }
+    else{
+      $event_id = $row['event_id'];
+      $pdoQuery = "SELECT * FROM events WHERE id = :id";
+      $pdoResult = $pdoConnect->prepare($pdoQuery);
+      $pdoExec = $pdoResult->execute(array(":id" => $event_id));
+      $event_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+      $event_name =$event_data['event_name'];
+    }
 
     $output .= '
     
     <tr>
       <td>'.$row["token"].'</td>
-      <td>'.$event_data['event_name'].'</td>
+      <td>'.$event_name.'</td>
       <td>'.$row["user_email"].'</td>
       <td>'.$row["date_of_use"].'</td>
       <td>'.$row["print_status"].'</td>       

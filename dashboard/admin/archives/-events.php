@@ -67,16 +67,10 @@ $user_last_update       = $user_data['updated_at'];
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="../events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Events</span>
-				</a>
-			</li>
-            <li class="active">
-				<a href="../events">
-					<i class='bx bxs-calendar'></i>
-					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -178,7 +172,7 @@ $user_last_update       = $user_data['updated_at'];
 					<section class="data-table">
 						<div class="info-data">
 							<div class="searchBx">
-								<input type="text" id="search-input" placeholder="Search Events . . . . . ." class="search">
+								<input type="text" id="search-input" placeholder="Search Course . . . . . ." class="search">
 								<button class="searchBtn" type="button" onclick="searchCourseEvents()"><i class="bx bx-search icon"></i></button>
 							</div>
 							<?php
