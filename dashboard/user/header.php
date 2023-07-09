@@ -33,4 +33,7 @@ $user_email             = $user_data['email'];
 $user_department        = $user_data['department'];
 $user_last_update       = $user_data['updated_at'];
 
+$mandatory = 1;
+$optional = 2;
+
 ?>

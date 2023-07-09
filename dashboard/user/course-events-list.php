@@ -197,14 +197,13 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 									$event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
 
 							?>
-									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>, <?php echo $mandatory ?> )">
 
 										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
 										<h4><?php echo $event_data['event_name'] ?></h4>
 										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
 										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
-
+										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>,<?php echo $mandatory ?> )" class="more btn-warning">More Info</button>
 									</li>
 							<?php
 								}
@@ -252,13 +251,13 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 									$event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
 
 							?>
-									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>,<?php echo $optional ?>)">
 
 										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
 										<h4><?php echo $event_data['event_name'] ?></h4>
 										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
 										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>)" class="more btn-warning">More Info</button>
+										<button type="button" onclick="setSessionValues(<?php echo $event_data['id'] ?>,<?php echo $optional ?> )" class="more btn-warning">More Info</button>
 
 									</li>
 							<?php
@@ -320,13 +319,15 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 	?>
 
 	<script>
-		function setSessionValues(eventId) {
+
+
+		function setSessionValues(eventId, eventType) {
 			fetch('events-details.php', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
-					body: 'event_id=' + encodeURIComponent(eventId),
+					body: 'event_id=' + encodeURIComponent(eventId) + '&event_type=' + encodeURIComponent(eventType),
 				})
 				.then(response => {
 					window.location.href = 'events-details';
@@ -335,6 +336,7 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 					console.error('Error:', error);
 				});
 		}
+
 
 		function searchMandatoryEvents() {
 			var searchInput = document.getElementById('search-input-mandatory').value.trim();

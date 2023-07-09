@@ -151,6 +151,7 @@ class AccessTokenMandatory
                     <tr>
                         <th>No.</th>
                         <th>Access Tokens</th>
+                        <th>Event Type</th>
                         <th>Date Printed</th>
                     </tr>
                 </thead>
@@ -163,6 +164,7 @@ class AccessTokenMandatory
                     <tr>
                         <td>' . $number . '</td>
                         <td>' . $token['token'] . '</td>
+                        <td>MANDATORY</td>
                         <td>' . $datePrinted . '</td>
                     </tr>';
                 $number++;
@@ -288,6 +290,8 @@ if (isset($_GET['print_access_tokens-mandatory'])) {
     $print_access_token->generateAccessTokensPDFMandatory($course_id, $year_level_id);
 }
 
+
+//OPTIONAL
 class AccessTokenOptional
 {
     private $conn;
@@ -425,6 +429,7 @@ class AccessTokenOptional
                     <tr>
                         <th>No.</th>
                         <th>Access Tokens</th>
+                        <th>Event Type</th>
                         <th>Date Printed</th>
                     </tr>
                 </thead>
@@ -437,6 +442,7 @@ class AccessTokenOptional
                     <tr>
                         <td>' . $number . '</td>
                         <td>' . $token['token'] . '</td>
+                        <td>OPTIONAL</td>
                         <td>' . $datePrinted . '</td>
                     </tr>';
                 $number++;
