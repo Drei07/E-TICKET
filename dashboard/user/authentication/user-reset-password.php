@@ -5,7 +5,7 @@ $config = new SystemConfig();
 $main_url = new MainUrl();
 if(empty($_GET['id']) && empty($_GET['code']))
 {
- $user->redirect('../../../');
+ $user->redirect('../../../private/sub-admin/');
 }
 
 if(isset($_GET['id']) && isset($_GET['code']))
@@ -42,7 +42,7 @@ if(isset($_GET['id']) && isset($_GET['code']))
     $_SESSION['status_title'] = "Success !";
     $_SESSION['status'] = "Password is updated. Redirecting to Sign in.";
     $_SESSION['status_code'] = "success";
-    header("refresh:4;../../../");
+    header("refresh:4;../../../private/sub-admin/");
    
   } 
  }

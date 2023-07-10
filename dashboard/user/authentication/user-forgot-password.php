@@ -100,14 +100,14 @@ if(isset($_POST['btn-forgot-password']))
   $_SESSION['status_title'] = "Success !";
   $_SESSION['status'] = "We've sent the password reset link to $email, kindly check your spam folder and 'Report not spam' to click the link.";
   $_SESSION['status_code'] = "success";
-  header('Location: ../../../');
+  header('Location: ../../../private/sub-admin/');
  }
  else
  {
     $_SESSION['status_title'] = "Oops !";
     $_SESSION['status'] = "Entered email not found";
     $_SESSION['status_code'] = "error";
-    header('Location: ../../../forgot-password');
+    header('Location: ../../../private/sub-admin/forgot-password');
  }
 }
 ?>
