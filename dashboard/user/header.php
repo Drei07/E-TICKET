@@ -9,7 +9,7 @@ $user = new SUB_ADMIN();
 
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../');
+ $user->redirect('../../private/sub-admin/');
 }
 
 // retrieve user data
