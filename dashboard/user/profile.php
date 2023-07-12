@@ -28,9 +28,9 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="events">
-					<i class='bx bxs-calendar' ></i>
-					<span class="text">Events</span>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
 				</a>
 			</li>
             <li>

@@ -32,9 +32,9 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="events">
+				<a href="course-events">
 					<i class='bx bxs-calendar'></i>
-					<span class="text">Events</span>
+					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -94,70 +94,6 @@ include_once 'header.php';
 				</div>
 			</div>
 
-			<ul class="dashboard_data">
-				<li>
-					<i class='bx bxs-calendar'></i>
-					<span class="text">
-						<?php
-						$pdoQuery = "SELECT COUNT(*) AS total_count FROM events WHERE course_id IN (SELECT id FROM course WHERE department_id = :department_id)";
-						$pdoResult = $pdoConnect->prepare($pdoQuery);
-						$pdoResult->execute(array(":department_id" => $user_department));
-						$row = $pdoResult->fetch(PDO::FETCH_ASSOC);
-						$total_count = $row['total_count'];
-
-						echo "<h3>$total_count</h3>";
-						?>
-						<p>Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-calendar-event'></i>
-					<span class="text">
-						<?php
-						$pdoQuery = "SELECT COUNT(*) AS total_count FROM course_event WHERE status = :status AND course_id IN (SELECT id FROM course WHERE department_id = :department_id)";
-						$pdoResult = $pdoConnect->prepare($pdoQuery);
-						$pdoResult->execute(array(":status" => "active", ":department_id" => $user_department));
-						$row = $pdoResult->fetch(PDO::FETCH_ASSOC);
-						$total_count = $row['total_count'];
-
-						echo "<h3>$total_count</h3>";
-						?>
-						<p>Course Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bx-calendar'></i>
-					<span class="text">
-						<?php
-						$pdoQuery = "SELECT COUNT(*) AS total_count FROM events WHERE course_id IN (SELECT id FROM course WHERE department_id = :department_id) AND event_type = :event_type";
-						$pdoResult = $pdoConnect->prepare($pdoQuery);
-						$pdoResult->execute(array(":department_id" => $user_department, ":event_type" => "MANDATORY"));
-						$row = $pdoResult->fetch(PDO::FETCH_ASSOC);
-						$total_count = $row['total_count'];
-
-						echo "<h3>$total_count</h3>";
-						?>
-
-						<p>Mandatory Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bx-calendar'></i>
-					<span class="text">
-						<?php
-						$pdoQuery = "SELECT COUNT(*) AS total_count FROM events WHERE course_id IN (SELECT id FROM course WHERE department_id = :department_id) AND event_type = :event_type";
-						$pdoResult = $pdoConnect->prepare($pdoQuery);
-						$pdoResult->execute(array(":department_id" => $user_department, ":event_type" => "OPTIONAL"));
-						$row = $pdoResult->fetch(PDO::FETCH_ASSOC);
-						$total_count = $row['total_count'];
-
-						echo "<h3>$total_count</h3>";
-						?>
-
-						<p>Optional Events</p>
-					</span>
-				</li>
-			</ul>
 		</main>
 		<!-- MAIN -->
 	</section>

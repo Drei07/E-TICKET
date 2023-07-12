@@ -9,7 +9,7 @@ $user = new SUB_ADMIN();
 
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../');
+ $user->redirect('../../private/sub-admin/');
 }
 
 // retrieve user data
@@ -32,5 +32,8 @@ $user_phone_number      = $user_data['phone_number'];
 $user_email             = $user_data['email'];
 $user_department        = $user_data['department'];
 $user_last_update       = $user_data['updated_at'];
+
+$mandatory = 1;
+$optional = 2;
 
 ?>

@@ -4,12 +4,18 @@ include_once 'header.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Retrieve the values from the POST request
 	$eventId = isset($_POST['event_id']) ? $_POST['event_id'] : '';
+	$eventType = isset($_POST['event_type']) ? $_POST['event_type'] : '';
+
 
 	// Store the values in session variables
 	$_SESSION['sub_admin_event_id'] = $eventId;
+	$_SESSION['sub_admin_event_type'] = $eventType;
+
+
 }
 
 // Retrieve the values from session variables
+$eventType = isset($_SESSION['sub_admin_event_type']) ? $_SESSION['sub_admin_event_type'] : '';
 $eventId = isset($_SESSION['sub_admin_event_id']) ? $_SESSION['sub_admin_event_id'] : '';
 
 $stmt = $user->runQuery("SELECT * FROM events WHERE id=:id");
@@ -49,9 +55,9 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 				</a>
 			</li>
 			<li class="active">
-				<a href="events">
+				<a href="course-events">
 					<i class='bx bxs-calendar'></i>
-					<span class="text">Events</span>
+					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -108,7 +114,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="course-events">Events</a>
+							<a class="active" href="course-events-list">Events List</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -128,11 +134,12 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Event Price:</strong> <?php echo $event_data['event_price'] ?></p>
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
 						<?php
-						if ($event_data['event_type'] == "MANDATORY") {
+
+						if ($eventType == 1) {
 						?>
 
 						<?php
-						} else if ($event_data['event_type'] == "OPTIONAL") {
+						} else if ($eventType == 2) {
 						?>
 
 							<div class="action">

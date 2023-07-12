@@ -132,7 +132,7 @@ public function systemLogo(){
       $_SESSION['status'] = "Email or Password is incorrect.";
       $_SESSION['status_code'] = "error";
       $_SESSION['status_timer'] = 1000000;
-      header("Location: ../../../");
+      header("Location: ../../../private/sub-admin/");
       exit;
      }
     }
@@ -142,7 +142,7 @@ public function systemLogo(){
       $_SESSION['status'] = "Entered email is not verify, please go to your email and verify it. Thank you !";
       $_SESSION['status_code'] = "error";
       $_SESSION['status_timer'] = 10000000;
-     header("Location: ../../../");
+     header("Location: ../../../private/sub-admin/");
      exit;
     } 
    }
@@ -152,7 +152,7 @@ public function systemLogo(){
     $_SESSION['status'] = "No account found or your account has been remove!";
     $_SESSION['status_code'] = "error";
     $_SESSION['status_timer'] = 10000000;
-   header("Location: ../../../");
+   header("Location: ../../../private/sub-admin/");
     exit;
    }  
   }

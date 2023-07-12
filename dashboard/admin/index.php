@@ -34,6 +34,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
@@ -227,42 +233,6 @@ include_once 'header.php';
 								";
 							?>
 						<p>Course Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bx-calendar'></i>
-					<span class="text">
-					<?php
-								$pdoQuery = "SELECT * FROM 	events WHERE event_type = :event_type";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute(array(":event_type" => "MANDATORY"));
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Mandatory Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bx-calendar'></i>
-					<span class="text">
-					<?php
-								$pdoQuery = "SELECT * FROM 	events WHERE event_type = :event_type";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute(array(":event_type" => "OPTIONAL"));
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Optional Events</p>
 					</span>
 				</li>
 			</ul>

@@ -71,7 +71,7 @@ class AccessTokenMandatory
             $_SESSION['status_timer'] = 100000;
         }
 
-        header('Location: ../course-events');
+        header('Location: ../course-events-list');
         exit();
 
         return $accessTokens;
@@ -151,6 +151,7 @@ class AccessTokenMandatory
                     <tr>
                         <th>No.</th>
                         <th>Access Tokens</th>
+                        <th>Event Type</th>
                         <th>Date Printed</th>
                     </tr>
                 </thead>
@@ -163,6 +164,7 @@ class AccessTokenMandatory
                     <tr>
                         <td>' . $number . '</td>
                         <td>' . $token['token'] . '</td>
+                        <td>MANDATORY</td>
                         <td>' . $datePrinted . '</td>
                     </tr>';
                 $number++;
@@ -227,7 +229,7 @@ class AccessTokenMandatory
                 $_SESSION['status'] = 'Something went wrong, please try again!';
                 $_SESSION['status_code'] = 'error';
                 $_SESSION['status_timer'] = 100000;
-                header('Location: ../course-events');
+                header('Location: ../course-events-list');
                 exit();
             }
         } else {
@@ -235,7 +237,7 @@ class AccessTokenMandatory
             $_SESSION['status'] = 'Access token are printed already, try to generate again thank you!';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
-            header('Location: ../course-events');
+            header('Location: ../course-events-list');
             exit();
         }
     }
@@ -288,6 +290,8 @@ if (isset($_GET['print_access_tokens-mandatory'])) {
     $print_access_token->generateAccessTokensPDFMandatory($course_id, $year_level_id);
 }
 
+
+//OPTIONAL
 class AccessTokenOptional
 {
     private $conn;
@@ -425,6 +429,7 @@ class AccessTokenOptional
                     <tr>
                         <th>No.</th>
                         <th>Access Tokens</th>
+                        <th>Event Type</th>
                         <th>Date Printed</th>
                     </tr>
                 </thead>
@@ -437,6 +442,7 @@ class AccessTokenOptional
                     <tr>
                         <td>' . $number . '</td>
                         <td>' . $token['token'] . '</td>
+                        <td>OPTIONAL</td>
                         <td>' . $datePrinted . '</td>
                     </tr>';
                 $number++;

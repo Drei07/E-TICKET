@@ -240,6 +240,26 @@ $('.view').on('click', function (e) {
 		});
 })
 
+//remove
+$('.remove').on('click', function (e) {
+	e.preventDefault();
+	const href = $(this).attr('href')
+
+	swal({
+		title: "Remove?",
+		text: "Do you want to remove this event?",
+		icon: "info",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((willDelete) => {
+			if (willDelete) {
+				document.location.href = href;
+			}
+		});
+})
+
+
 
 //Back Profile
 $('.back').on('click', function (e) {

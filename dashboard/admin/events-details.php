@@ -51,6 +51,18 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 				</a>
 			</li>
 			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
@@ -130,11 +142,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="events">Course Events</a>
-						</li>
-						<li>|</li>
-						<li>
-							<a class="active" href="course-events">Events</a>
+							<a class="active" href="events">Events</a>
 						</li>
                         <li>|</li>
                         <li>
@@ -257,18 +265,6 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 												<textarea value="<?php echo $event_data['event_rules']?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" autocomplete="off" name="event_rules" id="event_rules" rows="4" cols="40"><?php echo $event_data['event_rules']?></textarea>
 												<div class="invalid-feedback">
 													Please provide a Event Rules.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="event_type" class="form-label">Event Type<span> *</span></label>
-												<select class="form-select form-control"  name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
-													<option selected value="<?php echo $event_data['event_type']?>"><?php echo $event_data['event_type']?></option>
-													<option value="1">MANDATORY</option>
-													<option value="2 ">OPTIONAL</option>
-												</select>
-												<div class="invalid-feedback">
-													Please select a valid Event Type.
 												</div>
 											</div>
 
