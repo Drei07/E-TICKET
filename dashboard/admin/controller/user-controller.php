@@ -110,7 +110,7 @@ class sub_adminRegistration {
                         Email:<br />$email <br />
                         Password:<br />$hash_password
                         <p>To complete your account registration, please click the button below to verify your email address:</p>
-                        <p><a class='button' href='$this->main_url/verify-account?id=$id&code=$tokencode'>Verify Email</a></p>
+                        <p><a class='button' href='$this->main_url/private/sub-admin/verify-account?id=$id&code=$tokencode'>Verify Email</a></p>
                         <p>If you did not sign up for an account, you can safely ignore this email.</p>
                         <p>Thank you!</p>
                     </div>
