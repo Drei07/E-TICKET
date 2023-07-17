@@ -5,6 +5,10 @@ require_once __DIR__ . '/../../database/dbconfig2.php';
 // // instances of the classes
 // $config = new SystemConfig();
 
+// Access token
+$access_token = $_SESSION['token'];
+$access_token_data = fetchAccessTokenData($pdoConnect, $access_token);
+
 function fetchAccessTokenData($pdoConnect, $access_token)
 {
     $pdoQuery = "SELECT * FROM access_token WHERE token = :token";
@@ -13,6 +17,40 @@ function fetchAccessTokenData($pdoConnect, $access_token)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Course event data
+$courseId = $access_token_data['course_id'];
+$yearLevelId = $access_token_data['year_level_id'];
+$eventsId = $access_token_data['event_id'];
+
+if ($courseId == NULL || $yearLevelId == NULL) {
+    // Event data
+    $events_data = fetchEventData($pdoConnect, $eventsId);
+} else {
+    $course_event_data = fetchCourseEventData($pdoConnect, $courseId, $yearLevelId);
+
+    // Course data
+    $course_id = $course_event_data["course_id"];
+    $course_data = fetchCourseData($pdoConnect, $course_id);
+
+    // Department data
+    $department_id = $course_data['department_id'];
+    $department_data = fetchDepartmentData($pdoConnect, $department_id);
+
+    // Year level data
+    $year_level_id = $course_event_data['year_level_id'];
+    $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
+}
+
+// Fetch event data
+function fetchEventData($pdoConnect, $eventsId)
+{
+    $pdoQuery = "SELECT * FROM events WHERE id = :id";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    $pdoResult->execute(array(":id" => $eventsId));
+    return $pdoResult->fetch(PDO::FETCH_ASSOC);
+}
+
+// Fetch course event data
 function fetchCourseEventData($pdoConnect, $course_id, $year_level_id)
 {
     $pdoQuery = "SELECT * FROM course_event WHERE course_id = :course_id AND year_level_id = :year_level_id";
@@ -21,6 +59,7 @@ function fetchCourseEventData($pdoConnect, $course_id, $year_level_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch course data
 function fetchCourseData($pdoConnect, $course_id)
 {
     $pdoQuery = "SELECT * FROM course WHERE id = :id";
@@ -29,6 +68,7 @@ function fetchCourseData($pdoConnect, $course_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch department data
 function fetchDepartmentData($pdoConnect, $department_id)
 {
     $pdoQuery = "SELECT * FROM department WHERE id = :id";
@@ -37,6 +77,7 @@ function fetchDepartmentData($pdoConnect, $department_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch year level data
 function fetchYearLevelData($pdoConnect, $year_level_id)
 {
     $pdoQuery = "SELECT * FROM year_level WHERE id = :id";
@@ -44,28 +85,10 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
     $pdoResult->execute(array(":id" => $year_level_id));
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
-
-$access_token = $_SESSION['token'];
-$access_token_data = fetchAccessTokenData($pdoConnect, $access_token);
-
-$courseId = $access_token_data['course_id'];
-$yearLevelId = $access_token_data['year_level_id'];
-
-$course_event_data = fetchCourseEventData($pdoConnect, $courseId, $yearLevelId);
-
-$course_id = $course_event_data["course_id"];
-$course_data = fetchCourseData($pdoConnect, $course_id);
-
-$department_id = $course_data['department_id'];
-$department_data = fetchDepartmentData($pdoConnect, $department_id);
-
-$year_level_id = $course_event_data['year_level_id'];
-$year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
-
-
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='UTF-8'>
     <title>Event Ticket</title>
@@ -84,27 +107,43 @@ $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
             font-size: 30px;
             font-weight: 700;
         }
+
         .ticket h2 {
             font-size: 20px;
             font-weight: 500;
         }
+
         .ticket h3 {
             font-size: 9px;
             font-weight: 400;
         }
+
         .ticket p {
             font-size: 7px;
             font-weight: 300;
         }
-
     </style>
 </head>
+
 <body>
     <div class="ticket">
         <h1>E-CKET</h1>
-        <h2><?php echo $department_data['department'] ?></h2>
-        <h3><?php echo $course_data['course']; ?></h3>
-        <p><?php echo $year_level_data['year_level']; ?> (Mandatory Events)</p>
+        <?php
+        if ($courseId == NULL || $yearLevelId == NULL) {
+        ?>
+            <h2><?php echo $events_data['event_name'] ?></h2>
+            <h3><?php echo $events_data['event_venue']; ?></h3>
+            <p><?php echo date('m/d/y', strtotime($events_data['event_date'])); ?> (Optional Events)</p>
+        <?php
+        } else {
+        ?>
+            <h2><?php echo $department_data['department'] ?></h2>
+            <h3><?php echo $course_data['course']; ?></h3>
+            <p><?php echo $year_level_data['year_level']; ?> (Mandatory Events)</p>
+        <?php
+        }
+        ?>
     </div>
 </body>
+
 </html>

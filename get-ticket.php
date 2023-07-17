@@ -10,6 +10,9 @@ if ($_SESSION['token'] === NULL) {
     header('Location: ./');
     exit;
 }
+// Access token
+$access_token = $_SESSION['token'];
+$access_token_data = fetchAccessTokenData($pdoConnect, $access_token);
 
 function fetchAccessTokenData($pdoConnect, $access_token)
 {
@@ -19,6 +22,40 @@ function fetchAccessTokenData($pdoConnect, $access_token)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Course event data
+$courseId = $access_token_data['course_id'];
+$yearLevelId = $access_token_data['year_level_id'];
+$eventsId = $access_token_data['event_id'];
+
+if ($courseId == NULL || $yearLevelId == NULL) {
+    // Event data
+    $events_data = fetchEventData($pdoConnect, $eventsId);
+} else {
+    $course_event_data = fetchCourseEventData($pdoConnect, $courseId, $yearLevelId);
+
+    // Course data
+    $course_id = $course_event_data["course_id"];
+    $course_data = fetchCourseData($pdoConnect, $course_id);
+
+    // Department data
+    $department_id = $course_data['department_id'];
+    $department_data = fetchDepartmentData($pdoConnect, $department_id);
+
+    // Year level data
+    $year_level_id = $course_event_data['year_level_id'];
+    $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
+}
+
+// Fetch event data
+function fetchEventData($pdoConnect, $eventsId)
+{
+    $pdoQuery = "SELECT * FROM events WHERE id = :id";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    $pdoResult->execute(array(":id" => $eventsId));
+    return $pdoResult->fetch(PDO::FETCH_ASSOC);
+}
+
+// Fetch course event data
 function fetchCourseEventData($pdoConnect, $course_id, $year_level_id)
 {
     $pdoQuery = "SELECT * FROM course_event WHERE course_id = :course_id AND year_level_id = :year_level_id";
@@ -27,6 +64,7 @@ function fetchCourseEventData($pdoConnect, $course_id, $year_level_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch course data
 function fetchCourseData($pdoConnect, $course_id)
 {
     $pdoQuery = "SELECT * FROM course WHERE id = :id";
@@ -35,6 +73,7 @@ function fetchCourseData($pdoConnect, $course_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch department data
 function fetchDepartmentData($pdoConnect, $department_id)
 {
     $pdoQuery = "SELECT * FROM department WHERE id = :id";
@@ -43,6 +82,7 @@ function fetchDepartmentData($pdoConnect, $department_id)
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fetch year level data
 function fetchYearLevelData($pdoConnect, $year_level_id)
 {
     $pdoQuery = "SELECT * FROM year_level WHERE id = :id";
@@ -50,24 +90,6 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
     $pdoResult->execute(array(":id" => $year_level_id));
     return $pdoResult->fetch(PDO::FETCH_ASSOC);
 }
-
-$access_token = $_SESSION['token'];
-$access_token_data = fetchAccessTokenData($pdoConnect, $access_token);
-
-$courseId = $access_token_data['course_id'];
-$yearLevelId = $access_token_data['year_level_id'];
-
-$course_event_data = fetchCourseEventData($pdoConnect, $courseId, $yearLevelId);
-
-$course_id = $course_event_data["course_id"];
-$course_data = fetchCourseData($pdoConnect, $course_id);
-
-$department_id = $course_data['department_id'];
-$department_data = fetchDepartmentData($pdoConnect, $department_id);
-
-$year_level_id = $course_event_data['year_level_id'];
-$year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
-
 
 ?>
 <!DOCTYPE html>
@@ -90,47 +112,87 @@ $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
     <section class="event" id="cov">
 
         <div class="heading">
-            <h1><?php echo $department_data['department'] ?></h1>
-            <h2><?php echo $course_data['course']; ?></h2>
-            <p><?php echo $year_level_data['year_level']; ?> (Mandatory Events)</p>
-        </div>
-
-        <div class="column" id="column1">
             <?php
-            $pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
-            $pdoResult5 = $pdoConnect->prepare($pdoQuery);
-            $pdoResult5->execute(array(
-                ":course_id"         => $courseId,
-                ":year_level_id"     => $yearLevelId,
-                ":event_type"        => 1,
-                ":status"            => "active"
-            ));
-            if ($pdoResult5->rowCount() >= 1) {
-                while ($event_per_course_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
-                    extract($event_per_course_data);
-
-                    $event_id = $event_per_course_data['event_id'];
-                    $eventIds[] = $event_id; // Add the event ID to the array
-
-                    $pdoQuery = "SELECT * FROM events WHERE id = :id";
-                    $pdoResult2 = $pdoConnect->prepare($pdoQuery);
-                    $pdoExec = $pdoResult2->execute(array(":id" => $event_id));
-                    $event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
-
+            if ($courseId == NULL || $yearLevelId == NULL) {
             ?>
-
-                    <div class="image">
-                        <img src="src/img/<?php echo $event_data['event_poster'] ?>" alt="event">
-                        <h4><?php echo $event_data['event_name'] ?></h4>
-                        <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-                        <button type="button" class="more btn-warning">More Info</button>
-                    </div>
-
+                <h1><?php echo $events_data['event_name'] ?></h1>
+                <h2><?php echo $events_data['event_venue']; ?></h2>
+                <p><?php echo date('m/d/y', strtotime($events_data['event_date'])); ?> (Optional Events)</p>
             <?php
-                }
+            } else {
+            ?>
+                <h1><?php echo $department_data['department'] ?></h1>
+                <h2><?php echo $course_data['course']; ?></h2>
+                <p><?php echo $year_level_data['year_level']; ?> (Mandatory Events)</p>
+            <?php
             }
             ?>
         </div>
+        <?php
+        if ($courseId == NULL || $yearLevelId == NULL) {
+        ?>
+            <div class="column" id="column1">
+                <?php
+                $pdoQuery = "SELECT * FROM events WHERE status = :status AND id = :id";
+                $pdoResult5 = $pdoConnect->prepare($pdoQuery);
+                $pdoResult5->execute(array(
+                    ":id"         => $eventsId,
+                    ":status"     => "active"
+                ));
+                $event_data = $pdoResult5->fetch(PDO::FETCH_ASSOC);
+                ?>
+
+                <div class="image">
+                    <img src="src/img/<?php echo $event_data['event_poster'] ?>" alt="event">
+                    <h4><?php echo $event_data['event_name'] ?></h4>
+                    <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+                    <button type="button" class="more btn-warning">More Info</button>
+                </div>
+
+            </div>
+
+        <?php
+        } else {
+        ?>
+            <div class="column" id="column1">
+                <?php
+                $pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
+                $pdoResult5 = $pdoConnect->prepare($pdoQuery);
+                $pdoResult5->execute(array(
+                    ":course_id"         => $courseId,
+                    ":year_level_id"     => $yearLevelId,
+                    ":event_type"        => 1,
+                    ":status"            => "active"
+                ));
+                if ($pdoResult5->rowCount() >= 1) {
+                    while ($event_per_course_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
+                        extract($event_per_course_data);
+
+                        $event_id = $event_per_course_data['event_id'];
+                        $eventIds[] = $event_id; // Add the event ID to the array
+
+                        $pdoQuery = "SELECT * FROM events WHERE status = :status AND id = :id";
+                        $pdoResult2 = $pdoConnect->prepare($pdoQuery);
+                        $pdoExec = $pdoResult2->execute(array(":id" => $event_id, ":status"     => "active"));
+                        $event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
+
+                ?>
+
+                        <div class="image">
+                            <img src="src/img/<?php echo $event_data['event_poster'] ?>" alt="event">
+                            <h4><?php echo $event_data['event_name'] ?></h4>
+                            <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+                            <button type="button" class="more btn-warning">More Info</button>
+                        </div>
+
+                <?php
+                    }
+                }
+                ?>
+            </div>
+        <?php
+        }
+        ?>
         <div class="get-ticket">
             <button type="submit" class="btn-dark" data-bs-toggle="modal" data-bs-target="#pre-registration">Get Ticket</button>
             <button type="submit" class="btn-danger"><a href="./" class="cancel">Cancel</a></button>
@@ -150,6 +212,50 @@ $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
                         <div class="form-alert">
                             <span id="message"></span>
                         </div>
+                        <?php
+                        if ($courseId == NULL || $yearLevelId == NULL) {
+                        ?>
+                        <form action="dashboard/student/controller/student-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+                            <div class="row gx-5 needs-validation">
+                                <!-- course id-->
+                                <input type="hidden" name="event_id" value="<?php echo $eventsId ?>">
+                                <div class="col-md-6">
+                                    <label for="first_name" class="form-label">First Name <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></label>
+                                    <input type="text" value="<?php echo $_SESSION['first_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" name="first_name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" id="first_name" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a First Name.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="middle_name" class="form-label">Middle Name</label>
+                                    <input type="text" value="<?php echo $_SESSION['middle_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="middle_name" id="middle_name">
+                                    <div class="invalid-feedback">
+                                        Please provide a Middle Name.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="last_name" class="form-label">Last Name <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></label>
+                                    <input type="text" value="<?php echo $_SESSION['last_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="last_name" id="last_name" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a Last Name.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone_number" class="form-label">Phone No. <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></span></label>
+                                    <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping">+63</span>
+                                        <input type="text" value="<?php echo $_SESSION['phone_number'] ?>" class="form-control numbers" inputmode="numeric" autocapitalize="off" autocomplete="off" name="phone_number" id="phone_number" minlength="10" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required placeholder="eg. 9776621929">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="primary" name="btn-get-ticket-optional" id="btn-get-ticket" onclick="return IsEmpty(); sexEmpty();">Get Ticket</button>
+                            </div>
+                        </form>
+                        <?php
+                        } else {
+                        ?>
                         <form action="dashboard/student/controller/student-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
                             <div class="row gx-5 needs-validation">
                                 <!-- event id -->
@@ -159,9 +265,9 @@ $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
                                 }
                                 ?>
                                 <!-- course id-->
-                                <input type="hidden" name="course_id" value="<?php echo $courseId?>">
+                                <input type="hidden" name="course_id" value="<?php echo $courseId ?>">
                                 <!-- year level id-->
-                                <input type="hidden" name="year_level_id" value="<?php echo $yearLevelId?>">
+                                <input type="hidden" name="year_level_id" value="<?php echo $yearLevelId ?>">
 
                                 <div class="col-md-6">
                                     <label for="first_name" class="form-label">First Name <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></label>
@@ -194,9 +300,12 @@ $year_level_data = fetchYearLevelData($pdoConnect, $year_level_id);
                             </div>
 
                             <div class="modal-footer">
-                                <button type="submit" class="primary" name="btn-get-ticket" id="btn-get-ticket" onclick="return IsEmpty(); sexEmpty();">Get Ticket</button>
+                                <button type="submit" class="primary" name="btn-get-ticket-mandatory" id="btn-get-ticket" onclick="return IsEmpty(); sexEmpty();">Get Ticket</button>
                             </div>
                         </form>
+                        <?php
+                        }
+                        ?>
 
                     </div>
                 </div>
