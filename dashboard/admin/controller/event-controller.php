@@ -128,7 +128,6 @@ class Event
         exit();
     }
 
-    //delete course
     public function deleteEvent($event_id)
     {
         $disabled = "disabled";
@@ -137,23 +136,37 @@ class Event
             ":id"        => $event_id,
             ":status"   => $disabled,
         ));
-
+    
         if ($exec) {
-            $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Events successfully deleted!';
-            $_SESSION['status_code'] = 'success';
-            $_SESSION['status_timer'] = 40000;
+            // Disable related event_per_course entries
+            $stmt = $this->runQuery('UPDATE event_per_course SET event_status=:event_status WHERE event_id=:event_id');
+            $exec = $stmt->execute(array(
+                ":event_id"        => $event_id,
+                ":event_status"   => $disabled,
+            ));
+    
+            if ($exec) {
+                $_SESSION['status_title'] = 'Success!';
+                $_SESSION['status'] = 'Events successfully deleted!';
+                $_SESSION['status_code'] = 'success';
+                $_SESSION['status_timer'] = 40000;
+            } else {
+                $_SESSION['status_title'] = 'Oops!';
+                $_SESSION['status'] = 'Something went wrong, please try again!';
+                $_SESSION['status_code'] = 'error';
+                $_SESSION['status_timer'] = 100000;
+            }
         } else {
             $_SESSION['status_title'] = 'Oops!';
             $_SESSION['status'] = 'Something went wrong, please try again!';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../events');
         exit();
     }
-
+    
 
     //activate event
     public function activateEvent($event_id)
@@ -164,21 +177,35 @@ class Event
             ":id"        => $event_id,
             ":status"   => $active,
         ));
-
-
+    
         if ($exec) {
-            $_SESSION['status_title'] = 'Success!';
-            $_SESSION['status'] = 'Events successfully activated!';
-            $_SESSION['status_code'] = 'success';
-            $_SESSION['status_timer'] = 40000;
+            // Disable related event_per_course entries
+            $stmt = $this->runQuery('UPDATE event_per_course SET event_status=:event_status WHERE event_id=:event_id');
+            $exec = $stmt->execute(array(
+                ":event_id"        => $event_id,
+                ":event_status"   => $active,
+            ));
+    
+            if ($exec) {
+                $_SESSION['status_title'] = 'Success!';
+                $_SESSION['status'] = 'Events successfully activated!';
+                $_SESSION['status_code'] = 'success';
+                $_SESSION['status_timer'] = 40000;
+            } else {
+                $_SESSION['status_title'] = 'Oops!';
+                $_SESSION['status'] = 'Something went wrong, please try again!';
+                $_SESSION['status_code'] = 'error';
+                $_SESSION['status_timer'] = 100000;
+            }
         } else {
             $_SESSION['status_title'] = 'Oops!';
             $_SESSION['status'] = 'Something went wrong, please try again!';
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../events');
+        exit();
     }
 
 
@@ -318,6 +345,33 @@ class CourseEvent
         exit();
     }
 
+        //Activate Event Per Course
+        public function activateEventPerCourse($event_per_course)
+        {
+            $active = "active";
+            $stmt = $this->runQuery('UPDATE event_per_course SET status=:status WHERE id=:id');
+            $exec = $stmt->execute(array(
+                ":id"        => $event_per_course,
+                ":status"   => $active,
+            ));
+    
+            if ($exec) {
+                $_SESSION['status_title'] = 'Success!';
+                $_SESSION['status'] = 'Events successfully activated!';
+                $_SESSION['status_code'] = 'success';
+                $_SESSION['status_timer'] = 40000;
+            } else {
+                $_SESSION['status_title'] = 'Oops!';
+                $_SESSION['status'] = 'Something went wrong, please try again!';
+                $_SESSION['status_code'] = 'error';
+                $_SESSION['status_timer'] = 100000;
+            }
+    
+            header('Location: ../course-events-list');
+            exit();
+        }
+    
+
 
 
     public function runQuery($sql)
@@ -343,4 +397,12 @@ if (isset($_GET['delete_event_per_course'])) {
 
     $delete_event_per_course = new CourseEvent();
     $delete_event_per_course->deleteEventPerCourse($event_per_course);
+}
+
+//activate
+if (isset($_GET['activate_event_per_course'])) {
+    $event_per_course = $_GET["id"];
+
+    $activate_event_per_course = new CourseEvent();
+    $activate_event_per_course->activateEventPerCourse($event_per_course);
 }
