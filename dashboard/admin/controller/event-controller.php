@@ -31,6 +31,48 @@ class Event
         ));
 
         if ($exec && move_uploaded_file($_FILES['event_poster']['tmp_name'], $folder)) {
+            $lastInsertedId = $this->conn->lastInsertId();
+
+            // Generate access key
+            function generateAccessKey()
+            {
+                // Generate a unique access key using any desired method or algorithm
+                // Example: Generate a random string
+                $length = 10;
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $accessKey = '';
+                for ($i = 0; $i < $length; $i++) {
+                    $accessKey .= $characters[rand(0, strlen($characters) - 1)];
+                }
+                return $accessKey;
+            }
+
+            // Check if access key already exists
+            function isAccessKeyExists($accessKey)
+            {
+                $database = new Database();
+                $db = $database->dbConnection();
+                $stmt = $db->prepare('SELECT COUNT(*) FROM event_access_key WHERE access_key = :access_key');
+                $stmt->execute(array(":access_key" => $accessKey));
+                $count = $stmt->fetchColumn();
+                return ($count > 0);
+            }
+
+            // Generate unique access key
+            $accessKey = generateAccessKey();
+
+            // Check if access key already exists
+            while (isAccessKeyExists($accessKey)) {
+                $accessKey = generateAccessKey();
+            }
+
+            // Insert into event_access_key table
+            $accessKeyStmt = $this->runQuery('INSERT INTO event_access_key (event_id, access_key) VALUES (:event_id, :access_key)');
+            $accessKeyStmt->execute(array(
+                ":event_id" => $lastInsertedId,
+                ":access_key" => $accessKey,
+            ));
+
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Event added successfully';
             $_SESSION['status_code'] = 'success';
@@ -44,7 +86,6 @@ class Event
 
         header("Location: ../events");
     }
-
     // EDIT
     public function editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_poster, $event_price)
     {
@@ -136,7 +177,7 @@ class Event
             ":id"        => $event_id,
             ":status"   => $disabled,
         ));
-    
+
         if ($exec) {
             // Disable related event_per_course entries
             $stmt = $this->runQuery('UPDATE event_per_course SET event_status=:event_status WHERE event_id=:event_id');
@@ -144,7 +185,7 @@ class Event
                 ":event_id"        => $event_id,
                 ":event_status"   => $disabled,
             ));
-    
+
             if ($exec) {
                 $_SESSION['status_title'] = 'Success!';
                 $_SESSION['status'] = 'Events successfully deleted!';
@@ -162,11 +203,11 @@ class Event
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-    
+
         header('Location: ../events');
         exit();
     }
-    
+
 
     //activate event
     public function activateEvent($event_id)
@@ -177,7 +218,7 @@ class Event
             ":id"        => $event_id,
             ":status"   => $active,
         ));
-    
+
         if ($exec) {
             // Disable related event_per_course entries
             $stmt = $this->runQuery('UPDATE event_per_course SET event_status=:event_status WHERE event_id=:event_id');
@@ -185,7 +226,7 @@ class Event
                 ":event_id"        => $event_id,
                 ":event_status"   => $active,
             ));
-    
+
             if ($exec) {
                 $_SESSION['status_title'] = 'Success!';
                 $_SESSION['status'] = 'Events successfully activated!';
@@ -203,8 +244,58 @@ class Event
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-    
+
         header('Location: ../events');
+        exit();
+    }
+
+    //deactivate event access key
+    public function deactivateAccessKey($access_key_id)
+    {
+        $disabled = "disabled";
+        $stmt = $this->runQuery('UPDATE event_access_key SET status=:status WHERE id=:id');
+        $exec = $stmt->execute(array(
+            ":id"        => $access_key_id,
+            ":status"   => $disabled,
+        ));
+
+        if ($exec) {
+            $_SESSION['status_title'] = 'Success!';
+            $_SESSION['status'] = 'Access key successfully disabled!';
+            $_SESSION['status_code'] = 'success';
+            $_SESSION['status_timer'] = 40000;
+        } else {
+            $_SESSION['status_title'] = 'Oops!';
+            $_SESSION['status'] = 'Something went wrong, please try again!';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+        }
+        header('Location: ../events-details');
+        exit();
+    }
+
+    //activate event access key
+    public function activateAccessKey($access_key_id)
+    {
+        $active = "active";
+        $stmt = $this->runQuery('UPDATE event_access_key SET status=:status WHERE id=:id');
+        $exec = $stmt->execute(array(
+            ":id"        => $access_key_id,
+            ":status"   => $active,
+        ));
+
+        if ($exec) {
+            $_SESSION['status_title'] = 'Success!';
+            $_SESSION['status'] = 'Access key successfully activate!';
+            $_SESSION['status_code'] = 'success';
+            $_SESSION['status_timer'] = 40000;
+        } else {
+            $_SESSION['status_title'] = 'Oops!';
+            $_SESSION['status'] = 'Something went wrong, please try again!';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+        }
+        header('Location: ../events-details');
         exit();
     }
 
@@ -264,6 +355,23 @@ if (isset($_GET['activate_event'])) {
     $activate_event = new Event();
     $activate_event->activateEvent($event_id);
 }
+
+//deactivate event access key
+if (isset($_POST['btn_deactivate_access_key'])) {
+    $access_key_id = $_GET["access_key_id"];
+
+    $deactivate_access_key = new Event();
+    $deactivate_access_key->deactivateAccessKey($access_key_id);
+}
+
+//acticate event access key
+if (isset($_POST['btn_activate_access_key'])) {
+    $access_key_id = $_GET["access_key_id"];
+
+    $activate_access_key = new Event();
+    $activate_access_key->activateAccessKey($access_key_id);
+}
+
 
 
 class CourseEvent
@@ -345,32 +453,32 @@ class CourseEvent
         exit();
     }
 
-        //Activate Event Per Course
-        public function activateEventPerCourse($event_per_course)
-        {
-            $active = "active";
-            $stmt = $this->runQuery('UPDATE event_per_course SET status=:status WHERE id=:id');
-            $exec = $stmt->execute(array(
-                ":id"        => $event_per_course,
-                ":status"   => $active,
-            ));
-    
-            if ($exec) {
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'Events successfully activated!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
-            } else {
-                $_SESSION['status_title'] = 'Oops!';
-                $_SESSION['status'] = 'Something went wrong, please try again!';
-                $_SESSION['status_code'] = 'error';
-                $_SESSION['status_timer'] = 100000;
-            }
-    
-            header('Location: ../course-events-list');
-            exit();
+    //Activate Event Per Course
+    public function activateEventPerCourse($event_per_course)
+    {
+        $active = "active";
+        $stmt = $this->runQuery('UPDATE event_per_course SET status=:status WHERE id=:id');
+        $exec = $stmt->execute(array(
+            ":id"        => $event_per_course,
+            ":status"   => $active,
+        ));
+
+        if ($exec) {
+            $_SESSION['status_title'] = 'Success!';
+            $_SESSION['status'] = 'Events successfully activated!';
+            $_SESSION['status_code'] = 'success';
+            $_SESSION['status_timer'] = 40000;
+        } else {
+            $_SESSION['status_title'] = 'Oops!';
+            $_SESSION['status'] = 'Something went wrong, please try again!';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
         }
-    
+
+        header('Location: ../course-events-list');
+        exit();
+    }
+
 
 
 

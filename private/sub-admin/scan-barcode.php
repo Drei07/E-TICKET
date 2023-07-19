@@ -1,9 +1,9 @@
 <?php
 include_once __DIR__. '/../../src/api/api.php';
-include_once '../../dashboard/user/authentication/user-signin.php';
 include_once '../../configuration/settings-configuration.php';
 
 $config = new SystemConfig();
+$main_url = new MainUrl();
 
 ?>
 <!DOCTYPE html>
@@ -14,55 +14,44 @@ $config = new SystemConfig();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="../../src/img/<?php echo $config->getSystemLogo() ?>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $config->getSKey() ?>"></script>
     <link rel="stylesheet" href="../../src/css/signin.css?v=<?php echo time(); ?>">
-    <title>Sign In</title>
+    <title>Scan Barcode</title>
 </head>
 <body class="my-login-page">
 	<section class="h-100">
 		<div class="container h-100">
-			<div class="row justify-content-md-center h-100">
+			<div class="row justify-content-md-center align-items-center h-100">
 				<div class="card-wrapper">
 					<div class="brand">
 						<img src="../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
 					</div>
 					<div class="card fat">
 						<div class="card-body">
-							<h4 class="card-title">Sign In</h4>
-							<form action="../../dashboard/user/authentication/user-signin.php" method="POST" class="my-login-validation" novalidate="">
-							<input type="hidden" id="g-token" name="g-token">
-								<div class="form-group">
-									<label for="email">E-mail</label>
-									<input id="email" type="email" class="form-control" name="email" required autofocus>
-									<div class="invalid-feedback">
-										E-mail is invalid!
-									</div>
-								</div>
-
-								<div class="form-group">
+							<h4 class="card-title">Enter Password</h4>
+                            <a href="./" class="close"><img src="../../src/img/caret-right-fill.svg" alt="close-btn" width="24" height="24"></a>
+							<form action="../../dashboard/user/controller/barcode-scanner-controller.php" method="POST" class="my-login-validation" novalidate="">
+                                <div class="form-group">
 									<label for="password">Password
-										<a href="forgot-password" class="float-right">
-											Forgot Password?
-										</a>
 									</label>
 									<input id="password" type="password" autocomplete="off" class="form-control" name="password" required data-eye>
 								    <div class="invalid-feedback">
 								    	Password is required!
 							    	</div>
+                                    <div class="form-text text-muted">
+                                    Kindly provide the password to gain access to the event's barcode scanner. This password is essential for scanning the barcode.
+                                    </div>
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit"  id="submit" class="btn btn-dark btn-block" name="btn-signin">
+									<button type="submit" name="btn-signin" class="btn btn-dark btn-block">
 										Sign In
 									</button>
 								</div>
-								<div class="scan">
-									<a href="scan-barcode">Scan Barcode?</a>
-								</div>
+
 							</form>
 						</div>
 					</div>
-					<footer><?php echo $config->getSystemCopyright() ?></footer>
+						<footer><?php echo $config->getSystemCopyright() ?></footer>
 				</div>
 			</div>
 		</div>
@@ -73,16 +62,7 @@ $config = new SystemConfig();
 	<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="../../src/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../src/js/signin.js"></script>
-	<script>
 
-		// CAPTCHA
-			grecaptcha.ready(function() {
-			grecaptcha.execute('<?php echo $config->getSKey() ?>', {action: 'submit'}).then(function(token) {
-				document.getElementById("g-token").value = token;
-			});
-			});
-
-	</script>
 
 	<!-- SWEET ALERT -->
 	<?php

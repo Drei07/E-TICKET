@@ -32,7 +32,7 @@ $config = new SystemConfig();
         <nav class="navbar">
             <a href="" id="navbar">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="events" id="navbar">Events</a></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="" data-bs-toggle="modal" data-bs-target="#pre-registration" id="navbar">About us</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="about-us" id="navbar">About us</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </nav>
     </header>
     <!-- Live queue Modal -->
@@ -163,7 +163,6 @@ $config = new SystemConfig();
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="" id="logo"><img src="src/img/E-CKET.png" alt="E-CKET" style="width: 100px;"></a>
-                        <p> Streamline Your Ticketing Experience</p>
                         <a href="" class="close" data-bs-dismiss="modal" aria-label="Close"><img src="src/img/caret-right-fill.svg" alt="close-btn" width="24" height="24"></a>
                     </div>
                     <div class="modal-body">
@@ -242,7 +241,18 @@ $config = new SystemConfig();
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="src/js/landing-page.js"></script>
     <script src="src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        //navbar----------------------------------------------------------------------------------------------------->
+        var navbar = document.querySelector('header')
 
+        window.onscroll = function() {
+            if (window.pageYOffset > 0) {
+                navbar.classList.add('header-active')
+            } else {
+                navbar.classList.remove('header-active')
+            }
+        };
+    </script>
     <?php
     if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
     ?>

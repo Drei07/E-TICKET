@@ -1,13 +1,3 @@
-//navbar----------------------------------------------------------------------------------------------------->
-var navbar = document.querySelector('header')
-
-window.onscroll = function() {
-    if (window.pageYOffset > 0) {
-        navbar.classList.add('header-active')
-    } else {
-        navbar.classList.remove('header-active')
-    }
-};
 
 $(document).ready(function() {
     $(window).scroll(function() {

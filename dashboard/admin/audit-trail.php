@@ -40,6 +40,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
 				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>

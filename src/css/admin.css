@@ -1692,7 +1692,7 @@ border-right-color: var(--main);
 }
 
 #content main .events-details li .details .action .btn {
-	padding: 10px 25px;
+	padding: 10px 10px;
 	width: 130px;
 	border: none;
 	border-radius: 7px;
@@ -1731,6 +1731,7 @@ border-right-color: var(--main);
 
 	}
 	#content main .events-details li .details {
+		padding: 10px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

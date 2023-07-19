@@ -1531,6 +1531,7 @@ footer .pre-registration p{
 
  footer .credit{
     display: flex;
+    text-align: center;
     justify-content: center;
     margin-top: 40rem;
     padding:2.5rem 1rem;
@@ -2015,3 +2016,127 @@ object{
 }
 
 
+
+.scanner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+}
+
+.scanner .image img{
+    width:40vw;
+    animation: float 7s linear infinite;
+}
+
+@keyframes float{
+    0%, 100%{
+        transform: translateY(0rem);
+    }
+    50%{
+        transform: translateY(-3.5rem);
+    }
+}
+
+.scanner .content #qr_reader__scan_region{
+    width: 100%; 
+    min-height: 100px; 
+    text-align: center; 
+    position: relative;
+}
+
+.scanner .content #qr_reader__scan_region video{
+    border-radius: 10px;
+    height: 350px;
+    width: 465px;
+    background-color:#000;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region{
+    position: absolute;
+    border-width: 100px 50px; 
+    border-style: solid; 
+    border-color: rgba(0, 0, 0, 0.702); 
+    box-sizing: border-box; 
+    inset: 0px;
+    height: 350px;
+    border-radius: 10px;
+}
+
+.scanner .content #sourceSelectPanel{
+    padding: 2rem 0;
+}
+
+.scanner .content #sourceSelectPanel #sourceSelect{
+    text-align: center;
+}
+
+.scanner .content #sourceSelectPanel #toggleButton{
+    width: 100%;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #top_left {
+    position: absolute; background-color: rgb(255, 255, 255); width: 40px; height: 5px; top: -5px; left: 0px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #top_right {
+    position: absolute; background-color: rgb(255, 255, 255); width: 40px; height: 5px; top: -5px; right: 0px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #bottom_left {
+    position: absolute; background-color: rgb(255, 255, 255); width: 40px; height: 5px; top: 150px; left: 0px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #bottom_right {
+    position: absolute; background-color: rgb(255, 255, 255); width: 40px; height: 5px; top: 150px; right: 0px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #top_left_vertical {
+    position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: -5px; left: -5px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #top_right_vertical {
+    position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 110px; left: -5px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #bottom_left_vertical {
+    position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: -5px; right: -5px;
+}
+
+.scanner .content #qr_reader__scan_region #qr_shaded_region #bottom_right_vertical {
+    position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 110px; right: -5px;
+}
+
+@media (max-width:780px){
+
+    .scanner{
+        text-align: center;
+        flex-flow: column-reverse;
+    }
+
+    .scanner .image img{
+        margin-bottom: -10rem;
+        margin-top: 6rem;
+        width:100%;
+    }
+
+    .scanner .content h3{
+        text-align: left;
+        font-size: 3.9rem;
+    }
+
+    .scanner .content p{
+        text-align: justify;
+        margin-right: auto;
+        font-size: 1.9rem;
+    }
+    .btn{
+      align-content: center;
+    }
+}
+
+@media (max-width:500px){
+    .scanner .content #qr_reader__scan_region video{
+        width: 100%;
+    }
+}
