@@ -1,6 +1,6 @@
 <?php
-require_once 'user-class.php';
-$user = new SUB_ADMIN();
+require_once 'admin-class.php';
+$user = new ADMIN();
 
 if(empty($_GET['id']) && empty($_GET['code']))
 {

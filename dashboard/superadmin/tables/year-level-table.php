@@ -11,7 +11,6 @@ if(!$user->isUserLoggedIn())
 }
 
 
-
 function get_total_row($pdoConnect)
 {
 
@@ -31,26 +30,26 @@ else
 }
 
 $query = "
-SELECT * FROM course
+SELECT * FROM year_level WHERE status = :status
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE course LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND year_level LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
-$query .= 'ORDER BY course ASC ';
+$query .= 'ORDER BY year_level ASC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute();
+$statement->execute(array(":status" => "active"));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute();
+$statement->execute(array(":status" => "active"));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
@@ -58,7 +57,7 @@ if($total_data > 0)
 $output = '
 
     <thead>
-    <th>COURSE NAME</th>
+    <th>YEAR LEVEL</th>
     <th>ACTION</th>
     </thead>
 ';
@@ -66,16 +65,18 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/course-controller?id=' . $row["id"] . '&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="controller/year-level-controller?id='.$row["id"].'&delete_year_level=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+    
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-primary V"><a href="controller/course-controller?id=' . $row["id"] . '&activate_course=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="controller/year-level-controller?id='.$row["id"].'&activate_year_level=1" class="activate">Activate</a></button>';
     }
 
     $output .= '
+    
     <tr>
-      <td>'.$row["course"].'</td>
+      <td>'.$row["year_level"].'</td>
       <td>
-      <button type="button" class="btn btn-success V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
       '.$button.'
       </td>        
     </tr>

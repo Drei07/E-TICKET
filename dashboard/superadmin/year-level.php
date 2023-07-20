@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Audit Trail</title>
+	<title>Year Level</title>
 </head>
 <body>
 
@@ -34,6 +34,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
 				<a href="admin">
                     <i class='bx bxs-user-account'></i>
 					<span class="text">Admin</span>
@@ -43,12 +49,6 @@ include_once 'header.php';
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-			<li>
-				<a href="course-events">
-					<i class='bx bxs-calendar'></i>
-					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -63,7 +63,7 @@ include_once 'header.php';
 					<span class="text">Course</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
@@ -77,7 +77,7 @@ include_once 'header.php';
 					<span class="text">Settings</span>
 				</a>
 			</li>
-			<li  class="active">
+			<li>
 				<a href="audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
@@ -119,38 +119,79 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Audit Trail</h1>
+					<h1>Year Level</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Audit Trail</a>
+							<a href="">Year Level</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
+		<div class="modal-button">
+			<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Year Level</button>
+			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxl-blogger'></i> Audit Trail</h3>
+						<h3><i class='bx bxs-graduation' ></i> List of Year Level</h3>
 					</div>
+						<button type="button" onclick="location.href='archives/year-level'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search year level . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
                         <div id="dynamic_content">
                         </div>
-
                     </section>
 				</div>
 			</div>
 		</main>
+
+				<!-- MODALS -->
+		<div class="class-modal">
+			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+					<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-graduation' ></i> Add Year Level</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<section class="data-form-modals">
+							<div class="registration">
+								<form action="controller/year-level-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+									<div class="row gx-5 needs-validation">
+
+                                        <div class="col-md-12">
+											<label for="year_level" class="form-label">Year Level<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="year_level" id="year_level" required>
+											<div class="invalid-feedback">
+											Please provide a Year Level.
+											</div>
+										</div>
+
+									</div>
+
+									<div class="addBtn">
+										<button type="submit" class="btn-dark" name="btn-add-year-level" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
+									</div>
+								</form>
+							</div>
+						</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MAIN -->
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
@@ -158,9 +199,10 @@ include_once 'header.php';
 	<?php
     include_once '../../configuration/footer.php';
     ?>
+
 	<script>
 
-//live search---------------------------------------------------------------------------------------//
+	//live search---------------------------------------------------------------------------------------//
 	$(document).ready(function(){
 
 	load_data(1);
@@ -168,7 +210,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/logs-table.php",
+		url:"tables/year-level-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)
@@ -192,7 +234,6 @@ include_once 'header.php';
 	});
 
 	</script>
-
 		<!-- SWEET ALERT -->
 		<?php
 

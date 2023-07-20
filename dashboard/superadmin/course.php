@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Audit Trail</title>
+	<title>Course</title>
 </head>
 <body>
 
@@ -29,8 +29,14 @@ include_once 'header.php';
 			</li>
 			<li>
 				<a href="events">
-					<i class='bx bxs-calendar' ></i>
+					<i class='bx bxs-calendar'></i>
 					<span class="text">Events</span>
+				</a>
+			</li>
+			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -46,18 +52,12 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="course-events">
-					<i class='bx bxs-calendar'></i>
-					<span class="text">Course Events</span>
-				</a>
-			</li>
-			<li>
 				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
@@ -77,7 +77,7 @@ include_once 'header.php';
 					<span class="text">Settings</span>
 				</a>
 			</li>
-			<li  class="active">
+			<li>
 				<a href="audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
@@ -119,38 +119,100 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Audit Trail</h1>
+					<h1>Course</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Audit Trail</a>
+							<a href="">Course</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
+		<div class="modal-button">
+			<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Course</button>
+			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxl-blogger'></i> Audit Trail</h3>
+						<h3><i class='bx bxs-book' ></i> List of Course</h3>
 					</div>
+						<button type="button" onclick="location.href='archives/course'" class="archives btn-dark"><i class='bx bxs-archive' ></i> Archives</button>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search course . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
                         <div id="dynamic_content">
                         </div>
-
                     </section>
 				</div>
 			</div>
 		</main>
+
+				<!-- MODALS -->
+		<div class="class-modal">
+			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+					<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-book' ></i> Add Course / Program</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<section class="data-form-modals">
+							<div class="registration">
+								<form action="controller/course-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+									<div class="row gx-5 needs-validation">
+										
+										<div class="col-md-12">
+											<label for="department" class="form-label">Department<span> *</span></label>
+											<select type="text" class="form-select form-control"  name="department" id="department"  required>
+											<option selected disabled value="">Select Department</option>
+												<?php
+													$pdoQuery = "SELECT * FROM department WHERE status = :status";
+													$pdoResult = $pdoConnect->prepare($pdoQuery);
+													$pdoResult->execute(array(":status" => "active"));
+													
+														while($department_data=$pdoResult->fetch(PDO::FETCH_ASSOC)){
+															?>
+															<option value="<?php echo $department_data['id']; ?> " ><?php echo $department_data['department'];  ?></option>
+															<?php
+														}
+												?>
+											</select>
+											<div class="invalid-feedback">
+												Please select a Department.
+											</div>
+										</div>
+
+                                        <div class="col-md-12">
+											<label for="course" class="form-label">Course / Program Name<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="course" id="course" required>
+											<div class="invalid-feedback">
+											Please provide a Course Name.
+											</div>
+										</div>
+
+									</div>
+
+									<div class="addBtn">
+										<button type="submit" class="btn-dark" name="btn-add-course" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
+									</div>
+								</form>
+							</div>
+						</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MAIN -->
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
@@ -158,9 +220,10 @@ include_once 'header.php';
 	<?php
     include_once '../../configuration/footer.php';
     ?>
+
 	<script>
 
-//live search---------------------------------------------------------------------------------------//
+	//live search---------------------------------------------------------------------------------------//
 	$(document).ready(function(){
 
 	load_data(1);
@@ -168,7 +231,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/logs-table.php",
+		url:"tables/course-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)
@@ -192,7 +255,6 @@ include_once 'header.php';
 	});
 
 	</script>
-
 		<!-- SWEET ALERT -->
 		<?php
 

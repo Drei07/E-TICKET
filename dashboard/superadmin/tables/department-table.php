@@ -31,29 +31,26 @@ else
 }
 
 $query = "
-SELECT * FROM users WHERE user_type = :user_type
+SELECT * FROM department WHERE status = :status
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  AND first_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND last_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND middle_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND department LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
-$query .= 'ORDER BY id ASC ';
+$query .= 'ORDER BY department ASC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":user_type" => 2));
+$statement->execute(array(":status" => "active"));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":user_type" => 2));
+$statement->execute(array(":status" => "active"));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
@@ -61,32 +58,32 @@ if($total_data > 0)
 $output = '
 
     <thead>
-    <th>NAME</th>
-    <th>POSITION</th>
-    <th>PHONE NUMBER</th>
-    <th>EMAIL</th>
-    <th>ACTIONS</th>
+    <th>DEPARTMENT LOGO</th>
+    <th>DEPARTMENT NAME</th>
+    <th>ACTION</th>
     </thead>
 ';
   while($row=$statement->fetch(PDO::FETCH_ASSOC))
   {
 
-    if ($row["account_status"] == "active") {
-      $buttons = '<button type="button" class="btn btn-danger V"><a href="controller/user-controller?id='.$row["id"].'&disabled_employer=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+    if ($row["status"] == "active") {
+      $button = '<button type="button" class="btn btn-danger V"><a href="controller/department-controller?id='.$row["id"].'&delete_department=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
-    } else if ($row["account_status"] == "disabled") {
-      $buttons = '<button type="button" class="btn btn-warning V"><a href="controller/user-controller?id='.$row["id"].'&activate_employer=1" class="activate">Activate</a></button>';
+    } else if ($row["status"] == "disabled") {
+      $button = '<button type="button" class="btn btn-warning V"><a href="controller/department-controller?id='.$row["id"].'&activate_department=1" class="activate">Activate</a></button>';
     }
 
+
     $output .= '
+    
     <tr>
-      <td>'.$row["last_name"].', '.$row["first_name"].' '.$row["middle_name"].'</td>
-      <td>'.$row["position"].'</td>
-      <td>'.$row["phone_number"].'</td>
-      <td>'.$row["email"].'</td>
       <td>
-      <button type="button" class="btn btn-success V"><a href="edit-user?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      '.$buttons.'
+      <img src="../../src/img/'.$row["department_logo"].'">
+      </td>
+      <td>'.$row["department"].'</td>
+      <td>
+      <button type="button" class="btn btn-primary V"><a href="edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      '.$button.'
       </td>        
     </tr>
     ';
