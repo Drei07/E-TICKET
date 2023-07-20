@@ -17,6 +17,15 @@ $stmt->execute(array(":id"=>$eventId));
 $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
+// Fetch data from event_access_key table
+$accessKeyStmt = $user->runQuery("SELECT * FROM event_access_key WHERE event_id = :event_id");
+$accessKeyStmt->execute(array(":event_id" => $eventId));
+$accessKeyData = $accessKeyStmt->fetch(PDO::FETCH_ASSOC);
+
+// access key
+$access_key_id = $accessKeyData['id'];
+$access_key = $accessKeyData['access_key'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -163,13 +172,16 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						<p><strong>Max Guest:</strong> <?php echo $event_data['event_max_guest'] ?></p>
 						<?php if ($event_data['status'] == 'active') { ?>
 					<div class="action">
+						<button type="button" data-bs-toggle="modal" data-bs-target="#access_key" class="btn btn-success"><i class='bx bxs-key'></i> Access key</button>
 						<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
 						<button type="button" class="btn btn-danger"><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&delete_event=1" class="delete"><i class='bx bxs-trash'></i> Delete</a></button>
 					</div>
 				<?php } else if ($event_data['status'] == 'disabled') { ?>
 					<div class="action">
+						<button type="button" data-bs-toggle="modal" data-bs-target="#access_key" class="btn btn-success"><i class='bx bxs-key'></i> Access key</button>
 						<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn btn-warning"><i class='bx bxs-edit'></i> Edit</button>
 						<button type="button" class="btn btn-success" ><a href="controller/event-controller?id=<?php echo $event_data['id'] ?>&activate_event=1" class="activate" ><i class='bx bxs-check-circle'></i> Activate</a></button>
+						
 					</div>
 				<?php } ?>
 					</div>
@@ -195,6 +207,46 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 				</div>
 			</div>
 		</main>
+		<!-- ACCESS KEY -->
+		<div class="class-modal">
+			<div class="modal fade" id="access_key" tabindex="-1" aria-labelledby="access_keyLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="access_keyLabel"><i class='bx bxs-key'></i> Access Key</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<section class="data-form-modals">
+								<div class="registration">
+									<form action="controller/event-controller.php?access_key_id=<?php echo $access_key_id ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+										<div class="row gx-5 needs-validation">
+
+											<div class="col-md-12">
+											<input disabled type="text" value="<?php echo $access_key?>" class="form-control">
+												<div class="invalid-feedback">
+													Please provide a Number.
+												</div>
+											</div>
+										</div>
+
+										<div class="addBtn">
+										<?php if ($accessKeyData['status'] == 'active') { ?>
+											<button type="submit" class="btn-danger" name="btn_deactivate_access_key" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Disabled</button>
+										<?php } else if ($accessKeyData['status'] == 'disabled') { ?>
+											<button type="submit" class="btn-success" name="btn_activate_access_key" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Activate</button>
+										<?php } ?>
+
+										</div>
+									</form>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- MAIN -->
 		<div class="class-modal">
 			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">

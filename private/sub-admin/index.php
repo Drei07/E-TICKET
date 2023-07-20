@@ -56,6 +56,9 @@ $config = new SystemConfig();
 										Sign In
 									</button>
 								</div>
+								<div class="scan">
+									<a href="scan-barcode">Scan Barcode?</a>
+								</div>
 							</form>
 						</div>
 					</div>

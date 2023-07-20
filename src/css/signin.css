@@ -95,6 +95,14 @@ body.my-login-page {
 	margin-top: 25px;
 }
 
+.my-login-page .scan {
+	margin-top: 1rem;
+}
+.my-login-page .scan a{
+	text-decoration: none;
+	color: #222222;
+}
+
 .my-login-page .footer {
 	margin: 40px 0;
 	color: #888;

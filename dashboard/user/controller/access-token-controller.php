@@ -20,24 +20,37 @@ class AccessTokenMandatory
 
     public function addAccessTokenMandatory($user_id, $course_id, $year_level_id, $number_of_tokens)
     {
+        // Check if the course ID and year level ID exist in the event_per_course table
+        $isCourseExists = $this->isCourseExists($course_id, $year_level_id);
+        if (!$isCourseExists) {
+            $_SESSION['status_title'] = 'Error!';
+            $_SESSION['status'] = 'No event found, Please add event first';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+    
+            header('Location: ../course-events-list');
+            exit();
+        }
+    
+        // Generate access tokens
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $tokenLength = 10;
-
+    
         $accessTokens = array();
         $characterCount = strlen($characters);
-
+    
         while (count($accessTokens) < $number_of_tokens) {
             $accessToken = '';
             for ($j = 0; $j < $tokenLength; $j++) {
                 $randomIndex = mt_rand(0, $characterCount - 1);
                 $accessToken .= $characters[$randomIndex];
             }
-
+    
             if (!$this->isTokenExistsMandatory($accessToken)) {
                 $accessTokens[] = $accessToken;
             }
         }
-
+    
         // Insert the generated tokens into the database
         $values = array();
         $sql = 'INSERT INTO access_token (user_id, course_id, year_level_id, token) VALUES ';
@@ -45,20 +58,19 @@ class AccessTokenMandatory
             $values[] = "(:user_id, :course_id, :year_level_id, :token_$token)";
         }
         $sql .= implode(', ', $values);
-
+    
         $stmt = $this->runQuery($sql);
         $stmt->bindValue(':user_id', $user_id);
         $stmt->bindValue(':course_id', $course_id);
         $stmt->bindValue(':year_level_id', $year_level_id);
-
-
+    
         foreach ($accessTokens as $index => $token) {
             $param = ":token_$token";
             $stmt->bindValue($param, $token);
         }
-
+    
         $exec = $stmt->execute();
-
+    
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Successfully generated access tokens';
@@ -70,12 +82,23 @@ class AccessTokenMandatory
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../course-events-list');
         exit();
-
+    
         return $accessTokens;
     }
+    
+    // Function to check if the course ID and year level ID exist in the event_per_course table
+    public function isCourseExists($course_id, $year_level_id)
+    {
+        $stmt = $this->runQuery('SELECT COUNT(*) FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id');
+        $stmt->execute(array(':course_id' => $course_id, ':year_level_id' => $year_level_id));
+        $count = $stmt->fetchColumn();
+    
+        return ($count > 0);
+    }
+    
 
     public function isTokenExistsMandatory($accessToken)
     {
