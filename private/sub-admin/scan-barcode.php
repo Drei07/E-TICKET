@@ -43,8 +43,8 @@ $main_url = new MainUrl();
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit" name="btn-signin" class="btn btn-dark btn-block">
-										Sign In
+									<button type="submit" name="btn-submit" class="btn btn-dark btn-block">
+										Submit
 									</button>
 								</div>
 
