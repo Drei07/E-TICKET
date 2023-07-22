@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 12, 2023 at 12:51 PM
+-- Generation Time: Jul 22, 2023 at 02:42 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -81,7 +81,7 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `department_id`, `course`, `educational_attainment`, `status`, `created_at`, `updated_at`) VALUES
-(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE (B.A. POL. SCI)', '2', 'active', '2023-03-24 21:02:10', '2023-07-06 18:14:50'),
+(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE (B.A. POL. SCI)', '2', 'active', '2023-03-24 21:02:10', '2023-07-17 04:36:56'),
 (2, 4, 'BACHELOR OF ELEMENTARY EDUCATION (BEED)', '2', 'active', '2023-03-25 00:11:32', '2023-06-30 00:15:00'),
 (3, 4, 'BACHELOR OF SECONDARY EDUCATION (BSED)', '2', 'active', '2023-03-25 00:11:57', '2023-06-29 19:05:26'),
 (4, 5, 'BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT', '2', 'active', '2023-03-25 00:12:06', '2023-06-29 19:05:55'),
@@ -195,8 +195,33 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `event_name`, `event_date`, `event_time`, `event_venue`, `event_max_guest`, `event_rules`, `event_poster`, `event_price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BATTLE OF THE BANDS', '2023-07-12', '17:47:00', 'DCT GYMNASIUM', '400', 'SAMPLE RULES', 'poster.jpg', '120', 'active', '2023-07-09 06:50:25', '2023-07-09 07:17:40'),
-(2, 'MR AND MRS DCT', '2023-07-19', '19:07:00', 'DCT ROOM 202', '', '', 'pageant.jpeg', '120', 'active', '2023-07-09 07:05:34', NULL);
+(1, 'BATTLE OF THE BANDS', '2023-07-12', '17:47:00', 'DCT GYMNASIUM', '400', 'SAMPLE RULES', 'poster.jpg', '120', 'active', '2023-07-09 06:50:25', '2023-07-17 04:30:29'),
+(2, 'MR AND MRS DCT', '2023-07-19', '19:07:00', 'DCT ROOM 203', '', '', 'pageant.jpeg', '120', 'active', '2023-07-09 07:05:34', '2023-07-19 12:35:25'),
+(3, 'SINGING CONTEST', '2023-07-26', '09:26:00', 'OPEN GROUND', '400', 'SIMPLE JUST SING', 'images (1).jpeg', '120', 'active', '2023-07-19 13:24:16', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `event_access_key`
+--
+
+CREATE TABLE `event_access_key` (
+  `id` int(11) NOT NULL,
+  `event_id` int(14) DEFAULT NULL,
+  `access_key` varchar(145) DEFAULT NULL,
+  `status` enum('active','disabled') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event_access_key`
+--
+
+INSERT INTO `event_access_key` (`id`, `event_id`, `access_key`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Y758LRDH9W', 'active', '2023-07-19 13:22:14', NULL),
+(2, 2, 'WUFLRN7WFM', 'active', '2023-07-19 13:22:27', '2023-07-21 09:14:21'),
+(3, 3, 'Cxp6lm98df', 'active', '2023-07-19 13:24:16', '2023-07-20 01:12:26');
 
 -- --------------------------------------------------------
 
@@ -211,6 +236,7 @@ CREATE TABLE `event_per_course` (
   `course_id` int(11) DEFAULT NULL,
   `year_level_id` int(11) DEFAULT NULL,
   `status` enum('active','disabled') NOT NULL DEFAULT 'active',
+  `event_status` enum('active','disabled') NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -219,11 +245,9 @@ CREATE TABLE `event_per_course` (
 -- Dumping data for table `event_per_course`
 --
 
-INSERT INTO `event_per_course` (`id`, `event_id`, `event_type`, `course_id`, `year_level_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, '1', 10, 15, 'active', '2023-07-09 13:28:12', NULL),
-(2, 2, '2', 10, 15, 'active', '2023-07-09 13:28:20', NULL),
-(3, 1, '1', 10, 16, 'active', '2023-07-09 13:28:56', NULL),
-(4, 2, '1', 10, 16, 'active', '2023-07-09 13:29:04', NULL);
+INSERT INTO `event_per_course` (`id`, `event_id`, `event_type`, `course_id`, `year_level_id`, `status`, `event_status`, `created_at`, `updated_at`) VALUES
+(1, 1, '1', 10, 16, 'active', 'active', '2023-07-17 05:02:18', NULL),
+(2, 3, '1', 10, 16, 'active', 'active', '2023-07-20 03:05:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -340,7 +364,29 @@ CREATE TABLE `system_config` (
 --
 
 INSERT INTO `system_config` (`Id`, `system_name`, `system_phone_number`, `system_email`, `system_logo`, `system_color`, `system_copy_right`, `created_at`, `updated_at`) VALUES
-(1, 'DCT  E-CKET', '0977662192', 'dct.ecket2023@gmail.com', 'DCT-LOGO.png', NULL, 'COPYRIGHT © 2023 - DOMINICAN COLLEGE OF TARLAC. ALL RIGHTS RESERVED.', '2023-02-20 00:16:44', '2023-06-28 05:38:23');
+(1, 'DCT  E-CKET', '0977662192', 'dct.ecket2023@gmail.com', 'DCT-LOGO.png', NULL, 'COPYRIGHT © 2023 - DOMINICAN COLLEGE OF TARLAC E-CKET. ALL RIGHTS RESERVED.', '2023-02-20 00:16:44', '2023-07-12 11:24:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket`
+--
+
+CREATE TABLE `ticket` (
+  `id` int(11) NOT NULL,
+  `event_id` int(14) DEFAULT NULL,
+  `course_id` int(14) DEFAULT NULL,
+  `year_level_id` int(14) DEFAULT NULL,
+  `barcode` varchar(145) DEFAULT NULL,
+  `user_first_name` varchar(145) DEFAULT NULL,
+  `user_middle_name` varchar(145) DEFAULT NULL,
+  `user_last_name` varchar(145) DEFAULT NULL,
+  `user_phone_number` varchar(145) DEFAULT NULL,
+  `user_email` varchar(145) DEFAULT NULL,
+  `status` enum('active','disabled') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -375,11 +421,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `sex`, `date_of_birth`, `age`, `civil_status`, `phone_number`, `email`, `password`, `profile`, `status`, `tokencode`, `account_status`, `user_type`, `department`, `created_at`, `updated_at`) VALUES
-(7, 'JOSE', 'SANTOS', 'DATU', 'MALE', NULL, NULL, 'MARRIED', NULL, 'andreid.m.viscayno@gmail.com', '8280cf6cf941dbabb5ebabf6a8016c0f', 'profile.png', 'Y', '253b2ddeff678a7865863f6b6e9e2ac5', 'active', '1', NULL, '2023-06-24 16:57:18', '2023-07-08 11:52:33'),
-(8, 'ANDREI', 'MANALANSAN', 'VISCAYNO', 'MALE', NULL, NULL, 'SEPERATED', '9628648236', 'yoyoyo@dhvsu.edu.ph', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'fc8d7f19470873a62253fa15ced58885', 'active', '2', 2, '2023-07-07 08:02:26', '2023-07-12 10:50:21'),
-(9, 'SOFIA', 'INOFINADA', 'VISCAYN', NULL, NULL, NULL, NULL, '9776621929', 'admin2@gmail.com', '525f66a25afff0a837e6c643bafaa579', 'profile.png', 'N', '4681f469ea68ced00b2fd98d52ca1b73', 'active', '2', 3, '2023-07-07 08:08:02', '2023-07-12 10:50:13'),
-(10, 'FRANCRIO', 'MOVILLA', 'DUAY', NULL, NULL, NULL, NULL, '9766219299', 'francduay@gmail.com', '6f4dfad5630f4b08d9e1f7be1e58b357', 'profile.png', 'N', 'd7983fc63c3730015ee18d63c89ba728', 'active', '2', 4, '2023-07-08 11:51:33', '2023-07-12 10:49:35'),
-(11, 'SAMPLE', 'SAMPLW', 'SAMPLE', NULL, NULL, NULL, NULL, '9189328387', 'sample@gmail.com', '95aa51e053868591e9008543c2b0a9f3', 'profile.png', 'Y', 'eca83153ed19fd7aeb6f87f5a3ecf810', 'active', '2', 4, '2023-07-08 11:52:59', '2023-07-12 10:49:58');
+(7, 'JOSE', 'SANTOS', 'DATU', 'MALE', NULL, NULL, 'MARRIED', NULL, 'admin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', '253b2ddeff678a7865863f6b6e9e2ac5', 'active', '1', NULL, '2023-06-24 16:57:18', '2023-07-22 12:41:36'),
+(8, 'JOSE', 'MANALO', 'CHAN', 'MALE', NULL, NULL, 'SEPERATED', '9628648236', 'superadmin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'fc8d7f19470873a62253fa15ced58885', 'active', '0', NULL, '2023-07-07 08:02:26', '2023-07-22 12:41:53'),
+(11, 'SUB-ADMIN', 'SUB-ADMIN', 'SUB-ADMIN', NULL, NULL, NULL, NULL, '9189328387', 'sub_admin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'eca83153ed19fd7aeb6f87f5a3ecf810', 'active', '2', 4, '2023-07-08 11:52:59', '2023-07-22 12:41:34');
 
 -- --------------------------------------------------------
 
@@ -472,6 +516,13 @@ ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `event_access_key`
+--
+ALTER TABLE `event_access_key`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `event_id` (`event_id`);
+
+--
 -- Indexes for table `event_per_course`
 --
 ALTER TABLE `event_per_course`
@@ -511,6 +562,15 @@ ALTER TABLE `religion`
 --
 ALTER TABLE `system_config`
   ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `event_id` (`event_id`),
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `year_level_id` (`year_level_id`);
 
 --
 -- Indexes for table `users`
@@ -569,13 +629,19 @@ ALTER TABLE `email_config`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `event_access_key`
+--
+ALTER TABLE `event_access_key`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `event_per_course`
 --
 ALTER TABLE `event_per_course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `google_recaptcha_api`
@@ -608,10 +674,16 @@ ALTER TABLE `system_config`
   MODIFY `Id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `ticket`
+--
+ALTER TABLE `ticket`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `year_level`
@@ -646,6 +718,12 @@ ALTER TABLE `course_event`
   ADD CONSTRAINT `course_event_ibfk_2` FOREIGN KEY (`year_level_id`) REFERENCES `year_level` (`id`);
 
 --
+-- Constraints for table `event_access_key`
+--
+ALTER TABLE `event_access_key`
+  ADD CONSTRAINT `event_access_key_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`);
+
+--
 -- Constraints for table `event_per_course`
 --
 ALTER TABLE `event_per_course`
@@ -664,6 +742,14 @@ ALTER TABLE `logs`
 --
 ALTER TABLE `pdf_file`
   ADD CONSTRAINT `pdf_file_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`);
+
+--
+-- Constraints for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
+  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`),
+  ADD CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`year_level_id`) REFERENCES `year_level` (`id`);
 
 --
 -- Constraints for table `users`

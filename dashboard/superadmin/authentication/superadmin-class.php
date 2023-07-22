@@ -68,11 +68,11 @@ public function mainUrl(){
   return $stmt;
  }
  
- public function register($department_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status, $religion_id, $address_id, $phone_number, $email, $password, $profile, $tokencode, $user_type)
+ public function register($department_id, $first_name, $middle_name, $last_name, $sex, $date_of_birth, $age, $civil_status, $religion_id, $address_id, $phone_number, $email, $hash_password, $profile, $tokencode, $user_type)
  {
   try
   {       
-   $password = md5($upass);
+   $password = md5($hash_password);
    $stmt = $this->conn->prepare("INSERT INTO users(department_id, first_name, middle_name, last_name, sex, date_of_birth, age, civil_status, religion_id, address_id, phone_number, email, password, profile, tokencode, user_type) 
                                         VALUES(:department_id, :first_name, :middle_name, :last_name, :sex, :date_of_birth, :age, :civil_status, :religion_id, :address_id, :phone_number, :email, :password, :profile, :tokencode, :user_type)");
    

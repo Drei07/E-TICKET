@@ -1,10 +1,10 @@
 <?php
 include_once __DIR__. '/../../src/api/api.php';
+include_once '../../dashboard/admin/authentication/admin-verify.php';
 include_once '../../configuration/settings-configuration.php';
 
 $config = new SystemConfig();
 $main_url = new MainUrl();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@ $main_url = new MainUrl();
 	<link rel="shortcut icon" href="../../src/img/<?php echo $config->getSystemLogo() ?>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../../src/css/signin.css?v=<?php echo time(); ?>">
-    <title>Scan Barcode</title>
+    <title>Verify Account</title>
 </head>
 <body class="my-login-page">
 	<section class="h-100">
@@ -27,31 +27,12 @@ $main_url = new MainUrl();
 					</div>
 					<div class="card fat">
 						<div class="card-body">
-							<h4 class="card-title">Enter Password</h4>
-                            <a href="./" class="close"><img src="../../src/img/caret-right-fill.svg" alt="close-btn" width="24" height="24"></a>
-							<form action="../../dashboard/user/controller/barcode-scanner-controller.php" method="POST" class="my-login-validation" novalidate="">
-                                <div class="form-group">
-									<label for="password">Password
-									</label>
-									<input id="password" type="password" autocomplete="off" class="form-control" name="password" required data-eye>
-								    <div class="invalid-feedback">
-								    	Password is required!
-							    	</div>
-                                    <div class="form-text text-muted">
-                                    Kindly provide the password to gain access to the event's barcode scanner. This password is essential for scanning the barcode.
-                                    </div>
-								</div>
-
-								<div class="form-group m-0">
-									<button type="submit" name="btn-submit" class="btn btn-dark btn-block">
-										Submit
-									</button>
-								</div>
-
-							</form>
+							<h4 class="card-title">Verify Account</h4>
+                            <?php if(isset($msg)) { echo $msg; } ?>
 						</div>
 					</div>
-						<footer><?php echo $config->getSystemCopyright() ?></footer>
+					<footer>&copy; <?php echo $config->getSystemCopyright() ?></footer>
+
 				</div>
 			</div>
 		</div>

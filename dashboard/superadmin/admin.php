@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Audit Trail</title>
+	<title>Admin</title>
 </head>
 <body>
 
@@ -34,21 +34,21 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li class="active">
 				<a href="admin">
                     <i class='bx bxs-user-account'></i>
 					<span class="text">Admin</span>
 				</a>
 			</li>
-			<li>
+            <li>
 				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-			<li>
-				<a href="course-events">
-					<i class='bx bxs-calendar'></i>
-					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
@@ -77,7 +77,7 @@ include_once 'header.php';
 					<span class="text">Settings</span>
 				</a>
 			</li>
-			<li  class="active">
+			<li>
 				<a href="audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
@@ -119,23 +119,25 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Audit Trail</h1>
+					<h1>Admin</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Audit Trail</a>
+							<a href="">Admin</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
+            <div class="modal-button">
+				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Admin</button>
+			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxl-blogger'></i> Audit Trail</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of Admin</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">
@@ -151,6 +153,77 @@ include_once 'header.php';
 				</div>
 			</div>
 		</main>
+
+				<!-- MODALS -->
+		<div class="class-modal">
+			<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+					<div class="header"></div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-user-account' ></i> Add Sub-Admin</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<section class="data-form-modals">
+							<div class="registration">
+								<form action="controller/user-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()"  novalidate style="overflow: hidden;">
+									<div class="row gx-5 needs-validation">
+
+                                        <div class="col-md-6">
+											<label for="first_name" class="form-label">First Name<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="first_name" id="first_name" required>
+											<div class="invalid-feedback">
+											Please provide a First Name.
+											</div>
+										</div>
+
+
+										<div class="col-md-6">
+											<label for="middle_name" class="form-label">Middle Name</label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="middle_name" id="middle_name">
+										</div>
+										<div class="invalid-feedback">
+											Please provide a Middle Name.
+										</div>
+
+
+										<div class="col-md-6">
+											<label for="last_name" class="form-label">Last Name<span> *</span></label>
+											<input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on"  autocomplete="off" name="last_name" id="last_name" required>
+											<div class="invalid-feedback">
+											Please provide a Last Name.
+											</div>
+										</div>
+
+                                        <div class="col-md-6" >
+                                            <label for="phone_number" class="form-label">Phone Number<span> *</span></label>
+                                            <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">+63</span>
+                                            <input type="text" class="form-control numbers"  autocapitalize="off" inputmode="numeric" autocomplete="off" name="phone_number" id="phone_number" required minlength="10" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  placeholder="10-digit number">
+                                            </div>
+                                        </div>
+
+										<div class="col-md-12">
+											<label for="email" class="form-label">Email<span> *</span></label>
+											<input type="email" class="form-control" autocapitalize="on"  autocomplete="off" name="email" id="email" required>
+											<div class="invalid-feedback">
+											Please provide a Email.
+											</div>
+										</div>
+									</div>
+
+									<div class="addBtn">
+										<button type="submit" class="btn-dark" name="btn-add-admin" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
+									</div>
+								</form>
+							</div>
+						</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
@@ -158,9 +231,10 @@ include_once 'header.php';
 	<?php
     include_once '../../configuration/footer.php';
     ?>
+
 	<script>
 
-//live search---------------------------------------------------------------------------------------//
+	//live search---------------------------------------------------------------------------------------//
 	$(document).ready(function(){
 
 	load_data(1);
@@ -168,7 +242,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/logs-table.php",
+		url:"tables/admin-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)

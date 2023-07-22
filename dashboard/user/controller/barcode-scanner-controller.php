@@ -56,7 +56,7 @@ class BarCode {
 }
 
 //add
-if (isset($_POST['btn-signin'])) {
+if (isset($_POST['btn-submit'])) {
     $password     = trim($_POST['password']);
 
     $barcode_scanner_signin = new BarCode();

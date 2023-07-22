@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Dashboard</title>
+	<title>Events Logs</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@ include_once 'header.php';
 			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
-			<li  class="active">
+			<li>
 				<a href="./">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
@@ -119,129 +119,18 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
+					<h1>Events Logs</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Dashboard</a>
+							<a href="">Events Logs</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
-			<ul class="dashboard_data">
-				<li>
-					<i class='bx bx-user-circle'></i>
-					<span class="text">
-					<?php
-								$pdoQuery = "SELECT * FROM 	users WHERE user_type = :user_type";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute(array(":user_type" => 2));
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Sub-admin</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-buildings' ></i>
-					<span class="text">
-							<?php
-								$pdoQuery = "SELECT * FROM department";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute();
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Department</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-book' ></i>
-					<span class="text">
-							<?php
-								$pdoQuery = "SELECT * FROM course";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute();
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Course</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-graduation'></i>
-					<span class="text">
-					<?php
-								$pdoQuery = "SELECT * FROM  year_level";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute();
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Year Level</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-calendar' ></i>
-					<span class="text">
-							<?php
-								$pdoQuery = "SELECT * FROM events";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute();
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Events</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-calendar-event'></i>
-					<span class="text">
-					<?php
-								$pdoQuery = "SELECT * FROM  course_event";
-								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
-								$pdoResult1->execute();
-
-								$count = $pdoResult1->rowCount();
-
-								echo
-								"
-									<h3>$count</h3>
-								";
-							?>
-						<p>Course Events</p>
-					</span>
-				</li>
-			</ul>
 		</main>
 		<!-- MAIN -->
 	</section>
