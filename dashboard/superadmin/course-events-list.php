@@ -278,13 +278,15 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 						</div>
 						<ul class="box-info" id="optional-events">
 						<?php
-							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
+							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND event_status = :event_status AND status = :status ORDER BY id DESC";
 							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
 							$pdoResult5->execute(array(
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
 								":event_type"		=> 2,
-								":status"			=> "active"
+								":status"			=> "active",
+								":event_status"		=> "active"
+
 							));
 							if ($pdoResult5->rowCount() >= 1) {
 
