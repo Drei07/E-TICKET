@@ -58,6 +58,12 @@ $yearLevelId = isset($_SESSION['sub_admin_year_level_id']) ? $_SESSION['sub_admi
 					<span class="text">Access Tokens</span>
 				</a>
 			</li>
+			<li>
+				<a href="pdf-files">
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">PDF Files</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>

@@ -1,21 +1,20 @@
 <?php
 include_once '../../../database/dbconfig2.php';
-require_once '../authentication/admin-class.php';
+require_once '../authentication/superadmin-class.php';
 include_once '../../../configuration/settings-configuration.php';
 
 
 // instances of the classes
 $config = new SystemConfig();
-$user = new ADMIN();
+$user = new SUPERADMIN();
 
-if(!$user->isUserLoggedIn())
-{
- $user->redirect('../../../../private/admin/');
+if (!$user->isUserLoggedIn()) {
+	$user->redirect('../../../../private/superadmin/');
 }
 
 // retrieve user data
 $stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
-$stmt->execute(array(":uid"=>$_SESSION['adminSession']));
+$stmt->execute(array(":uid" => $_SESSION['superadminSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // retrieve profile user and full name
@@ -109,7 +108,7 @@ $user_last_update       = $user_data['updated_at'];
 				</a>
 			</li>
 			<li>
-				<a href="../authentication/admin-signout" class="btn-signout">
+				<a href="../authentication/superadmin-signout" class="btn-signout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Signout</span>
 				</a>

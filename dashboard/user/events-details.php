@@ -66,6 +66,12 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 					<span class="text">Access Tokens</span>
 				</a>
 			</li>
+			<li>
+				<a href="pdf-files">
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">PDF Files</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>
@@ -110,7 +116,7 @@ $event_data = $stmt->fetch(PDO::FETCH_ASSOC);
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="events">Course Events</a>
+							<a class="active" href="course-events">Course Events</a>
 						</li>
 						<li>|</li>
 						<li>

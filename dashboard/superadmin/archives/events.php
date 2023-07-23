@@ -1,20 +1,20 @@
 <?php
 include_once '../../../database/dbconfig2.php';
-require_once '../authentication/admin-class.php';
+require_once '../authentication/superadmin-class.php';
 include_once '../../../configuration/settings-configuration.php';
 
 
 // instances of the classes
 $config = new SystemConfig();
-$user = new ADMIN();
+$user = new SUPERADMIN();
 
 if (!$user->isUserLoggedIn()) {
-    $user->redirect('../../../../private/admin/');
+	$user->redirect('../../../../private/superadmin/');
 }
 
 // retrieve user data
 $stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
-$stmt->execute(array(":uid" => $_SESSION['adminSession']));
+$stmt->execute(array(":uid" => $_SESSION['superadminSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // retrieve profile user and full name
@@ -73,7 +73,7 @@ $user_last_update       = $user_data['updated_at'];
                 </a>
             </li>
             <li>
-				<a href="course-events">
+				<a href="../course-events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Course Events</span>
 				</a>
@@ -117,7 +117,7 @@ $user_last_update       = $user_data['updated_at'];
                 </a>
             </li>
             <li>
-                <a href="../authentication/admin-signout" class="btn-signout">
+                <a href="../authentication/superadmin-signout" class="btn-signout">
                     <i class='bx bxs-log-out-circle'></i>
                     <span class="text">Signout</span>
                 </a>
@@ -159,13 +159,9 @@ $user_last_update       = $user_data['updated_at'];
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="../events">Course Events</a>
+							<a class="active" href="../events">Events</a>
 						</li>
 						<li>|</li>
-						<li>
-							<a class="active" href="../course-events">Events</a>
-						</li>
-                        <li>|</li>
                         <li>
 							<a href="">Events Archive</a>
 						</li>
@@ -230,7 +226,7 @@ $user_last_update       = $user_data['updated_at'];
 
     <script>
         function setSessionValues(eventId) {
-            fetch('events-details.php', {
+            fetch('../events-details.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

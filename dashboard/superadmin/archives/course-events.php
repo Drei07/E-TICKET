@@ -1,20 +1,21 @@
 <?php
 include_once '../../../database/dbconfig2.php';
-require_once '../authentication/admin-class.php';
+include_once '../../../database/dbconfig2.php';
+require_once '../authentication/superadmin-class.php';
 include_once '../../../configuration/settings-configuration.php';
 
 
 // instances of the classes
 $config = new SystemConfig();
-$user = new ADMIN();
+$user = new SUPERADMIN();
 
 if (!$user->isUserLoggedIn()) {
-	$user->redirect('../../../../private/admin/');
+	$user->redirect('../../../../private/superadmin/');
 }
 
 // retrieve user data
 $stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
-$stmt->execute(array(":uid" => $_SESSION['adminSession']));
+$stmt->execute(array(":uid" => $_SESSION['superadminSession']));
 $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // retrieve profile user and full name
@@ -88,7 +89,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				</a>
 			</li>
             <li class="active">
-				<a href="../events">
+				<a href="../course-events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Course Events</span>
 				</a>
@@ -132,7 +133,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				</a>
 			</li>
 			<li>
-				<a href="../authentication/admin-signout" class="btn-signout">
+				<a href="../authentication/superadmin-signout" class="btn-signout">
 					<i class='bx bxs-log-out-circle'></i>
 					<span class="text">Signout</span>
 				</a>
@@ -174,7 +175,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="../events">Course Events</a>
+							<a class="active" href="../course-events">Course Events</a>
 						</li>
 						<li>|</li>
 						<li>
@@ -183,117 +184,73 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					</ul>
 				</div>
 			</div>
-		
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-calendar'></i> Mandatory Events</h3>
+						<h3><i class='bx bxs-book'></i> List of Archives Course Events</h3>
 					</div>
 					<!-- BODY -->
 					<section class="data-table">
-						<div class="searchBx">
-							<input type="text" id="search-input-mandatory" placeholder="Search Events . . . . . ." class="search">
-							<button class="searchBtn" type="button" onclick="searchMandatoryEvents()"><i class="bx bx-search icon"></i></button>
-						</div>
-						<ul class="box-info" id="mandatory-events">
+						<div class="info-data">
+							<div class="searchBx">
+								<input type="text" id="search-input" placeholder="Search Course . . . . . ." class="search">
+								<button class="searchBtn" type="button" onclick="searchCourseEvents()"><i class="bx bx-search icon"></i></button>
+							</div>
 							<?php
-							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND event_status = :event_status AND status = :status ORDER BY id DESC";
-							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
-							$pdoResult5->execute(array(
-								":course_id" 		=> $courseId,
-								":year_level_id" 	=> $yearLevelId,
-								":event_type"		=> 1,
-								":status"			=> "disabled",
-								":event_status"		=> "active"
-
-							));
-							if ($pdoResult5->rowCount() >= 1) {
-
-								while ($event_per_course_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
-									extract($event_per_course_data);
-
-									$event_id = $event_per_course_data['event_id'];
-									$pdoQuery = "SELECT * FROM events WHERE id = :id";
-									$pdoResult2 = $pdoConnect->prepare($pdoQuery);
-									$pdoExec = $pdoResult2->execute(array(":id" => $event_id));
-									$event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
-
+							$pdoQuery = "SELECT * FROM course_event WHERE status = :status ORDER BY id DESC";
+							$pdoResult = $pdoConnect->prepare($pdoQuery);
+							$pdoResult->execute(array(":status" => "disabled"));
+							if ($pdoResult->rowCount() >= 1) {
+								while ($course_event = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+									extract($course_event);
 							?>
-									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
+									<div class="card">
+										<div class="head2">
+											<div class="body" onclick="setSessionValues(<?php echo $course_event['course_id'] ?>, <?php echo $course_event['year_level_id'] ?>)">
+												<?php
+												//course data
+												$course_id = $course_event['course_id'];
+												$pdoQuery = "SELECT * FROM course WHERE id = :id";
+												$pdoResult2 = $pdoConnect->prepare($pdoQuery);
+												$pdoExec = $pdoResult2->execute(array(":id" => $course_id));
+												$course_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
 
-										<img src="../../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
-										<h4><?php echo $event_data['event_name'] ?></h4>
-										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
-										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" class="more btn-success"><a href="../../admin/controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&activate_event_per_course=1" class="activate" style="color: #FFFF;">Activate</a></button>
-									</li>
-							<?php
+												//department data
+												$department_id = $course_data['department_id'];
+												$pdoQuery = "SELECT * FROM department WHERE id = :id";
+												$pdoResult3 = $pdoConnect->prepare($pdoQuery);
+												$pdoExec = $pdoResult3->execute(array(":id" => $department_id));
+												$department_data = $pdoResult3->fetch(PDO::FETCH_ASSOC);
+												?>
+												<img src="../../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo">
+												<h2>
+													<?php echo $course_data['course']; ?>
+													<br>
+													<?php
+													//year level data
+													$year_level_id = $course_event['year_level_id'];
+													$pdoQuery = "SELECT * FROM year_level WHERE id = :id";
+													$pdoResult4 = $pdoConnect->prepare($pdoQuery);
+													$pdoExec = $pdoResult4->execute(array(":id" => $year_level_id));
+													$year_level_data = $pdoResult4->fetch(PDO::FETCH_ASSOC);
+													?>
+													<?php echo $year_level_data['year_level']; ?>
+													<br>
+													<label><?php echo $department_data['department'] ?></label>
+												</h2>
+											</div>
+											<a href="../controller/course-event-controller.php?id=<?php echo $course_event['id'] ?>&activate_course_event" class="activate"><i class='bx bxs-check-shield icon-3'></i></a>
+										</div>
+									</div>
+								<?php
 								}
+							} else {
+								?>
+								<h1 class="no-data">No Course Found</h1>
+							<?php
 							}
 							?>
-
-							<li data-bs-toggle="modal" data-bs-target="#eventModal">
-								<i class='bx bxs-calendar-plus'></i>
-							</li>
-						</ul>
-					</section>
-				</div>
-			</div>
-
-
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3><i class='bx bxs-calendar'></i> Optional Events</h3>
-					</div>
-					<!-- BODY -->
-					<section class="data-table">
-						<div class="searchBx">
-							<input type="text" id="search-input-optional" placeholder="Search Events . . . . . ." class="search">
-							<button class="searchBtn" type="button" onclick="searchOptionalEvents()"><i class="bx bx-search icon"></i></button>
 						</div>
-						<ul class="box-info" id="optional-events">
-						<?php
-							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND event_status = :event_status AND status = :status ORDER BY id DESC";
-							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
-							$pdoResult5->execute(array(
-								":course_id" 		=> $courseId,
-								":year_level_id" 	=> $yearLevelId,
-								":event_type"		=> 2,
-								":status"			=> "disabled",
-								":event_status"		=> "active"
-
-							));
-							if ($pdoResult5->rowCount() >= 1) {
-
-								while ($event_per_course_data = $pdoResult5->fetch(PDO::FETCH_ASSOC)) {
-									extract($event_per_course_data);
-
-									$event_id = $event_per_course_data['event_id'];
-									$pdoQuery = "SELECT * FROM events WHERE id = :id";
-									$pdoResult2 = $pdoConnect->prepare($pdoQuery);
-									$pdoExec = $pdoResult2->execute(array(":id" => $event_id));
-									$event_data = $pdoResult2->fetch(PDO::FETCH_ASSOC);
-
-							?>
-									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
-
-										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
-										<h4><?php echo $event_data['event_name'] ?></h4>
-										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
-										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" class="more btn-success"><a href="../../admin/controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&activate_event_per_course=1" class="activate" style="color: #FFFF;">Activate</a></button>
-
-									</li>
-							<?php
-								}
-							}
-							?>
-
-							<li data-bs-toggle="modal" data-bs-target="#eventModal">
-								<i class='bx bxs-calendar-plus'></i>
-							</li>
-						</ul>
 					</section>
 				</div>
 			</div>
@@ -311,64 +268,38 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 	<script src="../../../src/js/admin.js"></script>
 
 	<script>
-		function searchMandatoryEvents() {
-			var searchInput = document.getElementById('search-input-mandatory').value.trim();
-			var eventItems = document.querySelectorAll('#mandatory-events li');
-
-			eventItems.forEach(function(item) {
-				var eventName = item.querySelector('h4').innerText;
-
-				if (eventName.toLowerCase().includes(searchInput.toLowerCase())) {
-					item.style.display = 'block';
-				} else {
-					item.style.display = 'none';
-				}
-			});
-
-			var noResultsMsg = document.getElementById('no-results-msg-mandatory');
-			if (document.querySelectorAll('#mandatory-events li[style="display: block;"]').length === 0) {
-				noResultsMsg.style.display = 'block';
-			} else {
-				noResultsMsg.style.display = 'none';
-			}
-
-			if (searchInput === '') {
-				eventItems.forEach(function(item) {
-					item.style.display = 'block';
+		function setSessionValues(courseId, yearLevelId) {
+			fetch('../course-events-list.php', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'course_id=' + encodeURIComponent(courseId) + '&year_level_id=' + encodeURIComponent(yearLevelId),
+				})
+				.then(response => {
+					window.location.href = '../course-events-list';
+				})
+				.catch(error => {
+					console.error('Error:', error);
 				});
-				noResultsMsg.style.display = 'none';
-			}
 		}
 
-		function searchOptionalEvents() {
-			var searchInput = document.getElementById('search-input-optional').value.trim();
-			var eventItems = document.querySelectorAll('#optional-events li');
+		function searchCourseEvents() {
+			var searchInput = document.getElementById('search-input').value.trim();
+			var cards = document.querySelectorAll('.info-data .card');
 
-			eventItems.forEach(function(item) {
-				var eventName = item.querySelector('h4').innerText;
+			cards.forEach(function(card) {
+				var courseName = card.querySelector('h2').innerText;
 
-				if (eventName.toLowerCase().includes(searchInput.toLowerCase())) {
-					item.style.display = 'block';
+				if (courseName.toLowerCase().includes(searchInput.toLowerCase())) {
+					card.style.display = 'block';
 				} else {
-					item.style.display = 'none';
+					card.style.display = 'none';
 				}
 			});
-
-			var noResultsMsg = document.getElementById('no-results-msg-optional');
-			if (document.querySelectorAll('#optional-events li[style="display: block;"]').length === 0) {
-				noResultsMsg.style.display = 'block';
-			} else {
-				noResultsMsg.style.display = 'none';
-			}
-
-			if (searchInput === '') {
-				eventItems.forEach(function(item) {
-					item.style.display = 'block';
-				});
-				noResultsMsg.style.display = 'none';
-			}
 		}
 	</script>
+
 	<!-- SWEET ALERT -->
 	<?php
 

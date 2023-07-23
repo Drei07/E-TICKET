@@ -73,7 +73,7 @@ $user_last_update       = $user_data['updated_at'];
                 </a>
             </li>
             <li>
-				<a href="course-events">
+				<a href="../course-events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Course Events</span>
 				</a>
@@ -159,11 +159,7 @@ $user_last_update       = $user_data['updated_at'];
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="../events">Course Events</a>
-						</li>
-						<li>|</li>
-						<li>
-							<a class="active" href="../course-events">Events</a>
+							<a class="active" href="../events">Events</a>
 						</li>
                         <li>|</li>
                         <li>
@@ -230,7 +226,7 @@ $user_last_update       = $user_data['updated_at'];
 
     <script>
         function setSessionValues(eventId) {
-            fetch('events-details.php', {
+            fetch('../events-details.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Access Tokens</title>
+	<title>PDF files</title>
 </head>
 <body>
 
@@ -33,13 +33,13 @@ include_once 'header.php';
 					<span class="text">Course Events</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="access-tokens">
 					<i class='bx bxs-key' ></i>
 					<span class="text">Access Tokens</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="pdf-files">
 					<i class='bx bxs-file-pdf'></i>
 					<span class="text">PDF Files</span>
@@ -83,14 +83,14 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Access Tokens</h1>
+					<h1>PDF Files</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Access Tokens</a>
+							<a href="">PDF Files</a>
 						</li>
 					</ul>
 				</div>
@@ -98,7 +98,7 @@ include_once 'header.php';
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-key' ></i> List of Access Tokens</h3>
+						<h3><i class='bx bxs-key' ></i> List of Printed Access Tokens</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">
@@ -132,7 +132,7 @@ include_once 'header.php';
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/access-token-table.php",
+		url:"tables/printed-access-token-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)

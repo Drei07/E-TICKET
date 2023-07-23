@@ -66,12 +66,6 @@ $access_key = $accessKeyData['access_key'];
 				</a>
 			</li>
 			<li>
-				<a href="course-events">
-					<i class='bx bxs-calendar'></i>
-					<span class="text">Course Events</span>
-				</a>
-			</li>
-			<li>
 				<a href="admin">
                     <i class='bx bxs-user-account'></i>
 					<span class="text">Admin</span>

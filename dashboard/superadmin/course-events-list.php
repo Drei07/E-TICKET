@@ -58,7 +58,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<span class="text">Course Events</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="admin">
                     <i class='bx bxs-user-account'></i>
 					<span class="text">Admin</span>
