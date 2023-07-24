@@ -1,13 +1,14 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/user-class.php';
+
+require_once '../authentication/superadmin-class.php';
 include_once __DIR__.'/../../../database/dbconfig2.php';
 
-$user = new SUB_ADMIN();
+$user = new SUPERADMIN();
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../../');
+ $user->redirect('../../../private/superadmin/');
 }
 
 
@@ -31,13 +32,13 @@ else
 }
 
 $query = "
-SELECT * FROM pdf_file WHERE user_id = :user_id
+SELECT * FROM pdf_file
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  AND file_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE file_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
@@ -46,11 +47,11 @@ $query .= 'ORDER BY file_name ASC ';
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":user_id" => $_SESSION['sub_adminSession']));
+$statement->execute(array());
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":user_id" => $_SESSION['sub_adminSession']));
+$statement->execute(array());
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)

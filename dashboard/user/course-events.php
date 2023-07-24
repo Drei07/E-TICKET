@@ -165,7 +165,6 @@ include_once 'header.php';
 														<label><?php echo $department_data['department'] ?></label>
 													</h2>
 												</div>
-												<a href="controller/course-event-controller.php?id=<?php echo $course_event['id'] ?>&delete_course_event" class="delete"><i class='bx bxs-trash icon-2'></i></a>
 											</div>
 										</div>
 									<?php

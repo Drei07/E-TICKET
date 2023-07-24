@@ -172,6 +172,13 @@ public function mainUrl(){
  public function logout()
  {
   unset($_SESSION['adminSession']);
+
+  $_SESSION['status_title'] = 'Logout!';
+  $_SESSION['status'] = 'Thank you for using E-CKET';
+  $_SESSION['status_code'] = 'success';
+  $_SESSION['status_timer'] = 40000;    
+  header('Location: ../../../private/admin/');
+
  }
  
  function send_mail($email,$message,$subject,$smtp_email,$smtp_password,$system_name)

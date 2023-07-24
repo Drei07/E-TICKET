@@ -94,7 +94,14 @@ $user_last_update       = $user_data['updated_at'];
 					<span class="text">Year Level</span>
 				</a>
 			</li>
+			<li>
+				<a href="../pdf-files">
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">PDF Files</span>
+				</a>
+			</li>
 		</ul>
+		
 		<ul class="side-menu top">
 			<li>
 				<a href="../settings">
@@ -114,6 +121,7 @@ $user_last_update       = $user_data['updated_at'];
 					<span class="text">Signout</span>
 				</a>
 			</li>
+			
 		</ul>
 	</section>
 	<!-- SIDEBAR -->

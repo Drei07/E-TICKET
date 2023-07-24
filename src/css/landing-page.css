@@ -2064,15 +2064,41 @@ object{
 }
 
 .scanner .content #sourceSelectPanel{
-    padding: 2rem 0;
+
+
 }
 
 .scanner .content #sourceSelectPanel #sourceSelect{
     text-align: center;
+    width: 100%;
+    font-size: 2.5rem;
+    padding: 2rem;
+    border-radius: 5px;
+    margin: 2rem 0 2rem 0;
 }
 
 .scanner .content #sourceSelectPanel #toggleButton{
     width: 100%;
+    font-size: 2.5rem;
+    padding: 2rem;
+    border-radius: 5px;
+    margin: 2rem 0 4rem 0;
+
+}
+
+.scanner .content #sourceSelectPanel a{
+    width: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 2.5rem;
+    padding: 2rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    background-color: #000;
+    text-align: center;
 }
 
 .scanner .content #qr_reader__scan_region #qr_shaded_region #top_left {

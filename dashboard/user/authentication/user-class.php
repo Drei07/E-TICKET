@@ -179,6 +179,12 @@ public function systemLogo(){
  public function logout()
  {
   unset($_SESSION['sub_adminSession']);
+
+  $_SESSION['status_title'] = 'Logout!';
+  $_SESSION['status'] = 'Thank you for using E-CKET';
+  $_SESSION['status_code'] = 'success';
+  $_SESSION['status_timer'] = 40000;    
+  header('Location: ../../../private/sub-admin/');
  }
 
  function send_mail($email,$message,$subject,$smtp_email,$smtp_password,$system_name)

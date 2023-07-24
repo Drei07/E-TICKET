@@ -413,6 +413,7 @@ border-right-color: var(--main);
 	height: 36px;
 	object-fit: cover;
 	border-radius: 50%;
+	border: 1px solid var(--dark);
 }
 #content nav .switch-mode {
 	display: block;

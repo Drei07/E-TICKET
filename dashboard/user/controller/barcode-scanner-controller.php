@@ -45,6 +45,15 @@ class BarCode {
         }
     }
     
+    public function signOut(){
+        unset($_SESSION['eventId']);
+
+        $_SESSION['status_title'] = 'Logout!';
+        $_SESSION['status'] = 'Thank you for using E-CKET';
+        $_SESSION['status_code'] = 'success';
+        $_SESSION['status_timer'] = 40000;    
+        header('Location: ../../../private/sub-admin/scan-barcode');
+    }
 
 
     public function runQuery($sql)
@@ -61,6 +70,13 @@ if (isset($_POST['btn-submit'])) {
 
     $barcode_scanner_signin = new BarCode();
     $barcode_scanner_signin->scannerSignin($password);
+}
+
+if(isset($_GET['signout'])){
+
+
+    $signout = new BarCode();
+    $signout->signOut();
 }
 
 
