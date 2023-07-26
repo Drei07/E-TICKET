@@ -38,7 +38,7 @@ $config = new SystemConfig();
     <section class="home" id="homes" style="margin-bottom: 20rem;margin-top: 5rem;">
         <div class="content">
             <h3>About<span> E-CKET </span></h3>
-            <p>E-CKET is a leading ticketing platform that aims to revolutionize the way people buy and sell event tickets. Our mission is to provide a seamless and secure ticketing experience for event organizers and attendees alike.</p>
+            <p>E-CKET is a leading ticketing platform that aims to revolutionize the way people buy and sell event tickets. Our mission is to provide a seamless and secure ticketing experience for event organizers and attendees alike. Join e-cket today and be a part of the future of ticketing. Whether you're an event organizer or an enthusiastic attendee, we've got you covered. Let's create unforgettable events together!</p>
         </div>&nbsp;&nbsp;
 
         <div class="image">
