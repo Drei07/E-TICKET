@@ -1944,7 +1944,7 @@ footer .pre-registration p{
 }
 
 .event .column .image h4{
-	font-size: 1.7rem;
+	font-size: 2rem;
 	height: 50px;
     width: 200px;
 }
@@ -1997,7 +1997,7 @@ object{
     }
 
     .event .column .image h4{
-        font-size: 1.3rem;
+        font-size: 1.7rem;
         height: 40px;
         width: 200px;
     }
@@ -2065,10 +2065,6 @@ object{
     border-radius: 10px;
 }
 
-.scanner .content #sourceSelectPanel{
-
-
-}
 
 .scanner .content #sourceSelectPanel #sourceSelect{
     text-align: center;
