@@ -38,6 +38,23 @@ class ScanBarCode
                     ":event_id" => $event_id,
                 ));
 
+                // ticket  data
+                $ticket_id = $barcodeExist['id'];
+                $user_first_name = $barcodeExist['user_first_name'];
+                $user_middle_name = $barcodeExist['user_middle_name'];
+                $user_last_name = $barcodeExist['user_last_name'];
+                $user_email = $barcodeExist['user_email'];
+
+                $insertStmt = $this->runQuery('INSERT INTO event_registered (event_id, ticket_id, user_first_name, user_middle_name, user_last_name, user_email) VALUES (:event_id, :ticket_id, :user_first_name, :user_middle_name, :user_last_name, :user_email)');
+                $insertStmt->execute(array(
+                    ":event_id"  => $event_id,
+                    ":ticket_id" => $ticket_id,
+                    ":user_first_name" => $user_first_name,
+                    ":user_middle_name" => $user_middle_name,
+                    ":user_last_name" => $user_last_name,
+                    ":user_email" => $user_email
+                ));
+
                 $_SESSION['status_title'] = 'Success!';
                 $_SESSION['status'] = 'You can now enter the event!';
                 $_SESSION['status_code'] = 'success';

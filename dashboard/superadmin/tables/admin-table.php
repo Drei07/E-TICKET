@@ -38,9 +38,9 @@ if($_POST['query'] != '')
 {
   $query .= '
   AND first_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND last_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND middle_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
-  AND email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR last_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR middle_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 

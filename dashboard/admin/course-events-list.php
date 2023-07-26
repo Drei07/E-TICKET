@@ -82,6 +82,12 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<span class="text">Year Level</span>
 				</a>
 			</li>
+			<li>
+				<a href="pdf-files">
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">PDF Files</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>

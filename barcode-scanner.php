@@ -23,10 +23,8 @@ $event_id = $_SESSION['eventId'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="src/css/landing-page.css?v=<?php echo time(); ?>">
-
     <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
-    <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
     <title>Barcode Scanner</title>
 
 </head>
@@ -71,18 +69,21 @@ $event_id = $_SESSION['eventId'];
             <div id="sourceSelectPanel">
                 <select id="sourceSelect"></select>
                 <button id="toggleButton" onclick="toggleScanning()" class="btn-danger">Stop Scanning</button>
+                <a href="dashboard/user/controller/barcode-scanner-controller.php?signout=1" class="btn-signout">Sign Out</a>
             </div>
 
-            <form action="dashboard/student/controller/scan-barcode.php?event_id=<?php echo $event_id?>" method="POST" id="scanForm" style="display: none;">
-                <input type="text" name="scan" id="scan" class="qrcode">  
+            <form action="dashboard/student/controller/scan-barcode-controller.php?event_id=<?php echo $event_id ?>" method="POST" id="scanForm" style="display: none;">
+                <input type="text" name="scan" id="scan" class="qrcode">
             </form>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="src/js/landing-page.js"></script>
+    <script src="src/js/form.js"></script>
+    <script src="src/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript"> 
         let selectedDeviceId;
         let codeReader;
         let scanning = true;
@@ -126,14 +127,14 @@ $event_id = $_SESSION['eventId'];
                         });
 
                         if (result.text) {
-                document.getElementById('scanForm').submit();
-            }
+                            document.getElementById('scanForm').submit();
+                        }
                     }
                     if (err && !(err instanceof ZXing.NotFoundException)) {
                         document.getElementById('result').textContent = err;
                     }
                 });
-            }, 500);
+            }, 1500);
         }
 
         function stopScanning() {
@@ -182,6 +183,25 @@ $event_id = $_SESSION['eventId'];
                     console.error(err)
                 })
         });
+        // Signout
+        $('.btn-signout').on('click', function (e) {
+	e.preventDefault();
+	const href = $(this).attr('href')
+
+	swal({
+		title: "Signout?",
+		text: "Are you sure do you want to signout?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((willSignout) => {
+			if (willSignout) {
+				document.location.href = href;
+			}
+		});
+})
+       
     </script>
     <?php
     if (isset($_SESSION['status']) && $_SESSION['status'] != '') {

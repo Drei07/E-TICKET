@@ -31,13 +31,13 @@ else
 }
 
 $query = "
-SELECT * FROM pdf_file 
+SELECT * FROM pdf_file WHERE user_id = :user_id
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE file_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND file_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
@@ -46,11 +46,11 @@ $query .= 'ORDER BY file_name ASC ';
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array());
+$statement->execute(array(":user_id" => $_SESSION['sub_adminSession']));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array());
+$statement->execute(array(":user_id" => $_SESSION['sub_adminSession']));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)

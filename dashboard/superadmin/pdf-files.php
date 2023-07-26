@@ -1,49 +1,13 @@
 <?php
-include_once '../../../database/dbconfig2.php';
-require_once '../authentication/superadmin-class.php';
-include_once '../../../configuration/settings-configuration.php';
-
-
-// instances of the classes
-$config = new SystemConfig();
-$user = new SUPERADMIN();
-
-if (!$user->isUserLoggedIn()) {
-	$user->redirect('../../../../private/superadmin/');
-}
-
-// retrieve user data
-$stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
-$stmt->execute(array(":uid" => $_SESSION['superadminSession']));
-$user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// retrieve profile user and full name
-$user_id                = $user_data['id'];
-$user_profile           = $user_data['profile'];
-$user_fname             = $user_data['first_name'];
-$user_mname             = $user_data['middle_name'];
-$user_lname             = $user_data['last_name'];
-$user_fullname          = $user_data['last_name'] . ", " . $user_data['first_name'];
-$user_sex               = $user_data['sex'];
-$user_birth_date        = $user_data['date_of_birth'];
-$user_age               = $user_data['age'];
-$user_civil_status      = $user_data['civil_status'];
-$user_phone_number      = $user_data['phone_number'];
-$user_email             = $user_data['email'];
-$user_last_update       = $user_data['updated_at'];
-
+include_once 'header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="../../../src/img/<?php echo $config->getSystemLogo() ?>">
-	<link rel="stylesheet" href="../../../src/node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../../../src/node_modules/boxicons/css/boxicons.min.css">
-	<link rel="stylesheet" href="../../../src/node_modules/aos/dist/aos.css">
-    <link rel="stylesheet" href="../../../src/css/admin.css?v=<?php echo time(); ?>">
-	<title>Department Archives</title>
+    <?php
+    include_once '../../configuration/header.php';
+    ?>
+	<title>PDF Files</title>
 </head>
 <body>
 
@@ -53,48 +17,54 @@ $user_last_update       = $user_data['updated_at'];
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="" class="brand">
-			<img src="../../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
+			<img src="../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
 			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="../">
+				<a href="./">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li>
-				<a href="../events">
+				<a href="events">
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">Events</span>
 				</a>
 			</li>
 			<li>
-				<a href="../sub-admin">
+				<a href="course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
+				<a href="sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
-			<li   class="active">
-				<a href="../department">
+			<li>
+				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
 				</a>
 			</li>
 			<li>
-				<a href="../course">
+				<a href="course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
 				</a>
 			</li>
 			<li>
-				<a href="../year-level">
+				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
 				</a>
 			</li>
-			<li>
-				<a href="../pdf-files">
+			<li   class="active">
+				<a href="pdf-files">
 					<i class='bx bxs-file-pdf'></i>
 					<span class="text">PDF Files</span>
 				</a>
@@ -102,19 +72,19 @@ $user_last_update       = $user_data['updated_at'];
 		</ul>
 		<ul class="side-menu top">
 			<li>
-				<a href="../settings">
+				<a href="settings">
 					<i class='bx bxs-cog' ></i>
 					<span class="text">Settings</span>
 				</a>
 			</li>
 			<li>
-				<a href="../audit-trail">
+				<a href="audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
 				</a>
 			</li>
 			<li>
-				<a href="../authentication/superadmin-signout" class="btn-signout">
+				<a href="authentication/superadmin-signout" class="btn-signout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Signout</span>
 				</a>
@@ -140,7 +110,7 @@ $user_last_update       = $user_data['updated_at'];
                 <span>Hello, <label for=""><?php echo $user_fname ?></label></span>
             </div>
 			<a href="profile" class="profile" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Profile">
-				<img src="../../../src/img/<?php echo $user_profile ?>">
+				<img src="../../src/img/<?php echo $user_profile ?>">
 			</a>
 		</nav>
 		<!-- NAVBAR -->
@@ -149,18 +119,14 @@ $user_last_update       = $user_data['updated_at'];
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Department Archives</h1>
+					<h1>PDF Files</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="../">Home</a>
+							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="../department">Department</a>
-						</li>
-						<li>|</li>
-						<li>
-							<a href="">Archives</a>
+							<a href="">PDF Files</a>
 						</li>
 					</ul>
 				</div>
@@ -168,12 +134,12 @@ $user_last_update       = $user_data['updated_at'];
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-buildings' ></i> List of Archives Department</h3>
+						<h3><i class='bx bxs-key' ></i> List of Printed Access Tokens</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search department . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="search access tokens . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
@@ -184,16 +150,13 @@ $user_last_update       = $user_data['updated_at'];
 			</div>
 		</main>
 		<!-- MAIN -->
+		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 
-    <script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="../../../src/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="../../../src/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../../src/js/loader.js"></script>
-    <script src="../../../src/js/form.js"></script>
-    <script src="../../../src/js/tooltip.js"></script>
-	<script src="../../../src/js/admin.js"></script>
+	<?php
+    include_once '../../configuration/footer.php';
+    ?>
 
 	<script>
 
@@ -205,7 +168,7 @@ $user_last_update       = $user_data['updated_at'];
 	function load_data(page, query = '')
 	{
 	$.ajax({
-		url:"tables/department-table.php",
+		url:"tables/printed-access-token-table.php",
 		method:"POST",
 		data:{page:page, query:query},
 		success:function(data)

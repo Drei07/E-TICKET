@@ -63,6 +63,12 @@ include_once 'header.php';
 					<span class="text">Year Level</span>
 				</a>
 			</li>
+            <li>
+				<a href="pdf-files">
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">PDF Files</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu top">
 			<li>

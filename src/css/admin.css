@@ -135,6 +135,7 @@ body {
 	font-weight: 600;
 	font-size: 13px;
 	margin-right: 1.5rem;
+	margin-bottom: 2rem;
 }
 
 .swal-text{
@@ -413,6 +414,7 @@ border-right-color: var(--main);
 	height: 36px;
 	object-fit: cover;
 	border-radius: 50%;
+	border: 1px solid var(--dark);
 }
 #content nav .switch-mode {
 	display: block;

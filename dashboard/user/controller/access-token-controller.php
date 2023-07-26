@@ -276,11 +276,12 @@ class AccessTokenMandatory
 
     public function savePdfFilenameToDatabaseMandatory($course_id, $year_level_id, $filename)
     {
-        $stmt = $this->runQuery('INSERT INTO pdf_file (course_id, year_level_id, file_name) VALUES (:course_id, :year_level_id, :file_name)');
+        $stmt = $this->runQuery('INSERT INTO pdf_file (user_id, course_id, year_level_id, file_name) VALUES (:user_id, :course_id, :year_level_id, :file_name)');
         $exec = $stmt->execute(array(
             ":course_id"  => $course_id,
             ":year_level_id"  => $year_level_id,
             ":file_name"         => $filename,
+            ":user_id" => $_SESSION['sub_adminSession']
         ));
     
     }
@@ -553,10 +554,11 @@ class AccessTokenOptional
 
     public function savePdfFilenameToDatabaseOptional($event_id, $filename)
     {
-        $stmt = $this->runQuery('INSERT INTO pdf_file (event_id, file_name) VALUES (:event_id, :file_name)');
+        $stmt = $this->runQuery('INSERT INTO pdf_file (user_id, event_id, file_name) VALUES (:user_id, :event_id, :file_name)');
         $exec = $stmt->execute(array(
             ":event_id"  => $event_id,
             ":file_name"         => $filename,
+            ":user_id" => $_SESSION['sub_adminSession']
         ));
     
     }
