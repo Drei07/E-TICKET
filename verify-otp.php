@@ -50,8 +50,7 @@ if ($_SESSION['OTP'] === NULL) {
     <section class="home" id="homes">
         <div class="content">
             <h3>Enter your OTP</h3>
-            <p>Please enter the 6 digit One-Time Password (OTP) that has been sent to your registered
-                email address in order to complete the pre-registration process. To resend please wait for ( <span id="timer" style="font-weight: bold;"> </span>) <a href="dashboard/student/controller/pre-register-controller.php?btn-resend-otp=1" id="resent" style="text-decoration: none; color:#EB58B5;"></a></p>
+            <p>Please enter the 6 digit One-Time Password (OTP) that has been sent to <?php echo $_SESSION['not_verify_email'] ?> in order to complete the pre-registration process. To resend please wait for ( <span id="timer" style="font-weight: bold;"> </span>) <a href="dashboard/student/controller/student-controller.php?btn-resend-otp=1" id="resent" style="text-decoration: none; color:#EB58B5;"></a></p>
             <div class="verify">
                 <form action="dashboard/student/controller/student-controller.php" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
                     <div class="row gx-5 needs-validation">

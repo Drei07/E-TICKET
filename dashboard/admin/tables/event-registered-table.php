@@ -30,27 +30,33 @@ else
   $start = 0;
 }
 
+$eventId = isset($_SESSION['event_id']) ? $_SESSION['event_id'] : '';
+
+
 $query = "
-SELECT * FROM course WHERE status = :status
+SELECT * FROM event_registered WHERE event_id = :event_id AND status = :status
 ";
 $output = '';
 if($_POST['query'] != '')
 {
   $query .= '
-  AND course LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND user_first_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR user_middle_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR user_last_name LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  OR user_email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   ';
 }
 
-$query .= 'ORDER BY course ASC ';
+$query .= 'ORDER BY id ASC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
 $statement = $pdoConnect->prepare($query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":event_id" => $eventId,":status" => "active"));
 $total_data = $statement->rowCount();
 
 $statement = $pdoConnect->prepare($filter_query);
-$statement->execute(array(":status" => "active"));
+$statement->execute(array(":event_id" => $eventId,":status" => "active"));
 $total_filter_data = $statement->rowCount();
 
 if($total_data > 0)
@@ -58,41 +64,29 @@ if($total_data > 0)
 $output = '
 
     <thead>
-    <th>DEPARTMENT LOGO</th>
-    <th>DEPARTMENT NAME</th>
-    <th>COURSE / PROGRAM</th>
-    <th>ACTION</th>
+    <th>FULL NAME</th>
+    <th>PHONE NUMBER</th>
+    <th>EMAIL</th>
+    <th>DATE</th>
     </thead>
 ';
   while($row=$statement->fetch(PDO::FETCH_ASSOC))
   {
 
-    if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/course-controller?id='.$row["id"].'&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
-    
-    } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="controller/course-controller?id='.$row["id"].'&activate_course=1" class="activate">Activate</a></button>';
-    }
-    
-    $department_id = $row['department_id'];
-    $pdoQuery = "SELECT * FROM department WHERE id = :id";
+    $ticket_id = $row['ticket_id'];
+    $pdoQuery = "SELECT * FROM ticket WHERE id = :id";
     $pdoResult = $pdoConnect->prepare($pdoQuery);
-    $pdoExec = $pdoResult->execute(array(":id" => $department_id));
-    $department_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    $pdoExec = $pdoResult->execute(array(":id" => $ticket_id));
+    $ticket_data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
 
     $output .= '
     
     <tr>
-      <td>
-      <img src="../../src/img/'.$department_data["department_logo"].'">
-      </td>
-      <td>'.$department_data["department"].'</td>
-      <td>'.$row["course"].'</td>
-      <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
-      '.$button.'
-      </td>        
+      <td>'.$ticket_data["user_last_name"].', '.$ticket_data["user_first_name"].' '.$ticket_data["user_middle_name"].'</td>
+      <td>'.$ticket_data["user_phone_number"].'</td>
+      <td>'.$ticket_data["user_email"].'</td>
+      <td>'.$row["created_at"].'</td>        
     </tr>
     ';
     

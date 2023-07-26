@@ -433,6 +433,16 @@ class StudentController
         return $barcode;
     }
 
+    public function cancelTicket(){
+        unset($_SESSION['token']);
+        unset($_SESSION['firstname']);
+        unset($_SESSION['middlename']);
+        unset($_SESSION['lastname']);
+        unset($_SESSION['phone_number']);
+        unset($_SESSION['email']);
+        header('Location: ../../../');
+    }
+
     public function runQuery($sql)
     {
         $stmt = $this->conn->prepare($sql);
@@ -517,4 +527,12 @@ if (isset($_POST['btn-get-ticket-optional'])) {
 
     $get_ticket_optional = new StudentController();
     $get_ticket_optional->getTicketOptional($eventId, $first_name, $middle_name, $last_name, $phone_number, $email);
+}
+
+//cancel ticket
+if(isset($_GET['cancel_ticket'])){
+
+    $cancel_ticket = new StudentController();
+    $cancel_ticket->cancelTicket();
+
 }

@@ -1767,6 +1767,8 @@ footer .pre-registration p{
     flex-direction: column;
     margin-bottom: 10rem;
 }
+
+
 .event .heading h1{
     font-size: 30px;
     font-weight: 700;
@@ -1820,10 +1822,10 @@ footer .pre-registration p{
 }
 
 .event .column .image h4{
-	font-size: 2rem;
+	font-size: 2.5rem;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 	font-weight: 700!important;
-	color: var(--dark);
+	color: #3a3a3a;
 	letter-spacing: normal;
 	height: 60px;
     width: 250px;

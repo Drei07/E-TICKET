@@ -54,7 +54,28 @@ $config = new SystemConfig();
         <div class="column" id="column1">
 
             <div class="image">
-                <img src="src/img/access-token.svg" alt="the-best-time-to-visit.sv">
+                <img src="src/img/enter-otp.svg" alt="enter-otp">
+            </div>
+
+            <div class="content">
+                <div class="ic">
+                    <object data="src/img/icons8-otp-64.png"></object>
+                    <h3>Email Verification</h3>
+                </div>
+                <p data-aos="fade-in">Complete the pre-registration form by providing your valid email address. An OTP (One-Time Password) will be sent to your email to verify its authenticity.</p>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="column" id="column2">
+
+            <div class="image">
+                <img src="src/img/access-token.svg" alt="access-token">
             </div>
 
             <div class="content">
@@ -72,10 +93,10 @@ $config = new SystemConfig();
         <br>
         <br>
         <br>
-        <div class="column" id="column2">
+        <div class="column" id="column3">
 
             <div class="image">
-                <img src="src/img/choose-event.svg" alt="remote-sign-in.svg">
+                <img src="src/img/choose-event.svg" alt="choose-event">
             </div>
 
             <div class="content">
@@ -94,10 +115,10 @@ $config = new SystemConfig();
         <br>
         <br>
         <br>
-        <div class="column" id="column3">
+        <div class="column" id="column4">
 
             <div class="image">
-                <img src="src/img/get-ticket.svg" alt="img-covid-vaccine-pass">
+                <img src="src/img/get-ticket.svg" alt="get-ticket">
             </div>
 
             <div class="content">
@@ -116,10 +137,10 @@ $config = new SystemConfig();
         <br>
         <br>
 
-        <div class="column" id="column4">
+        <div class="column" id="column5">
 
             <div class="image">
-                <img src="src/img/Barcode-scanning.svg" alt="chat-customers.svg">
+                <img src="src/img/Barcode-scanning.svg" alt="Barcode-scanning">
             </div>
 
             <div class="content">
@@ -138,7 +159,7 @@ $config = new SystemConfig();
         <br>
         <br>
         <br>
-        <div class="column" id="column5">
+        <div class="column" id="column6">
 
             <div class="image">
                 <img src="src/img/enjoy-event.svg" alt="chat-customers.svg">
@@ -146,7 +167,7 @@ $config = new SystemConfig();
 
             <div class="content">
                 <div class="ic">
-                    <object data="src/img/icons8-party-64.png"></object>
+                    <object data="src/img/enjoy-event-icon.png"></object>
                     <h3>Enjoy the Event</h3>
                 </div>
                 <p data-aos="fade-in">Embrace the moment and fully immerse yourself in the event. Enjoy the live experience, connect with others, and create lasting memories. Let go of all worries and fully engage with the music, performances, or activities. Make the most of this opportunity to have fun, be present, and cherish the magical atmosphere.</p>
