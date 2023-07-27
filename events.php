@@ -35,7 +35,7 @@ $config = new SystemConfig();
         </nav>
     </header>
     <!-- Live queue Modal -->
-    <section class="event" id="cov" style="margin-bottom: 20rem;" >
+    <section class="event" id="cov" style="margin-bottom: 20rem; background-color: #FAFAFA;" >
         <div class="column" id="column1" style="margin-top: 20rem;">
             <?php
             $pdoQuery = "SELECT * FROM events WHERE status = :status";
