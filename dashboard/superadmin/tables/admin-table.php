@@ -95,7 +95,7 @@ $output = '
       <td>'.$row["phone_number"].'</td>
       <td>'.$row["email"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-admin?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-admin?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>

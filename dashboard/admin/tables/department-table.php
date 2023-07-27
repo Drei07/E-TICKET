@@ -89,7 +89,7 @@ $output = '
       </td>
       <td>'.$row["department"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>

@@ -89,7 +89,7 @@ SELECT * FROM course WHERE status = :status
       <td>' . $department_data["department"] . '</td>
       <td>' . $row["course"] . '</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id=' . $row["id"] . '" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-course?id=' . $row["id"] . '" class="edit"><i class="bx bxs-edit"></i></a></button>
       ' . $button . '
       </td>        
     </tr>

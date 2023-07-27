@@ -1,21 +1,26 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../../authentication/admin-class.php';
-include_once __DIR__.'/../../../../database/dbconfig2.php';
+require_once '../authentication/admin-class.php';
+include_once __DIR__.'/../../../database/dbconfig2.php';
 
 $user = new ADMIN();
 if(!$user->isUserLoggedIn())
 {
- $user->redirect('../../../../private/admin/');
+ $user->redirect('../../../private/admin/');
 }
 
 
 
 function get_total_row($pdoConnect)
 {
-
+  $pdoQuery = "SELECT COUNT(*) as total_rows FROM department WHERE status = :status";
+  $pdoResult = $pdoConnect->prepare($pdoQuery);
+  $pdoResult->execute(array(":status" => "disabled"));
+  $row = $pdoResult->fetch(PDO::FETCH_ASSOC);
+  return $row['total_rows'];
 }
+
 
 $total_record = get_total_row($pdoConnect);
 $limit = '20';
@@ -56,7 +61,9 @@ $total_filter_data = $statement->rowCount();
 if($total_data > 0)
 {
 $output = '
-
+    <div class="row-count">
+      Showing ' . ($start + 1) . ' to ' . min($start + $limit, $total_data) . ' of ' . $total_record . ' entries
+    </div>
     <thead>
     <th>DEPARTMENT LOGO</th>
     <th>DEPARTMENT NAME</th>
@@ -67,21 +74,22 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="../controller/department-controller?id='.$row["id"].'&delete_department=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="controller/department-controller?id='.$row["id"].'&delete_department=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="../controller/department-controller?id='.$row["id"].'&activate_department=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="controller/department-controller?id='.$row["id"].'&activate_department=1" class="activate">Activate</a></button>';
     }
+
 
     $output .= '
     
     <tr>
       <td>
-      <img src="../../../src/img/'.$row["department_logo"].'">
+      <img src="../../src/img/'.$row["department_logo"].'">
       </td>
       <td>'.$row["department"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="../edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>
@@ -218,7 +226,7 @@ echo $output;
 
 ?>
 
-<script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../../src/js/form.js"></script>
+<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../../src/js/form.js"></script>
 
 </table>

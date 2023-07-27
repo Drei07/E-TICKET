@@ -74,7 +74,7 @@ $output = '
     <tr>
       <td><i class="bx bxs-file-pdf"></i> '.$row["file_name"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="../pdf/'.$row["file_name"].'" class="view" download><i class="bx bxs-printer"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="../pdf/'.$row["file_name"].'" class="view" download><i class="bx bxs-printer"></i></a></button>
       </td>        
     </tr>
     ';

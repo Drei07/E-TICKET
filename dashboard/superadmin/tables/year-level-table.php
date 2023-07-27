@@ -83,7 +83,7 @@ $output = '
     <tr>
       <td>'.$row["year_level"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary V"><a href="edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>
