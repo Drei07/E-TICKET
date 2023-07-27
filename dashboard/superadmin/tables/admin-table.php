@@ -12,9 +12,14 @@ if(!$user->isUserLoggedIn())
 
 
 
+
 function get_total_row($pdoConnect)
 {
-
+  $pdoQuery = "SELECT COUNT(*) as total_rows FROM users WHERE user_type = :user_type";
+  $pdoResult = $pdoConnect->prepare($pdoQuery);
+  $pdoResult->execute(array(":user_type" => 1));
+  $row = $pdoResult->fetch(PDO::FETCH_ASSOC);
+  return $row['total_rows'];
 }
 
 $total_record = get_total_row($pdoConnect);
@@ -59,7 +64,9 @@ $total_filter_data = $statement->rowCount();
 if($total_data > 0)
 {
 $output = '
-
+  <div class="row-count">
+    Showing ' . ($start + 1) . ' to ' . min($start + $limit, $total_data) . ' of ' . $total_record . ' entries
+  </div>
     <thead>
     <th>STATUS</th>
     <th>NAME</th>

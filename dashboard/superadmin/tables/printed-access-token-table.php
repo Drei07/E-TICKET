@@ -1,7 +1,6 @@
 <table class="table table-bordered table-hover">
 <?php
 
-
 require_once '../authentication/superadmin-class.php';
 include_once __DIR__.'/../../../database/dbconfig2.php';
 
@@ -11,11 +10,13 @@ if(!$user->isUserLoggedIn())
  $user->redirect('../../../private/superadmin/');
 }
 
-
-
 function get_total_row($pdoConnect)
 {
-
+  $pdoQuery = "SELECT COUNT(*) as total_rows FROM pdf_file";
+  $pdoResult = $pdoConnect->prepare($pdoQuery);
+  $pdoResult->execute();
+  $row = $pdoResult->fetch(PDO::FETCH_ASSOC);
+  return $row['total_rows'];
 }
 
 $total_record = get_total_row($pdoConnect);
@@ -57,7 +58,9 @@ $total_filter_data = $statement->rowCount();
 if($total_data > 0)
 {
 $output = '
-
+  <div class="row-count">
+    Showing ' . ($start + 1) . ' to ' . min($start + $limit, $total_data) . ' of ' . $total_record . ' entries
+  </div>
     <thead>
     <th>FILE NAME</th>
     <th>ACTION</th>

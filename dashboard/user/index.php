@@ -97,6 +97,71 @@ include_once 'header.php';
 				</div>
 			</div>
 
+			<ul class="dashboard_data">
+				<li>
+					<i class='bx bx-key'></i>
+					<span class="text">
+						<?php
+						$pdoQuery = "SELECT * FROM access_token WHERE user_id = :user_id";
+						$pdoResult1 = $pdoConnect->prepare($pdoQuery);
+						$pdoResult1->execute(array(":user_id" => $_SESSION['sub_adminSession']));
+
+						$count = $pdoResult1->rowCount();
+
+						echo
+						"
+									<h3>$count</h3>
+								";
+						?>
+						<p>Access Tokens</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-file-pdf'></i>
+					<span class="text">
+						<?php
+						$pdoQuery = "SELECT * FROM pdf_file WHERE user_id = :user_id";
+						$pdoResult1 = $pdoConnect->prepare($pdoQuery);
+						$pdoResult1->execute(array(":user_id" => $_SESSION['sub_adminSession']));
+
+						$count = $pdoResult1->rowCount();
+
+						echo
+						"
+									<h3>$count</h3>
+								";
+						?>
+						<p>PDF Files</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-calendar-event'></i>
+					<span class="text">
+						<?php
+						$stmt = $user->runQuery("SELECT * FROM course WHERE department_id=:department_id");
+						$stmt->execute(array(":department_id" => $user_department));
+						$pdoResult0 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+						$total_count = 0; // Initialize the total count variable
+
+						foreach ($pdoResult0 as $course_data) {
+							$course_id = $course_data['id'];
+							$pdoQuery = "SELECT * FROM course_event WHERE status = :status AND course_id = :course_id ORDER BY id DESC";
+							$pdoResult = $pdoConnect->prepare($pdoQuery);
+							$pdoResult->execute(array(":status" => "active", ":course_id" => $course_id));
+
+							$count = $pdoResult->rowCount(); // Get the count of rows for the current course
+							$total_count += $count; // Add the current count to the total count
+						}
+
+						echo "<h3>$total_count</h3>"; // Output the total count
+						?>
+
+						<p>Course Events</p>
+					</span>
+				</li>
+			</ul>
+
 		</main>
 		<!-- MAIN -->
 	</section>

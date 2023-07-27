@@ -1347,6 +1347,12 @@ border-right-color: var(--main);
     font-style: 50rem;
 }
 
+#content main .table-data .order .data-table .table .row-count{
+	padding-bottom: 1rem;
+	text-align: left;
+	font-weight: 500;
+}
+
 #content main .table-data .order .data-table .table td{
 	padding: 15px 9px;
 	width:auto;

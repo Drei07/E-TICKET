@@ -14,7 +14,12 @@ if(!$user->isUserLoggedIn())
 
 function get_total_row($pdoConnect)
 {
-
+  $eventId = isset($_SESSION['event_id']) ? $_SESSION['event_id'] : '';
+  $pdoQuery = "SELECT COUNT(*) as total_rows FROM event_registered WHERE event_id = :event_id AND status = :status";
+  $pdoResult = $pdoConnect->prepare($pdoQuery);
+  $pdoResult->execute(array(":event_id" => $eventId,":status" => "active"));
+  $row = $pdoResult->fetch(PDO::FETCH_ASSOC);
+  return $row['total_rows'];
 }
 
 $total_record = get_total_row($pdoConnect);
@@ -62,7 +67,9 @@ $total_filter_data = $statement->rowCount();
 if($total_data > 0)
 {
 $output = '
-
+  <div class="row-count">
+    Showing ' . ($start + 1) . ' to ' . min($start + $limit, $total_data) . ' of ' . $total_record . ' entries
+  </div>
     <thead>
     <th>FULL NAME</th>
     <th>PHONE NUMBER</th>
