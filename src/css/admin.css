@@ -135,8 +135,19 @@ body {
 	font-weight: 600;
 	font-size: 13px;
 	margin-right: 1.5rem;
-	margin-bottom: 2rem;
 }
+
+@media screen and (max-width:600px){
+	.archives{
+		width: 100%;
+	}
+
+	#content main .table-data .order .data-table .searchBx .search{
+		width: 100%;
+	}
+
+}
+
 
 .swal-text{
 	text-align: center;
@@ -347,9 +358,10 @@ border-right-color: var(--main);
 	color: var(--main);
 }
 #content nav form {
-	max-width: 400px;
+	max-width: 0px;
 	width: 100%;
 	margin-right: auto;
+	background-color: #15ce1e;
 }
 #content nav form .form-input {
 	display: flex;
@@ -1277,6 +1289,7 @@ border-right-color: var(--main);
     display: flex;
 	justify-content: right;
 	padding-bottom: 1rem;
+	margin-top: 2rem;
 
 }
 #content main .table-data .order .data-table .searchBx a{
@@ -1299,7 +1312,6 @@ border-right-color: var(--main);
     background-color: var(--light);
     height: 35px;
 	border-style: none;
-    width: 270px;
     font-size: 12px;
     padding-left: 20px;
     padding-right: 40px;
@@ -1481,12 +1493,10 @@ border-right-color: var(--main);
   /* END OF MODALS */
 
 
-
-
-
 @media screen and (max-width: 576px) {
 	#content nav form .form-input input {
 		display: none;
+		width: 100px;
 	}
 
 	#content nav form .form-input button {
@@ -1592,7 +1602,6 @@ border-right-color: var(--main);
 #content main .table-data  .box-info li {
 	padding: 0px;
 	border-radius: 5px;
-	display: block;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;

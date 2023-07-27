@@ -96,7 +96,7 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
         .ticket {
             width: 400px;
             height: 500px;
-            padding: 20px;
+            padding: 20rem;
             background-color: #F8F8F8;
             border: 1px solid #F8F8F8;
             border-radius: 10px;
@@ -122,6 +122,27 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
             font-size: 7px;
             font-weight: 300;
         }
+
+        .ticket .details{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem;
+        }
+
+        .ticket .details p{
+            font-size: 9px;
+        }
+
+        .ticket .footer{
+            display: flex;
+            padding: 5rem;
+            justify-content: center;
+            margin-top: 10rem;
+        }
+        .ticket .footer p{
+            font-size: 9px;
+        }
     </style>
 </head>
 
@@ -134,12 +155,33 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
             <h2><?php echo $events_data['event_name'] ?></h2>
             <h3><?php echo $events_data['event_venue']; ?></h3>
             <p><?php echo date('m/d/y', strtotime($events_data['event_date'])); ?> (Optional Events)</p>
+
+
+            <div class="details">
+                <p><strong>Full Name: </strong> <?php echo $_SESSION['last_name'] ?>, <?php echo $_SESSION['first_name'] ?> <?php echo $_SESSION['middle_name'] ?></p>
+                <p><strong>Phone Number: </strong> +63<?php echo $_SESSION['phone_number'] ?></p>
+                <p><strong>Email: </strong> <?php echo $_SESSION['email'] ?></p>
+            </div>
+
+            <div class="footer">
+                <p>Kindly ensure that you have this ticket with you when attending the event, as it will serve as your entry pass. Should you have any further questions or concerns, please do not hesitate to contact us.</p>
+            </div>
         <?php
         } else {
         ?>
             <h2><?php echo $department_data['department'] ?></h2>
             <h3><?php echo $course_data['course']; ?></h3>
             <p><?php echo $year_level_data['year_level']; ?> (Mandatory Events)</p>
+
+            <div class="details">
+                <p><strong>Full Name: </strong> <?php echo $_SESSION['last_name'] ?>, <?php echo $_SESSION['first_name'] ?> <?php echo $_SESSION['middle_name'] ?></p>
+                <p><strong>Phone Number: </strong> +63<?php echo $_SESSION['phone_number'] ?></p>
+                <p><strong>Email: </strong> <?php echo $_SESSION['email'] ?></p>
+            </div>
+
+            <div class="footer">
+                <p>Kindly ensure that you have this ticket with you when attending the event, as it will serve as your entry pass. Should you have any further questions or concerns, please do not hesitate to contact us.</p>
+            </div>
         <?php
         }
         ?>
