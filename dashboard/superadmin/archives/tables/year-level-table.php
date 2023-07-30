@@ -1,14 +1,14 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/superadmin-class.php';
-include_once __DIR__.'/../../../database/dbconfig2.php';
+require_once '../../authentication/superadmin-class.php';
+include_once __DIR__ . '/../../../../database/dbconfig2.php';
 
 $user = new SUPERADMIN();
-if(!$user->isUserLoggedIn())
-{
- $user->redirect('../../../private/superadmin/');
+if (!$user->isUserLoggedIn()) {
+  $user->redirect('../../../../private/superadmin/');
 }
+
 
 
 
@@ -72,10 +72,10 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/year-level-controller?id='.$row["id"].'&delete_year_level=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="../controller/year-level-controller?id='.$row["id"].'&delete_year_level=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="controller/year-level-controller?id='.$row["id"].'&activate_year_level=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="../controller/year-level-controller?id='.$row["id"].'&activate_year_level=1" class="activate">Activate</a></button>';
     }
 
     $output .= '
@@ -83,7 +83,7 @@ $output = '
     <tr>
       <td>'.$row["year_level"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
+      <button type="button" class="btn btn-primary V"><a href="../edit-year-level?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>
@@ -220,7 +220,7 @@ echo $output;
 
 ?>
 
-<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../src/js/form.js"></script>
+<script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../../../src/js/form.js"></script>
 
 </table>

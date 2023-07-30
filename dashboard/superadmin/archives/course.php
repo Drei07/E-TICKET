@@ -71,6 +71,18 @@ $user_last_update       = $user_data['updated_at'];
 				</a>
 			</li>
 			<li>
+				<a href="../course-events">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Course Events</span>
+				</a>
+			</li>
+			<li>
+				<a href="admin">
+                    <i class='bx bxs-user-account'></i>
+					<span class="text">Admin</span>
+				</a>
+			</li>
+			<li>
 				<a href="../sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
@@ -132,10 +144,6 @@ $user_last_update       = $user_data['updated_at'];
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
 			</form>
 			<div class="username">
                 <span>Hello, <label for=""><?php echo $user_fname ?></label></span>

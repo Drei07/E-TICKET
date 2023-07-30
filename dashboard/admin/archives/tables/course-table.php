@@ -1,12 +1,12 @@
 <table class="table table-bordered table-hover">
   <?php
 
-  require_once '../authentication/admin-class.php';
-  include_once __DIR__ . '/../../../database/dbconfig2.php';
+  require_once '../../authentication/admin-class.php';
+  include_once __DIR__ . '/../../../../database/dbconfig2.php';
 
   $user = new ADMIN();
   if (!$user->isUserLoggedIn()) {
-    $user->redirect('../../../private/admin/');
+    $user->redirect('../../../../private/admin/');
   }
 
 
@@ -67,9 +67,9 @@ SELECT * FROM course WHERE status = :status
     while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 
       if ($row["status"] == "active") {
-        $button = '<button type="button" class="btn btn-danger V"><a href="controller/course-controller?id=' . $row["id"] . '&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+        $button = '<button type="button" class="btn btn-danger V"><a href="../controller/course-controller?id=' . $row["id"] . '&delete_course=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
       } else if ($row["status"] == "disabled") {
-        $button = '<button type="button" class="btn btn-warning V"><a href="controller/course-controller?id=' . $row["id"] . '&activate_course=1" class="activate">Activate</a></button>';
+        $button = '<button type="button" class="btn btn-warning V"><a href="../controller/course-controller?id=' . $row["id"] . '&activate_course=1" class="activate">Activate</a></button>';
       }
 
       $department_id = $row['department_id'];
@@ -83,12 +83,12 @@ SELECT * FROM course WHERE status = :status
     
     <tr>
       <td>
-      <img src="../../src/img/' . $department_data["department_logo"] . '">
+      <img src="../../../src/img/' . $department_data["department_logo"] . '">
       </td>
       <td>' . $department_data["department"] . '</td>
       <td>' . $row["course"] . '</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-course?id=' . $row["id"] . '" class="edit"><i class="bx bxs-edit"></i></a></button>
+      <button type="button" class="btn btn-primary V"><a href="../edit-course?id=' . $row["id"] . '" class="edit"><i class="bx bxs-edit"></i></a></button>
       ' . $button . '
       </td>        
     </tr>
@@ -197,7 +197,7 @@ SELECT * FROM course WHERE status = :status
 
   ?>
 
-  <script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="../../src/js/form.js"></script>
+  <script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="../../../src/js/form.js"></script>
 
 </table>

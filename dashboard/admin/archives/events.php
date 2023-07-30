@@ -141,10 +141,6 @@ $user_last_update       = $user_data['updated_at'];
         <nav>
             <i class='bx bx-menu'></i>
             <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-                </div>
             </form>
             <div class="username">
                 <span>Hello, <label for=""><?php echo $user_fname ?></label></span>
@@ -211,9 +207,6 @@ $user_last_update       = $user_data['updated_at'];
                             }
                             ?>
 
-                            <li data-bs-toggle="modal" data-bs-target="#classModal">
-                                <i class='bx bxs-calendar-plus'></i>
-                            </li>
                         </ul>
                     </section>
                 </div>

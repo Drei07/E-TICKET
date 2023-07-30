@@ -1,5 +1,37 @@
 <?php
-include_once 'header.php';
+include_once '../../../database/dbconfig2.php';
+require_once '../authentication/admin-class.php';
+include_once '../../../configuration/settings-configuration.php';
+
+
+// instances of the classes
+$config = new SystemConfig();
+$user = new ADMIN();
+
+if(!$user->isUserLoggedIn())
+{
+ $user->redirect('../../../../private/admin/');
+}
+
+// retrieve user data
+$stmt = $user->runQuery("SELECT * FROM users WHERE id=:uid");
+$stmt->execute(array(":uid"=>$_SESSION['adminSession']));
+$user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// retrieve profile user and full name
+$user_id                = $user_data['id'];
+$user_profile           = $user_data['profile'];
+$user_fname             = $user_data['first_name'];
+$user_mname             = $user_data['middle_name'];
+$user_lname             = $user_data['last_name'];
+$user_fullname          = $user_data['last_name'] . ", " . $user_data['first_name'];
+$user_sex               = $user_data['sex'];
+$user_birth_date        = $user_data['date_of_birth'];
+$user_age               = $user_data['age'];
+$user_civil_status      = $user_data['civil_status'];
+$user_phone_number      = $user_data['phone_number'];
+$user_email             = $user_data['email'];
+$user_last_update       = $user_data['updated_at'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Retrieve the values from the POST request
@@ -15,81 +47,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $courseId = isset($_SESSION['course_id']) ? $_SESSION['course_id'] : '';
 $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : '';
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<?php
-	include_once '../../configuration/header.php';
-	?>
-	<title>Course Events List</title>
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="../../../src/img/<?php echo $config->getSystemLogo() ?>">
+	<link rel="stylesheet" href="../../../src/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../../src/node_modules/boxicons/css/boxicons.min.css">
+	<link rel="stylesheet" href="../../../src/node_modules/aos/dist/aos.css">
+    <link rel="stylesheet" href="../../../src/css/admin.css?v=<?php echo time(); ?>">
+	<title>Course Events Archives</title>
 </head>
-
 <body>
 
-	<!-- Loader -->
-	<div class="loader"></div>
+<!-- Loader -->
+<div class="loader"></div>
 
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="" class="brand">
-			<img src="../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
-			<span class="text">DOMINICAN<br>
-				<p>COLLEGE OF TARLAC</p>
-			</span>
+			<img src="../../../src/img/<?php echo $config->getSystemLogo() ?>" alt="logo">
+			<span class="text">DOMINICAN<br><p>COLLEGE OF TARLAC</p></span>
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="./">
-					<i class='bx bxs-dashboard'></i>
+				<a href="../">
+					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li>
-				<a href="events">
-					<i class='bx bxs-calendar'></i>
+				<a href="../events">
+					<i class='bx bxs-calendar' ></i>
 					<span class="text">Events</span>
 				</a>
 			</li>
-			<li class="active">
-				<a href="course-events">
+            <li class="active">
+				<a href="../course-events">
 					<i class='bx bxs-calendar'></i>
 					<span class="text">Course Events</span>
 				</a>
 			</li>
 			<li>
-				<a href="admin">
-                    <i class='bx bxs-user-account'></i>
-					<span class="text">Admin</span>
-				</a>
-			</li>
-			<li>
-				<a href="sub-admin">
+				<a href="../sub-admin">
 					<i class='bx bxs-user-plus'></i>
 					<span class="text">Sub-admin</span>
 				</a>
 			</li>
 			<li>
-				<a href="department">
-					<i class='bx bxs-buildings'></i>
-					<span class="text">Department</span>
+				<a href="../department">
+				<i class='bx bxs-buildings'></i>
+				<span class="text">Department</span>
 				</a>
 			</li>
-			<li>
-				<a href="course">
+			<li >
+				<a href="../course">
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
 				</a>
 			</li>
 			<li>
-				<a href="year-level">
-					<i class='bx bxs-graduation'></i>
+				<a href="../year-level">
+					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
 				</a>
 			</li>
 			<li>
-				<a href="pdf-files">
+				<a href="../pdf-files">
 					<i class='bx bxs-file-pdf'></i>
 					<span class="text">PDF Files</span>
 				</a>
@@ -97,23 +124,24 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 		</ul>
 		<ul class="side-menu top">
 			<li>
-				<a href="settings">
-					<i class='bx bxs-cog'></i>
+				<a href="../settings">
+					<i class='bx bxs-cog' ></i>
 					<span class="text">Settings</span>
 				</a>
 			</li>
 			<li>
-				<a href="audit-trail">
+				<a href="../audit-trail">
 					<i class='bx bxl-blogger'></i>
 					<span class="text">Audit Trail</span>
 				</a>
 			</li>
 			<li>
-				<a href="authentication/admin-signout" class="btn-signout">
-					<i class='bx bxs-log-out-circle'></i>
+				<a href="../authentication/admin-signout" class="btn-signout">
+					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Signout</span>
 				</a>
 			</li>
+			
 		</ul>
 	</section>
 	<!-- SIDEBAR -->
@@ -124,15 +152,14 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
-			<i class='bx bx-menu'></i>
+			<i class='bx bx-menu' ></i>
 			<form action="#">
-
 			</form>
 			<div class="username">
-				<span>Hello, <label for=""><?php echo $user_fname ?></label></span>
-			</div>
+                <span>Hello, <label for=""><?php echo $user_fname ?></label></span>
+            </div>
 			<a href="profile" class="profile" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Profile">
-				<img src="../../src/img/<?php echo $user_profile ?>">
+				<img src="../../../src/img/<?php echo $user_profile ?>">
 			</a>
 		</nav>
 		<!-- NAVBAR -->
@@ -141,24 +168,21 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Course Events List</h1>
+                    <h1>Course Events List Archives</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a class="active" href="./">Home</a>
+							<a class="active" href=".././">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a class="active" href="course-events">Course Events</a>
+							<a class="active" href="../course-event-list">Course Events</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Events List</a>
+							<a href="">Archives</a>
 						</li>
 					</ul>
 				</div>
-			</div>
-			<div class="modal-button">
-				<button type="button" data-bs-toggle="modal" data-bs-target="#eventModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Events</button>
 			</div>
 			<div class="info-data">
 				<?php
@@ -186,7 +210,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 							$pdoExec = $pdoResult3->execute(array(":id" => $department_id));
 							$department_data = $pdoResult3->fetch(PDO::FETCH_ASSOC);
 							?>
-							<img src="../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo">
+							<img src="../../../src/img/<?php echo $department_data['department_logo']; ?>" alt="department_logo">
 							<h2>
 								<?php echo $course_data['course']; ?>
 								<br>
@@ -214,7 +238,6 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<div class="head">
 						<h3><i class='bx bxs-calendar'></i> Mandatory Events</h3>
 					</div>
-					<button type="button" onclick="location.href='archives/course-event-list'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
 						<div class="searchBx">
@@ -229,7 +252,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
 								":event_type"		=> 1,
-								":status"			=> "active",
+								":status"			=> "disabled",
 								":event_status"		=> "active"
 
 							));
@@ -247,21 +270,17 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 							?>
 									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
 
-										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+										<img src="../../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
 										<h4><?php echo $event_data['event_name'] ?></h4>
 										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
 										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" class="more btn-danger"><a href="controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&delete_event_per_course=1" class="remove" style="color: #FFFF;">Remove</a></button>
+										<button type="button" class="more btn-success"><a href="../controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&activate_event_per_course=1" class="activate" style="color: #FFFF;">Activate</a></button>
 
 									</li>
 							<?php
 								}
 							}
 							?>
-
-							<li data-bs-toggle="modal" data-bs-target="#eventModal">
-								<i class='bx bxs-calendar-plus'></i>
-							</li>
 						</ul>
 					</section>
 				</div>
@@ -272,7 +291,6 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<div class="head">
 						<h3><i class='bx bxs-calendar'></i> Optional Events</h3>
 					</div>
-					<button type="button" onclick="location.href='archives/course-event-list'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
 						<div class="searchBx">
@@ -287,7 +305,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
 								":event_type"		=> 2,
-								":status"			=> "active",
+								":status"			=> "disabled",
 								":event_status"		=> "active"
 
 							));
@@ -305,89 +323,24 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 							?>
 									<li onclick="setSessionValues(<?php echo $event_data['id'] ?>)">
 
-										<img src="../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
+										<img src="../../../src/img/<?php echo $event_data['event_poster'] ?>" alt="">
 										<h4><?php echo $event_data['event_name'] ?></h4>
 										<p>Event: Price <?php echo $event_data['event_price'] ?></p>
 										<p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
-										<button type="button" class="more btn-danger"><a href="controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&delete_event_per_course=1" class="remove" style="color: #FFFF;">Remove</a></button>
+										<button type="button" class="more btn-success"><a href="../controller/event-controller.php?id=<?php echo $event_per_course_data['id'] ?>&activate_event_per_course=1" class="activate" style="color: #FFFF;">Activate</a></button>
 
 									</li>
 							<?php
 								}
 							}
 							?>
-
-							<li data-bs-toggle="modal" data-bs-target="#eventModal">
-								<i class='bx bxs-calendar-plus'></i>
-							</li>
 						</ul>
 					</section>
 				</div>
 			</div>
 		</main>
-		<!-- EVENT MODAL -->
-		<div class="class-modal">
-			<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true" data-bs-backdrop="static">
-				<div class="modal-dialog modal-dialog-centered modal-lg">
-					<div class="modal-content">
-						<div class="header"></div>
-						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Add Events</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<section class="data-form-modals">
-								<div class="registration">
-									<form action="controller/event-controller.php?course_id=<?php echo $courseId ?>&year_level_id=<?php echo $yearLevelId ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
-										<div class="row gx-5 needs-validation">
-
-											<div class="col-md-12">
-												<label for="event_name" class="form-label">Select Events<span> *</span></label>
-												<select type="text" class="form-select form-control" name="event_name" id="event_name" required>
-													<option selected disabled value="">Select Events</option>
-													<?php
-													$pdoQuery = "SELECT * FROM events WHERE status = :status";
-													$pdoResult = $pdoConnect->prepare($pdoQuery);
-													$pdoResult->execute(array(":status" => "active"));
-
-													while ($event_data = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-													?>
-														<option value="<?php echo $event_data['id']; ?> "><?php echo $event_data['event_name'];  ?></option>
-													<?php
-													}
-													?>
-												</select>
-												<div class="invalid-feedback">
-													Please select a Events.
-												</div>
-											</div>
-
-											<div class="col-md-12">
-												<label for="event_type" class="form-label">Event Type<span> *</span></label>
-												<select class="form-select form-control" name="event_type" maxlength="6" autocomplete="off" id="event_type" required>
-													<option selected disabled value="">Select Event Type</option>
-													<option value="1">MANDATORY</option>
-													<option value="2">OPTIONAL</option>
-												</select>
-												<div class="invalid-feedback">
-													Please select a valid Event Type.
-												</div>
-											</div>
-
-										</div>
-
-										<div class="addBtn">
-											<button type="submit" class="btn-dark" name="btn-add-course-events" id="btn-add" onclick="return IsEmpty(); sexEmpty();">Add</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- EDIT MODAL -->
+		<!-- MAIN -->
+        		<!-- EDIT MODAL -->
 		<div class="class-modal">
 			<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
@@ -400,7 +353,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 						<div class="modal-body">
 							<section class="data-form-modals">
 								<div class="registration">
-									<form action="controller/course-event-controller.php?id=<?php echo $course_event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
+									<form action="../controller/course-event-controller.php?id=<?php echo $course_event_data['id'] ?>" method="POST" class="row gx-5 needs-validation" name="form" onsubmit="return validate()" novalidate style="overflow: hidden;">
 										<div class="row gx-5 needs-validation">
 
 											<div class="col-md-12">
@@ -458,16 +411,18 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				</div>
 			</div>
 		</div>
-		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 
-	<?php
-	include_once '../../configuration/footer.php';
-	?>
+    <script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../../../src/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../../../src/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../src/js/loader.js"></script>
+    <script src="../../../src/js/form.js"></script>
+    <script src="../../../src/js/tooltip.js"></script>
+	<script src="../../../src/js/admin.js"></script>
 
 	<script>
-
 		function searchMandatoryEvents() {
 			var searchInput = document.getElementById('search-input-mandatory').value.trim();
 			var eventItems = document.querySelectorAll('#mandatory-events li');
@@ -526,25 +481,24 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 			}
 		}
 	</script>
+		<!-- SWEET ALERT -->
+		<?php
 
-	<!-- SWEET ALERT -->
-	<?php
-
-	if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-	?>
+		if(isset($_SESSION['status']) && $_SESSION['status'] !='')
+		{
+		?>
 		<script>
 			swal({
-				title: "<?php echo $_SESSION['status_title']; ?>",
-				text: "<?php echo $_SESSION['status']; ?>",
-				icon: "<?php echo $_SESSION['status_code']; ?>",
-				button: false,
-				timer: <?php echo $_SESSION['status_timer']; ?>,
+			title: "<?php echo $_SESSION['status_title']; ?>",
+			text: "<?php echo $_SESSION['status']; ?>",
+			icon: "<?php echo $_SESSION['status_code']; ?>",
+			button: false,
+			timer: <?php echo $_SESSION['status_timer']; ?>,
 			});
 		</script>
-	<?php
+		<?php
 		unset($_SESSION['status']);
-	}
-	?>
+		}
+		?>
 </body>
-
 </html>

@@ -1,13 +1,12 @@
 <table class="table table-bordered table-hover">
 <?php
 
-require_once '../authentication/superadmin-class.php';
-include_once __DIR__.'/../../../database/dbconfig2.php';
+require_once '../../authentication/superadmin-class.php';
+include_once __DIR__ . '/../../../../database/dbconfig2.php';
 
 $user = new SUPERADMIN();
-if(!$user->isUserLoggedIn())
-{
- $user->redirect('../../../private/superadmin/');
+if (!$user->isUserLoggedIn()) {
+  $user->redirect('../../../../private/superadmin/');
 }
 
 
@@ -75,10 +74,10 @@ $output = '
   {
 
     if ($row["status"] == "active") {
-      $button = '<button type="button" class="btn btn-danger V"><a href="controller/department-controller?id='.$row["id"].'&delete_department=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
+      $button = '<button type="button" class="btn btn-danger V"><a href="../controller/department-controller?id='.$row["id"].'&delete_department=1" class="delete"><i class="bx bxs-trash"></i></a></button>';
     
     } else if ($row["status"] == "disabled") {
-      $button = '<button type="button" class="btn btn-warning V"><a href="controller/department-controller?id='.$row["id"].'&activate_department=1" class="activate">Activate</a></button>';
+      $button = '<button type="button" class="btn btn-warning V"><a href="../controller/department-controller?id='.$row["id"].'&activate_department=1" class="activate">Activate</a></button>';
     }
 
 
@@ -86,11 +85,11 @@ $output = '
     
     <tr>
       <td>
-      <img src="../../src/img/'.$row["department_logo"].'">
+      <img src="../../../src/img/'.$row["department_logo"].'">
       </td>
       <td>'.$row["department"].'</td>
       <td>
-      <button type="button" class="btn btn-primary V"><a href="edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
+      <button type="button" class="btn btn-primary V"><a href="../edit-department?id='.$row["id"].'" class="edit"><i class="bx bxs-edit"></i></a></button>
       '.$button.'
       </td>        
     </tr>
@@ -227,7 +226,7 @@ echo $output;
 
 ?>
 
-<script src="../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script src="../../src/js/form.js"></script>
+<script src="../../../src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../../../src/js/form.js"></script>
 
 </table>

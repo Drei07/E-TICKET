@@ -208,7 +208,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<div class="head">
 						<h3><i class='bx bxs-calendar'></i> Mandatory Events</h3>
 					</div>
-					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
+					<button type="button" onclick="location.href='archives/course-event-list'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
 						<div class="searchBx">
@@ -266,7 +266,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<div class="head">
 						<h3><i class='bx bxs-calendar'></i> Optional Events</h3>
 					</div>
-					<button type="button" onclick="location.href='archives/course-events'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
+					<button type="button" onclick="location.href='archives/course-event-list'" class="archives btn-dark"><i class='bx bxs-archive'></i> Archives</button>
 					<!-- BODY -->
 					<section class="data-table">
 						<div class="searchBx">
@@ -275,13 +275,15 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 						</div>
 						<ul class="box-info" id="optional-events">
 						<?php
-							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND status = :status ORDER BY id DESC";
+							$pdoQuery = "SELECT * FROM event_per_course WHERE course_id = :course_id AND year_level_id = :year_level_id AND event_type = :event_type AND event_status = :event_status AND status = :status ORDER BY id DESC";
 							$pdoResult5 = $pdoConnect->prepare($pdoQuery);
 							$pdoResult5->execute(array(
 								":course_id" 		=> $courseId,
 								":year_level_id" 	=> $yearLevelId,
 								":event_type"		=> 2,
-								":status"			=> "active"
+								":status"			=> "active",
+								":event_status"		=> "active"
+
 							));
 							if ($pdoResult5->rowCount() >= 1) {
 
