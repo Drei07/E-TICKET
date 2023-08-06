@@ -1,7 +1,8 @@
 <?php
-include_once __DIR__ . '/src/api/api.php';
 include_once 'dashboard/user/authentication/user-signin.php';
 include_once 'configuration/settings-configuration.php';
+require_once __DIR__ . '/database/dbconfig2.php';
+
 
 $config = new SystemConfig();
 
@@ -12,6 +13,11 @@ if ($_SESSION['eventId'] === NULL) {
 }
 
 $event_id = $_SESSION['eventId'];
+
+$pdoQuery = "SELECT * FROM events WHERE status = :status";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->execute(array(":status" => "active"));
+$event_data = $pdoResult->fetch(PDO::FETCH_ASSOC)
 
 ?>
 <!DOCTYPE html>
@@ -50,6 +56,8 @@ $event_id = $_SESSION['eventId'];
     .scanner .content.hidden {
         display: none;
     }
+
+    
 </style>
 
 <body>
@@ -60,6 +68,9 @@ $event_id = $_SESSION['eventId'];
             <img src="src/img/barcode-scanning.gif" alt="Scanning" />
         </div>
         <div class="content">
+            <div class="heading">
+                <h1><?php echo $event_data['event_name'] ?></h1>
+            </div>
             <div id="qr_reader__scan_region">
                 <video id="video"></video>
             </div>
@@ -128,7 +139,7 @@ $event_id = $_SESSION['eventId'];
                     unset($_SESSION['status']);
                 }
                 ?>
-            }, 3000);
+            }, 2000);
         }
 
         // Function to hide the scanning indicator
@@ -185,7 +196,7 @@ $event_id = $_SESSION['eventId'];
                         submitButton.disabled = false;
                     }
                 });
-            }, 3000); // 2 seconds timeout before starting the scanning process
+            }, 2000); // 2 seconds timeout before starting the scanning process
         }
 
 

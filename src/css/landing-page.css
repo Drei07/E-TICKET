@@ -2031,6 +2031,14 @@ object{
     border-radius: 20%;
 }
 
+.scanner .content .heading {
+    text-align: center;
+    position: relative;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+    font-weight: bolder;
+    font-size: 8px;
+}
 
 .scanner .content #qr_reader__scan_region{
     width: 100%; 
@@ -2041,7 +2049,7 @@ object{
 
 .scanner .content #qr_reader__scan_region video{
     border-radius: 10px;
-    height: 350px;
+    height: 300px;
     width: 465px;
     background-color:#000;
 }
