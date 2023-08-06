@@ -2026,6 +2026,11 @@ object{
     background-size: cover;
 }
 
+.scanner #scanningIndicator img{
+    width: 700px;
+    border-radius: 20%;
+}
+
 
 .scanner .content #qr_reader__scan_region{
     width: 100%; 
@@ -2140,8 +2145,37 @@ object{
     }
 }
 
+@media (max-width:550px){
+    .scanner #scanningIndicator img{
+        width: 400px;
+    } 
+}
+
 @media (max-width:500px){
     .scanner .content #qr_reader__scan_region video{
         width: 100%;
     }
+
 }
+
+@media (max-width:450px){
+    .scanner #scanningIndicator img{
+        width: 350px;
+    } 
+}
+
+
+@media (max-width:350px){
+    .scanner #scanningIndicator img{
+        width: 250px;
+    } 
+}
+
+@media (max-width:250px){
+    .scanner #scanningIndicator img{
+        width: 150px;
+    } 
+}
+
+
+
