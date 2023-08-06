@@ -42,12 +42,22 @@ $event_id = $_SESSION['eventId'];
             padding-bottom: none;
         }
     }
+    .scanner .content {
+    display: block;
+  }
+
+  .scanner .content.hidden {
+    display: none;
+  }
 </style>
 
 <body>
     <!-- Live queue Modal -->
 
     <section class="scanner" id="homes">
+        <div id="scanningIndicator" style="display: none;">
+            <img src="src/img/under-construction.svg" alt="Scanning" width="500px"/>
+        </div>
         <div class="content">
             <div id="qr_reader__scan_region">
                 <video id="video"></video>
@@ -70,79 +80,101 @@ $event_id = $_SESSION['eventId'];
     <script src="src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
     <script type="text/javascript">
-        let selectedDeviceId;
-        let codeReader;
-        let scanning = true;
-        let isProcessingScan = false;
+    let selectedDeviceId;
+    let codeReader;
+    let scanning = true;
 
-        function toggleScanning() {
-            const toggleButton = document.getElementById('toggleButton');
-            if (scanning) {
-                scanning = false;
-                toggleButton.textContent = 'Start Scanning';
-                toggleButton.classList.remove('btn-danger');
-                toggleButton.classList.add('btn-success');
-                stopScanning();
-            } else {
-                scanning = true;
-                toggleButton.textContent = 'Stop Scanning';
-                toggleButton.classList.remove('btn-success');
-                toggleButton.classList.add('btn-danger');
-                startScanning();
-            }
-        }
-
-        function handleScanResult(resultText) {
-        // Perform any processing needed with the scan result here
-        // For example, you can display the result in an element on the page
-        document.getElementById('scan').value = resultText;
-        document.getElementById('scanForm').submit();
+    function toggleScanning() {
+      const toggleButton = document.getElementById('toggleButton');
+      if (scanning) {
+        scanning = false;
+        toggleButton.textContent = 'Start Scanning';
+        toggleButton.classList.remove('btn-danger');
+        toggleButton.classList.add('btn-success');
+        stopScanning();
+      } else {
+        scanning = true;
+        toggleButton.textContent = 'Stop Scanning';
+        toggleButton.classList.remove('btn-success');
+        toggleButton.classList.add('btn-danger');
+        startScanning();
+      }
     }
 
-    function processScanResult(result, err) {
-        if (result) {
-            document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
-                div.classList.add('success');
-            });
+    function showScanningIndicator() {
+      const scanningIndicator = document.getElementById('scanningIndicator');
+      scanningIndicator.style.display = 'block';
 
-            if (result.text) {
-                handleScanResult(result.text); // Call the function to handle the scan result
-            }
-        }
-        if (err && !(err instanceof ZXing.NotFoundException)) {
-            document.getElementById('result').textContent = err;
-        }
+      const contentSection = document.querySelector('.scanner .content');
+      contentSection.classList.add('hidden');
 
-        // Reset the flag after processing the scan
-        isProcessingScan = false;
+      // Hide the scanning indicator after 2 seconds
+      setTimeout(() => {
+        hideScanningIndicator();
+
+        // Show the status message after the scanning indicator is hidden
+        <?php
+        if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+        ?>
+        swal({
+          title: "<?php echo $_SESSION['status_title']; ?>",
+          text: "<?php echo $_SESSION['status']; ?>",
+          icon: "<?php echo $_SESSION['status_code']; ?>",
+          button: false,
+          timer: <?php echo $_SESSION['status_timer']; ?>,
+        });
+        <?php
+          unset($_SESSION['status']);
+        }
+        ?>
+      }, 2000);
+    }
+
+    // Function to hide the scanning indicator
+    function hideScanningIndicator() {
+      const scanningIndicator = document.getElementById('scanningIndicator');
+      scanningIndicator.style.display = 'none';
+
+      const contentSection = document.querySelector('.scanner .content');
+      contentSection.classList.remove('hidden');
     }
 
     function startScanning() {
-        if (isProcessingScan) {
-            // A scan is already in progress, ignore the current call
-            return;
+      const videoElement = document.getElementById('video');
+      const videoConstraints = {
+        deviceId: {
+          exact: selectedDeviceId
+        },
+        advanced: [{
+          autoFocus: 'continuous'
+        }]
+      };
+
+      // Show the scanning indicator when scanning starts
+      showScanningIndicator();
+
+      codeReader.decodeFromConstraints({
+        video: videoConstraints
+      }, videoElement, (result, err) => {
+        // The hideScanningIndicator() function is called automatically
+        // after 2 seconds, so no need to explicitly call it here.
+
+        if (result) {
+          document.getElementById('scan').value = result.text;
+          document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
+            div.classList.add('success');
+          });
+
+          if (result.text) {
+            document.getElementById('scanForm').submit();
+          }
         }
 
-        isProcessingScan = true; // Set the flag to indicate a scan is in progress
-
-        setTimeout(() => {
-            const videoElement = document.getElementById('video');
-            const videoConstraints = {
-                deviceId: {
-                    exact: selectedDeviceId
-                },
-                advanced: [{
-                    autoFocus: 'continuous'
-                }]
-            };
-
-            codeReader.decodeFromConstraints({
-                video: videoConstraints
-            }, videoElement, processScanResult); // Pass the processScanResult function as the callback
-
-        }, 1500);
+        if (err && !(err instanceof ZXing.NotFoundException)) {
+          document.getElementById('result').textContent = err;
+        }
+      });
     }
-
 
         function stopScanning() {
             codeReader.reset();
@@ -209,22 +241,6 @@ $event_id = $_SESSION['eventId'];
                 });
         })
     </script>
-    <?php
-    if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-    ?>
-        <script>
-            swal({
-                title: "<?php echo $_SESSION['status_title']; ?>",
-                text: "<?php echo $_SESSION['status']; ?>",
-                icon: "<?php echo $_SESSION['status_code']; ?>",
-                button: false,
-                timer: <?php echo $_SESSION['status_timer']; ?>,
-            });
-        </script>
-    <?php
-        unset($_SESSION['status']);
-    }
-    ?>
 </body>
 
 </html>

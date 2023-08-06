@@ -2026,19 +2026,6 @@ object{
     background-size: cover;
 }
 
-.scanner .image img{
-    width:40vw;
-    animation: float 7s linear infinite;
-}
-
-@keyframes float{
-    0%, 100%{
-        transform: translateY(0rem);
-    }
-    50%{
-        transform: translateY(-3.5rem);
-    }
-}
 
 .scanner .content #qr_reader__scan_region{
     width: 100%; 
@@ -2136,12 +2123,6 @@ object{
     .scanner{
         text-align: center;
         flex-flow: column-reverse;
-    }
-
-    .scanner .image img{
-        margin-bottom: -10rem;
-        margin-top: 6rem;
-        width:100%;
     }
 
     .scanner .content h3{

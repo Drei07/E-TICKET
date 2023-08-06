@@ -75,6 +75,7 @@ class ScanBarCode
             $_SESSION['status_timer'] = 40000;
         }
         header('Location: ../../../barcode-scanner');
+        
     }
 
 
