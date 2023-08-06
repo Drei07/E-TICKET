@@ -92,47 +92,57 @@ $event_id = $_SESSION['eventId'];
             }
         }
 
-        function startScanning() {
-            if (isProcessingScan) {
-                // A scan is already in progress, ignore the current call
-                return;
+        function handleScanResult(resultText) {
+        // Perform any processing needed with the scan result here
+        // For example, you can display the result in an element on the page
+        document.getElementById('scan').value = resultText;
+        document.getElementById('scanForm').submit();
+    }
+
+    function processScanResult(result, err) {
+        if (result) {
+            document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
+                div.classList.add('success');
+            });
+
+            if (result.text) {
+                handleScanResult(result.text); // Call the function to handle the scan result
             }
-
-            isProcessingScan = true; // Set the flag to indicate a scan is in progress
-
-            setTimeout(() => {
-                const videoElement = document.getElementById('video');
-                const videoConstraints = {
-                    deviceId: {
-                        exact: selectedDeviceId
-                    },
-                    advanced: [{
-                        autoFocus: 'continuous'
-                    }]
-                };
-
-                codeReader.decodeFromConstraints({
-                    video: videoConstraints
-                }, videoElement, (result, err) => {
-                    if (result) {
-                        document.getElementById('scan').value = result.text;
-                        document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
-                            div.classList.add('success');
-                        });
-
-                        if (result.text) {
-                            document.getElementById('scanForm').submit();
-                        }
-                    }
-                    if (err && !(err instanceof ZXing.NotFoundException)) {
-                        document.getElementById('result').textContent = err;
-                    }
-
-                    // Reset the flag after processing the scan
-                    isProcessingScan = false;
-                });
-            }, 1500);
         }
+        if (err && !(err instanceof ZXing.NotFoundException)) {
+            document.getElementById('result').textContent = err;
+        }
+
+        // Reset the flag after processing the scan
+        isProcessingScan = false;
+    }
+
+    function startScanning() {
+        if (isProcessingScan) {
+            // A scan is already in progress, ignore the current call
+            return;
+        }
+
+        isProcessingScan = true; // Set the flag to indicate a scan is in progress
+
+        setTimeout(() => {
+            const videoElement = document.getElementById('video');
+            const videoConstraints = {
+                deviceId: {
+                    exact: selectedDeviceId
+                },
+                advanced: [{
+                    autoFocus: 'continuous'
+                }]
+            };
+
+            codeReader.decodeFromConstraints({
+                video: videoConstraints
+            }, videoElement, processScanResult); // Pass the processScanResult function as the callback
+
+        }, 1500);
+    }
+
 
         function stopScanning() {
             codeReader.reset();
