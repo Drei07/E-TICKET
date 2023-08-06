@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2023 at 03:44 PM
+-- Generation Time: Aug 06, 2023 at 05:23 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -81,7 +81,7 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `department_id`, `course`, `educational_attainment`, `status`, `created_at`, `updated_at`) VALUES
-(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE (B.A. POL. SCI)', '2', 'active', '2023-03-24 21:02:10', '2023-07-17 04:36:56'),
+(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE (B.A. POL. SCI)', '2', 'active', '2023-03-24 21:02:10', '2023-07-30 13:41:37'),
 (2, 4, 'BACHELOR OF ELEMENTARY EDUCATION (BEED)', '2', 'active', '2023-03-25 00:11:32', '2023-06-30 00:15:00'),
 (3, 4, 'BACHELOR OF SECONDARY EDUCATION (BSED)', '2', 'active', '2023-03-25 00:11:57', '2023-06-29 19:05:26'),
 (4, 5, 'BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT', '2', 'active', '2023-03-25 00:12:06', '2023-06-29 19:05:55'),
@@ -118,7 +118,7 @@ INSERT INTO `course_event` (`id`, `course_id`, `year_level_id`, `status`, `creat
 (4, 6, 13, 'active', '2023-07-09 12:52:21', '2023-07-09 12:52:48'),
 (5, 10, 13, 'active', '2023-07-09 12:52:57', NULL),
 (6, 10, 14, 'active', '2023-07-09 12:53:15', NULL),
-(7, 10, 16, 'active', '2023-07-09 12:53:27', '2023-07-23 04:48:41');
+(7, 10, 16, 'active', '2023-07-09 12:53:27', '2023-07-30 14:10:13');
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`id`, `department`, `department_logo`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'COLLEGE OF BUSINESS AND ACCOUNTANCY', 'CBA_Logo.png', 'active', '2023-03-24 16:11:57', '2023-07-06 00:23:27'),
+(1, 'COLLEGE OF BUSINESS AND ACCOUNTANCY', 'CBA_Logo.png', 'active', '2023-03-24 16:11:57', '2023-07-30 13:42:36'),
 (2, 'COLLEGE OF COMPUTER STUDIES', 'CCS_Logo.png', 'active', '2023-03-24 16:11:57', '2023-06-28 19:29:46'),
 (3, 'COLLEGE OF CRIMINAL JUSTICE EDUCATION', 'CCJE_Logo.png', 'active', '2023-03-24 16:11:57', '2023-06-28 19:31:08'),
 (4, 'COLLEGE OF EDUCATION', 'CED_Logo.png', 'active', '2023-03-24 16:11:32', '2023-06-28 19:28:58'),
@@ -195,7 +195,7 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `event_name`, `event_date`, `event_time`, `event_venue`, `event_max_guest`, `event_rules`, `event_poster`, `event_price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BATTLE OF THE BANDS', '2023-07-12', '17:47:00', 'DCT GYMNASIUM', '400', 'SAMPLE RULES', 'poster.jpg', '120', 'active', '2023-07-09 06:50:25', '2023-07-26 13:24:23'),
+(1, 'BATTLE OF THE BANDS', '2023-07-12', '17:47:00', 'DCT GYMNASIUM', '400', 'SAMPLE RULES', 'poster.jpg', '120', 'active', '2023-07-09 06:50:25', '2023-07-30 14:07:45'),
 (2, 'MR AND MRS DCT', '2023-07-19', '19:07:00', 'DCT ROOM 203', '', '', 'pageant.jpeg', '120', 'active', '2023-07-09 07:05:34', '2023-07-24 06:34:26'),
 (3, 'SINGING CONTEST', '2023-07-26', '09:26:00', 'OPEN GROUND', '400', 'SIMPLE JUST SING', 'images (1).jpeg', '120', 'active', '2023-07-19 13:24:16', '2023-07-26 11:23:58');
 
@@ -246,8 +246,9 @@ CREATE TABLE `event_per_course` (
 --
 
 INSERT INTO `event_per_course` (`id`, `event_id`, `event_type`, `course_id`, `year_level_id`, `status`, `event_status`, `created_at`, `updated_at`) VALUES
-(1, 1, '1', 10, 16, 'active', 'active', '2023-07-17 05:02:18', '2023-07-26 13:24:23'),
-(2, 3, '1', 10, 16, 'active', 'active', '2023-07-20 03:05:43', '2023-07-26 11:23:58');
+(1, 1, '1', 10, 16, 'active', 'active', '2023-07-17 05:02:18', '2023-07-30 14:11:33'),
+(2, 3, '1', 10, 16, 'active', 'active', '2023-07-20 03:05:43', '2023-07-30 14:11:43'),
+(3, 2, '2', 10, 16, 'active', 'active', '2023-07-30 14:11:55', '2023-07-30 14:13:42');
 
 -- --------------------------------------------------------
 
@@ -313,7 +314,13 @@ INSERT INTO `logs` (`id`, `user_id`, `activity`, `created_at`, `updated_at`) VAL
 (3, 11, 'Has successfully signed in', '2023-07-24 01:10:13', NULL),
 (4, 8, 'Has successfully signed in', '2023-07-24 06:36:38', NULL),
 (5, 7, 'Has successfully signed in', '2023-07-24 12:56:21', NULL),
-(6, 7, 'Has successfully signed in', '2023-07-25 23:59:02', NULL);
+(6, 7, 'Has successfully signed in', '2023-07-25 23:59:02', NULL),
+(7, 11, 'Has successfully signed in', '2023-07-27 00:12:55', NULL),
+(8, 8, 'Has successfully signed in', '2023-07-27 00:26:13', NULL),
+(9, 7, 'Has successfully signed in', '2023-07-27 02:59:33', NULL),
+(10, 11, 'Has successfully signed in', '2023-07-28 12:30:59', NULL),
+(11, 7, 'Has successfully signed in', '2023-07-28 12:31:18', NULL),
+(12, 8, 'Has successfully signed in', '2023-07-30 14:11:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -332,14 +339,6 @@ CREATE TABLE `pdf_file` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `pdf_file`
---
-
-INSERT INTO `pdf_file` (`id`, `user_id`, `event_id`, `course_id`, `year_level_id`, `file_name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 11, NULL, 10, 16, 'BACHELOR_OF_SCIENCE_IN_COMPUTER_SCIENCE_4th_YEAR_COLLEGE_access_tokens_1690074685.pdf', 'active', '2023-07-23 01:11:25', '2023-07-24 01:10:25'),
-(2, 11, NULL, 10, 16, 'BACHELOR_OF_SCIENCE_IN_COMPUTER_SCIENCE_4th_YEAR_COLLEGE_access_tokens_1690161283.pdf', 'active', '2023-07-24 01:14:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -497,7 +496,7 @@ INSERT INTO `year_level` (`id`, `year_level`, `educational_attainment`, `status`
 (10, 'G10 HIGH SCHOOL', '0', 'active', '2023-02-18 08:36:44', '2023-06-28 20:02:54'),
 (11, 'G11 SENIOR HIGH SCHOOL', '1', 'active', '2023-02-18 08:36:44', '2023-06-28 19:58:06'),
 (12, 'G12 SENIOR HIGH SCHOOL', '1', 'active', '2023-02-18 08:36:44', '2023-06-28 19:58:10'),
-(13, '1st YEAR COLLEGE', '2', 'active', '2023-02-18 08:36:44', '2023-06-28 19:59:06'),
+(13, '1ST YEAR COLLEGE', '2', 'active', '2023-02-18 08:36:44', '2023-07-30 14:15:23'),
 (14, '2nd YEAR COLLEGE', '2', 'active', '2023-02-18 08:36:44', '2023-06-28 19:59:12'),
 (15, '3rd YEAR COLLEGE', '2', 'active', '2023-02-18 08:36:44', '2023-06-28 19:59:22'),
 (16, '4th YEAR COLLEGE', '2', 'active', '2023-02-18 08:36:44', '2023-06-28 19:59:29');
@@ -692,7 +691,7 @@ ALTER TABLE `event_access_key`
 -- AUTO_INCREMENT for table `event_per_course`
 --
 ALTER TABLE `event_per_course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `event_registered`
@@ -710,13 +709,13 @@ ALTER TABLE `google_recaptcha_api`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `pdf_file`
 --
 ALTER TABLE `pdf_file`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `religion`

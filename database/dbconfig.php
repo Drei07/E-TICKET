@@ -2,18 +2,18 @@
 class Database
 {
     // // Localhost
-    private $host = "localhost";
-    private $db_name = "tarlac";
-    private $username = "root";
-    private $password = "";
-    public $conn;
+    // private $host = "localhost";
+    // private $db_name = "tarlac";
+    // private $username = "root";
+    // private $password = "";
+    // public $conn;
 
     // Live
-    // private $host = "localhost";
-    // private $db_name = "u839560647_alumni";
-    // private $username = "u839560647_alumni";
-    // private $password = "Andreishania12";
-    // public $conn;
+    private $host = "localhost";
+    private $db_name = "u297724503_ecket";
+    private $username = "u297724503_ecket";
+    private $password = "E-cket@2023";
+    public $conn;
 
      
     public function dbConnection()

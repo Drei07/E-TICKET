@@ -124,8 +124,8 @@ class MainUrl {
     private $url;
 
     public function __construct() {
-        $this->url = "http://localhost/E-TICKET"; // localhost
-        // $this->url = "https://trackeme.website"; // webhost
+        // $this->url = "http://localhost/E-TICKET"; // localhost
+        $this->url = "https://ecket.online"; // webhost
     }
 
     public function getUrl() {
