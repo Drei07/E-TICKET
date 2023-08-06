@@ -50,20 +50,6 @@ $event_id = $_SESSION['eventId'];
     <section class="scanner" id="homes">
         <div class="content">
             <div id="qr_reader__scan_region">
-                <div id="qr_shaded_region">
-                    <!-- top -->
-                    <div id="top_left"></div>
-                    <div id="top_right"></div>
-                    <!-- bottom -->
-                    <div id="bottom_left"></div>
-                    <div id="bottom_right"></div>
-                    <!-- top -->
-                    <div id="top_left_vertical"></div>
-                    <div id="top_right_vertical"></div>
-                    <!-- bottom -->
-                    <div id="bottom_left_vertical"></div>
-                    <div id="bottom_right_vertical"></div>
-                </div>
                 <video id="video"></video>
             </div>
             <div id="sourceSelectPanel">
@@ -83,10 +69,11 @@ $event_id = $_SESSION['eventId'];
     <script src="src/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         let selectedDeviceId;
         let codeReader;
         let scanning = true;
+        let isProcessingScan = false;
 
         function toggleScanning() {
             const toggleButton = document.getElementById('toggleButton');
@@ -106,6 +93,13 @@ $event_id = $_SESSION['eventId'];
         }
 
         function startScanning() {
+            if (isProcessingScan) {
+                // A scan is already in progress, ignore the current call
+                return;
+            }
+
+            isProcessingScan = true; // Set the flag to indicate a scan is in progress
+
             setTimeout(() => {
                 const videoElement = document.getElementById('video');
                 const videoConstraints = {
@@ -122,7 +116,7 @@ $event_id = $_SESSION['eventId'];
                 }, videoElement, (result, err) => {
                     if (result) {
                         document.getElementById('scan').value = result.text;
-                        document.querySelectorAll('#qr_shaded_region > div').forEach((div) => {
+                        document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
                             div.classList.add('success');
                         });
 
@@ -133,6 +127,9 @@ $event_id = $_SESSION['eventId'];
                     if (err && !(err instanceof ZXing.NotFoundException)) {
                         document.getElementById('result').textContent = err;
                     }
+
+                    // Reset the flag after processing the scan
+                    isProcessingScan = false;
                 });
             }, 1500);
         }
@@ -140,7 +137,7 @@ $event_id = $_SESSION['eventId'];
         function stopScanning() {
             codeReader.reset();
             document.getElementById('scan').value = '';
-            document.querySelectorAll('#qr_shaded_region > div').forEach((div) => {
+            document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
                 div.classList.remove('success');
             });
         }
@@ -184,24 +181,23 @@ $event_id = $_SESSION['eventId'];
                 })
         });
         // Signout
-        $('.btn-signout').on('click', function (e) {
-	e.preventDefault();
-	const href = $(this).attr('href')
+        $('.btn-signout').on('click', function(e) {
+            e.preventDefault();
+            const href = $(this).attr('href')
 
-	swal({
-		title: "Signout?",
-		text: "Are you sure do you want to signout?",
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	})
-		.then((willSignout) => {
-			if (willSignout) {
-				document.location.href = href;
-			}
-		});
-})
-       
+            swal({
+                    title: "Signout?",
+                    text: "Are you sure do you want to signout?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willSignout) => {
+                    if (willSignout) {
+                        document.location.href = href;
+                    }
+                });
+        })
     </script>
     <?php
     if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
