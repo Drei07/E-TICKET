@@ -30,13 +30,6 @@ class ScanBarCode
         if ($barcodeExist) {
             if ($barcodeExist['status'] === 'active') {
 
-                // Update the status to 'disabled'
-                $updateStmt = $this->runQuery('UPDATE ticket SET status = :status WHERE barcode = :barcode AND event_id = :event_id');
-                $updateStmt->execute(array(
-                    ":status" => 'disabled',
-                    ":barcode" => $barcode,
-                    ":event_id" => $event_id,
-                ));
 
                 // ticket  data
                 $ticket_id = $barcodeExist['id'];
