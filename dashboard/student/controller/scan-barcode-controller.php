@@ -30,7 +30,6 @@ class ScanBarCode
         if ($barcodeExist) {
             if ($barcodeExist['status'] === 'active') {
 
-
                 // ticket  data
                 $ticket_id = $barcodeExist['id'];
                 $user_first_name = $barcodeExist['user_first_name'];
@@ -39,7 +38,7 @@ class ScanBarCode
                 $user_email = $barcodeExist['user_email'];
 
                 $insertStmt = $this->runQuery('INSERT INTO event_registered (event_id, ticket_id, user_first_name, user_middle_name, user_last_name, user_email) VALUES (:event_id, :ticket_id, :user_first_name, :user_middle_name, :user_last_name, :user_email)');
-                $insertStmt->execute(array(
+                $insertResult = $insertStmt->execute(array(
                     ":event_id"  => $event_id,
                     ":ticket_id" => $ticket_id,
                     ":user_first_name" => $user_first_name,
@@ -48,10 +47,21 @@ class ScanBarCode
                     ":user_email" => $user_email
                 ));
 
-                $_SESSION['status_title'] = 'Success!';
-                $_SESSION['status'] = 'You can now enter the event!';
-                $_SESSION['status_code'] = 'success';
-                $_SESSION['status_timer'] = 40000;
+                if ($insertResult) {
+
+                    $_SESSION['status_title'] = 'Success!';
+                    $_SESSION['status'] = 'You can now enter the event!';
+                    $_SESSION['status_code'] = 'success';
+                    $_SESSION['status_timer'] = 40000;
+
+                    // Update the status to 'disabled'
+                    $updateStmt = $this->runQuery('UPDATE ticket SET status = :status WHERE barcode = :barcode AND event_id = :event_id');
+                    $updateStmt->execute(array(
+                        ":status" => 'disabled',
+                        ":barcode" => $barcode,
+                        ":event_id" => $event_id,
+                    ));
+                }
             } else {
                 $_SESSION['status_title'] = 'Oops!';
                 $_SESSION['status'] = 'Barcode is not valid anymore!';
