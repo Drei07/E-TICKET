@@ -42,13 +42,14 @@ $event_id = $_SESSION['eventId'];
             padding-bottom: none;
         }
     }
-    .scanner .content {
-    display: block;
-  }
 
-  .scanner .content.hidden {
-    display: none;
-  }
+    .scanner .content {
+        display: block;
+    }
+
+    .scanner .content.hidden {
+        display: none;
+    }
 </style>
 
 <body>
@@ -56,7 +57,7 @@ $event_id = $_SESSION['eventId'];
 
     <section class="scanner" id="homes">
         <div id="scanningIndicator" style="display: none;">
-            <img src="src/img/barcode-scanning.gif" alt="Scanning"/>
+            <img src="src/img/barcode-scanning.gif" alt="Scanning" />
         </div>
         <div class="content">
             <div id="qr_reader__scan_region">
@@ -68,9 +69,9 @@ $event_id = $_SESSION['eventId'];
                 <a href="dashboard/user/controller/barcode-scanner-controller.php?signout=1" class="btn-signout">Sign Out</a>
             </div>
             <form action="dashboard/student/controller/scan-barcode-controller.php?event_id=<?php echo $event_id ?>" method="POST" id="scanForm" style="display: none;">
-    <input type="text" name="scan" id="scan" class="qrcode">
-    <button type="submit" id="submitButton">Submit</button>
-</form>
+                <input type="text" name="scan" id="scan" class="qrcode">
+                <button type="submit" id="submitButton">Submit</button>
+            </form>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
@@ -80,73 +81,67 @@ $event_id = $_SESSION['eventId'];
     <script src="src/node_modules/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
     <script type="text/javascript">
-    let selectedDeviceId;
-    let codeReader;
-    let scanning = true;
-    let submitting = false;
+        let selectedDeviceId;
+        let codeReader;
+        let scanning = true;
 
-
-    function toggleScanning() {
-      const toggleButton = document.getElementById('toggleButton');
-      if (scanning) {
-        scanning = false;
-        toggleButton.textContent = 'Start Scanning';
-        toggleButton.classList.remove('btn-danger');
-        toggleButton.classList.add('btn-success');
-        stopScanning();
-      } else {
-        scanning = true;
-        toggleButton.textContent = 'Stop Scanning';
-        toggleButton.classList.remove('btn-success');
-        toggleButton.classList.add('btn-danger');
-        startScanning();
-      }
-    }
-
-    function showScanningIndicator() {
-      const scanningIndicator = document.getElementById('scanningIndicator');
-      scanningIndicator.style.display = 'block';
-
-      const contentSection = document.querySelector('.scanner .content');
-      contentSection.classList.add('hidden');
-
-      // Hide the scanning indicator after 2 seconds
-      setTimeout(() => {
-        hideScanningIndicator();
-
-        // Show the status message after the scanning indicator is hidden
-        <?php
-        if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-        ?>
-        swal({
-          title: "<?php echo $_SESSION['status_title']; ?>",
-          text: "<?php echo $_SESSION['status']; ?>",
-          icon: "<?php echo $_SESSION['status_code']; ?>",
-          button: false,
-          timer: <?php echo $_SESSION['status_timer']; ?>,
-        });
-        <?php
-          unset($_SESSION['status']);
+        function toggleScanning() {
+            const toggleButton = document.getElementById('toggleButton');
+            if (scanning) {
+                scanning = false;
+                toggleButton.textContent = 'Start Scanning';
+                toggleButton.classList.remove('btn-danger');
+                toggleButton.classList.add('btn-success');
+                stopScanning();
+            } else {
+                scanning = true;
+                toggleButton.textContent = 'Stop Scanning';
+                toggleButton.classList.remove('btn-success');
+                toggleButton.classList.add('btn-danger');
+                startScanning();
+            }
         }
-        ?>
-      }, 2000);
-    }
 
-    // Function to hide the scanning indicator
-    function hideScanningIndicator() {
-      const scanningIndicator = document.getElementById('scanningIndicator');
-      scanningIndicator.style.display = 'none';
+        function showScanningIndicator() {
+            const scanningIndicator = document.getElementById('scanningIndicator');
+            scanningIndicator.style.display = 'block';
 
-      const contentSection = document.querySelector('.scanner .content');
-      contentSection.classList.remove('hidden');
-    }
+            const contentSection = document.querySelector('.scanner .content');
+            contentSection.classList.add('hidden');
+
+            // Hide the scanning indicator after 2 seconds
+            setTimeout(() => {
+                hideScanningIndicator();
+
+                // Show the status message after the scanning indicator is hidden
+                <?php
+                if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                ?>
+                    swal({
+                        title: "<?php echo $_SESSION['status_title']; ?>",
+                        text: "<?php echo $_SESSION['status']; ?>",
+                        icon: "<?php echo $_SESSION['status_code']; ?>",
+                        button: false,
+                        timer: <?php echo $_SESSION['status_timer']; ?>,
+                    });
+                <?php
+                    unset($_SESSION['status']);
+                }
+                ?>
+            }, 3000);
+        }
+
+        // Function to hide the scanning indicator
+        function hideScanningIndicator() {
+            const scanningIndicator = document.getElementById('scanningIndicator');
+            scanningIndicator.style.display = 'none';
+
+            const contentSection = document.querySelector('.scanner .content');
+            contentSection.classList.remove('hidden');
+        }
 
 
-    function startScanning() {
-  if (submitting) {
-    return; // If a form submission is already in progress, exit the function
-  }
-
+        function startScanning() {
   const videoElement = document.getElementById('video');
   const videoConstraints = {
     deviceId: {
@@ -157,45 +152,45 @@ $event_id = $_SESSION['eventId'];
     }]
   };
 
-  // Show the scanning indicator when scanning starts
-  showScanningIndicator();
-
   // Disable the form submission button while scanning is in progress
   const submitButton = document.getElementById('submitButton');
   submitButton.disabled = true;
 
-  submitting = true; // Set the submitting flag to true
+  // Show the scanning indicator when scanning starts
+  showScanningIndicator();
 
-  codeReader.decodeFromConstraints({
-    video: videoConstraints
-  }, videoElement, (result, err) => {
-    // The hideScanningIndicator() function is called automatically
-    // after 2 seconds, so no need to explicitly call it here.
+  // Wait for 2 seconds before starting the scanning process
+  setTimeout(() => {
+    codeReader.decodeFromConstraints({
+      video: videoConstraints
+    }, videoElement, (result, err) => {
+      // The hideScanningIndicator() function is called automatically
+      // after 2 seconds, so no need to explicitly call it here.
 
-    if (result) {
-      document.getElementById('scan').value = result.text;
-      document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
-        div.classList.add('success');
-      });
+      if (result) {
+        document.getElementById('scan').value = result.text;
+        document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
+          div.classList.add('success');
+        });
 
-      // Enable the form submission button after scanning is complete
-      submitButton.disabled = false;
-      submitting = false; // Reset the submitting flag to false
+        // Enable the form submission button after scanning is complete
+        submitButton.disabled = false;
 
-      if (result.text) {
-        document.getElementById('scanForm').submit();
+        // Show the scanning indicator when scanning starts
+        if (result.text) {
+          document.getElementById('scanForm').submit();
+        }
       }
-    }
 
-    if (err && !(err instanceof ZXing.NotFoundException)) {
-      document.getElementById('result').textContent = err;
-      // Enable the form submission button after scanning is complete
-      submitButton.disabled = false;
-      submitting = false; // Reset the submitting flag to false
-    }
-  });
-
+      if (err && !(err instanceof ZXing.NotFoundException)) {
+        document.getElementById('result').textContent = err;
+        // Enable the form submission button after scanning is complete
+        submitButton.disabled = false;
+      }
+    });
+  }, 3000); // 2 seconds timeout before starting the scanning process
 }
+
 
         function stopScanning() {
             codeReader.reset();
