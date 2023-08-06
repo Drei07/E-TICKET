@@ -142,54 +142,51 @@ $event_id = $_SESSION['eventId'];
 
 
         function startScanning() {
-  const videoElement = document.getElementById('video');
-  const videoConstraints = {
-    deviceId: {
-      exact: selectedDeviceId
-    },
-    advanced: [{
-      autoFocus: 'continuous'
-    }]
-  };
+            const videoElement = document.getElementById('video');
+            const videoConstraints = {
+                deviceId: {
+                    exact: selectedDeviceId
+                },
+                advanced: [{
+                    autoFocus: 'continuous'
+                }]
+            };
 
-  // Disable the form submission button while scanning is in progress
-  const submitButton = document.getElementById('submitButton');
-  submitButton.disabled = true;
+            // Disable the form submission button while scanning is in progress
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
 
-  // Show the scanning indicator when scanning starts
-  showScanningIndicator();
+            // Wait for 2 seconds before starting the scanning process
+            setTimeout(() => {
+                codeReader.decodeFromConstraints({
+                    video: videoConstraints
+                }, videoElement, (result, err) => {
+                    // The hideScanningIndicator() function is called automatically
+                    // after 2 seconds, so no need to explicitly call it here.
 
-  // Wait for 2 seconds before starting the scanning process
-  setTimeout(() => {
-    codeReader.decodeFromConstraints({
-      video: videoConstraints
-    }, videoElement, (result, err) => {
-      // The hideScanningIndicator() function is called automatically
-      // after 2 seconds, so no need to explicitly call it here.
+                    if (result) {
+                        document.getElementById('scan').value = result.text;
+                        document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
+                            div.classList.add('success');
+                        });
 
-      if (result) {
-        document.getElementById('scan').value = result.text;
-        document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
-          div.classList.add('success');
-        });
+                        // Enable the form submission button after scanning is complete
+                        submitButton.disabled = false;
 
-        // Enable the form submission button after scanning is complete
-        submitButton.disabled = false;
+                        // Show the scanning indicator when scanning starts
+                        if (result.text) {
+                            document.getElementById('scanForm').submit();
+                        }
+                    }
 
-        // Show the scanning indicator when scanning starts
-        if (result.text) {
-          document.getElementById('scanForm').submit();
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        document.getElementById('result').textContent = err;
+                        // Enable the form submission button after scanning is complete
+                        submitButton.disabled = false;
+                    }
+                });
+            }, 3000); // 2 seconds timeout before starting the scanning process
         }
-      }
-
-      if (err && !(err instanceof ZXing.NotFoundException)) {
-        document.getElementById('result').textContent = err;
-        // Enable the form submission button after scanning is complete
-        submitButton.disabled = false;
-      }
-    });
-  }, 3000); // 2 seconds timeout before starting the scanning process
-}
 
 
         function stopScanning() {
@@ -205,38 +202,39 @@ $event_id = $_SESSION['eventId'];
 
             codeReader.listVideoInputDevices()
                 .then((videoInputDevices) => {
-                    const sourceSelect = document.getElementById('sourceSelect')
-                    selectedDeviceId = videoInputDevices[0].deviceId
+                    const sourceSelect = document.getElementById('sourceSelect');
+                    selectedDeviceId = videoInputDevices[0].deviceId;
                     if (videoInputDevices.length >= 1) {
                         videoInputDevices.forEach((element) => {
-                            const sourceOption = document.createElement('option')
-                            sourceOption.text = element.label
-                            sourceOption.value = element.deviceId
-                            sourceSelect.appendChild(sourceOption)
-                        })
+                            const sourceOption = document.createElement('option');
+                            sourceOption.text = element.label;
+                            sourceOption.value = element.deviceId;
+                            sourceSelect.appendChild(sourceOption);
+                        });
 
                         sourceSelect.onchange = () => {
                             selectedDeviceId = sourceSelect.value;
                         };
 
-                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-                        sourceSelectPanel.style.display = 'block'
+                        const sourceSelectPanel = document.getElementById('sourceSelectPanel');
+                        sourceSelectPanel.style.display = 'block';
                     }
 
                     // Check if back camera exists
-                    const backCamera = videoInputDevices.find(device => device.label.toLowerCase().includes('back'))
+                    const backCamera = videoInputDevices.find(device => device.label.toLowerCase().includes('back'));
                     if (backCamera) {
-                        selectedDeviceId = backCamera.deviceId
+                        selectedDeviceId = backCamera.deviceId;
                     }
 
                     // Start the camera automatically
                     if (scanning) {
+                        showScanningIndicator(); // Call this function to display the scanning indicator on page load
                         startScanning();
                     }
                 })
                 .catch((err) => {
-                    console.error(err)
-                })
+                    console.error(err);
+                });
         });
         // Signout
         $('.btn-signout').on('click', function(e) {
