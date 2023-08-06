@@ -67,10 +67,10 @@ $event_id = $_SESSION['eventId'];
                 <button id="toggleButton" onclick="toggleScanning()" class="btn-danger">Stop Scanning</button>
                 <a href="dashboard/user/controller/barcode-scanner-controller.php?signout=1" class="btn-signout">Sign Out</a>
             </div>
-
             <form action="dashboard/student/controller/scan-barcode-controller.php?event_id=<?php echo $event_id ?>" method="POST" id="scanForm" style="display: none;">
-                <input type="text" name="scan" id="scan" class="qrcode">
-            </form>
+    <input type="text" name="scan" id="scan" class="qrcode">
+    <button type="submit" id="submitButton">Submit</button>
+</form>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
@@ -139,42 +139,52 @@ $event_id = $_SESSION['eventId'];
       contentSection.classList.remove('hidden');
     }
 
+
     function startScanning() {
-      const videoElement = document.getElementById('video');
-      const videoConstraints = {
+    const videoElement = document.getElementById('video');
+    const videoConstraints = {
         deviceId: {
-          exact: selectedDeviceId
+            exact: selectedDeviceId
         },
         advanced: [{
-          autoFocus: 'continuous'
+            autoFocus: 'continuous'
         }]
-      };
+    };
 
-      // Show the scanning indicator when scanning starts
-      showScanningIndicator();
+    // Show the scanning indicator when scanning starts
+    showScanningIndicator();
 
-      codeReader.decodeFromConstraints({
+    // Disable the form submission button while scanning is in progress
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = true;
+
+    codeReader.decodeFromConstraints({
         video: videoConstraints
-      }, videoElement, (result, err) => {
+    }, videoElement, (result, err) => {
         // The hideScanningIndicator() function is called automatically
         // after 2 seconds, so no need to explicitly call it here.
 
         if (result) {
-          document.getElementById('scan').value = result.text;
-          document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
-            div.classList.add('success');
-          });
+            document.getElementById('scan').value = result.text;
+            document.querySelectorAll('#qr_reader__scan_region > div').forEach((div) => {
+                div.classList.add('success');
+            });
 
-          if (result.text) {
-            document.getElementById('scanForm').submit();
-          }
+            // Enable the form submission button after scanning is complete
+            submitButton.disabled = false;
+
+            if (result.text) {
+                document.getElementById('scanForm').submit();
+            }
         }
 
         if (err && !(err instanceof ZXing.NotFoundException)) {
-          document.getElementById('result').textContent = err;
+            document.getElementById('result').textContent = err;
+            // Enable the form submission button after scanning is complete
+            submitButton.disabled = false;
         }
-      });
-    }
+    });
+}
 
         function stopScanning() {
             codeReader.reset();
