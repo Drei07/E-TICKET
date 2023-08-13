@@ -14,9 +14,9 @@ if ($_SESSION['eventId'] === NULL) {
 
 $event_id = $_SESSION['eventId'];
 
-$pdoQuery = "SELECT * FROM events WHERE status = :status";
+$pdoQuery = "SELECT * FROM events WHERE id = :id";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
-$pdoResult->execute(array(":status" => "active"));
+$pdoResult->execute(array(":id" => $event_id));
 $event_data = $pdoResult->fetch(PDO::FETCH_ASSOC)
 
 ?>
