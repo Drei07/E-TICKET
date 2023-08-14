@@ -182,13 +182,11 @@ class StudentController
         $access_token_id = $token['id'];
 
         if ($token) {
-            $disabled = "disabled";
-            $stmt = $this->runQuery('UPDATE access_token SET user_email = :user_email, date_of_use = :date_of_use, status=:status WHERE id=:id');
+            $stmt = $this->runQuery('UPDATE access_token SET user_email = :user_email, date_of_use = :date_of_use WHERE id=:id');
             $exec = $stmt->execute(array(
                 ":id"        => $access_token_id,
                 ":user_email" => $email,
                 ":date_of_use" => $date_access,
-                ":status"   => $disabled,
             ));
 
             if ($exec) {
@@ -215,7 +213,7 @@ class StudentController
         }
     }
 
-    public function getTicketMandatory($eventIds, $courseId, $yearLevelId, $first_name, $middle_name, $last_name, $phone_number, $email)
+    public function getTicketMandatory($eventIds, $courseId, $yearLevelId, $first_name, $middle_name, $last_name, $phone_number, $email, $access_token)
     {
         // Generate a unique barcode
         $barcode = $this->generateUniqueBarcode();
@@ -244,6 +242,13 @@ class StudentController
             ));
 
             if ($exec) {
+
+                $stmt = $this->runQuery('UPDATE access_token SET status = :status WHERE id=:id');
+                $exec = $stmt->execute(array(
+                    ":id"        => $access_token,
+                    ":status" => "disabled",
+                ));
+                
                 $_SESSION['status_title'] = 'Success!';
                 $_SESSION['status'] = "We've sent the ticket to $email";
                 $_SESSION['status_code'] = 'success';
@@ -317,7 +322,7 @@ class StudentController
         header('Location: ../../../');
     }
 
-    public function getTicketOptional($eventId, $first_name, $middle_name, $last_name, $phone_number, $email){
+    public function getTicketOptional($eventId, $first_name, $middle_name, $last_name, $phone_number, $email, $access_token){
         // Generate a unique barcode
         $barcode = $this->generateUniqueBarcode();
 
@@ -342,6 +347,13 @@ class StudentController
             ));
 
             if ($exec) {
+
+                $stmt = $this->runQuery('UPDATE access_token SET status = :status WHERE id=:id');
+                $exec = $stmt->execute(array(
+                    ":id"        => $access_token,
+                    ":status" => "disabled",
+                ));
+
                 $_SESSION['status_title'] = 'Success!';
                 $_SESSION['status'] = "We've sent the ticket to $email";
                 $_SESSION['status_code'] = 'success';
@@ -511,9 +523,10 @@ if (isset($_POST['btn-get-ticket-mandatory'])) {
     $last_name      =   trim($_POST['last_name']);
     $phone_number   =   trim($_POST['phone_number']);
     $email          =   $_SESSION['email'];
+    $access_token   =   trim($_POST['access_token']);
 
     $get_ticket_mandatory = new StudentController();
-    $get_ticket_mandatory->getTicketMandatory($eventIds, $courseId, $yearLevelId, $first_name, $middle_name, $last_name, $phone_number, $email);
+    $get_ticket_mandatory->getTicketMandatory($eventIds, $courseId, $yearLevelId, $first_name, $middle_name, $last_name, $phone_number, $email, $access_token);
 }
 
 if (isset($_POST['btn-get-ticket-optional'])) {
@@ -524,9 +537,10 @@ if (isset($_POST['btn-get-ticket-optional'])) {
     $last_name      =   trim($_POST['last_name']);
     $phone_number   =   trim($_POST['phone_number']);
     $email          =   $_SESSION['email'];
+    $access_token   =   trim($_POST['access_token']);
 
     $get_ticket_optional = new StudentController();
-    $get_ticket_optional->getTicketOptional($eventId, $first_name, $middle_name, $last_name, $phone_number, $email);
+    $get_ticket_optional->getTicketOptional($eventId, $first_name, $middle_name, $last_name, $phone_number, $email, $access_token);
 }
 
 //cancel ticket

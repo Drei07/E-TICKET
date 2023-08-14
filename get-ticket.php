@@ -239,6 +239,9 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
                                 <div class="row gx-5 needs-validation">
                                     <!-- course id-->
                                     <input type="hidden" name="event_id" value="<?php echo $eventsId ?>">
+                                     <!-- access token -->                                   
+                                    <input type="hidden" name="access_token" value="<?php echo $access_token_data['id'] ?>">
+
                                     <div class="col-md-6">
                                         <label for="first_name" class="form-label">First Name <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></label>
                                         <input type="text" value="<?php echo $_SESSION['first_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" name="first_name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" id="first_name" required>
@@ -248,7 +251,7 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
                                     </div>
                                     <div class="col-md-6">
                                         <label for="middle_name" class="form-label">Middle Name</label>
-                                        <input type="text" value="<?php echo $_SESSION['middle_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="middle_name" id="middle_name">
+                                        <input type="text" value="<?php echo $_SESSION['middle_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="middle_name" id="middle_name" required>
                                         <div class="invalid-feedback">
                                             Please provide a Middle Name.
                                         </div>
@@ -288,7 +291,8 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
                                     <input type="hidden" name="course_id" value="<?php echo $courseId ?>">
                                     <!-- year level id-->
                                     <input type="hidden" name="year_level_id" value="<?php echo $yearLevelId ?>">
-
+                                    <!-- access token -->
+                                    <input type="hidden" name="access_token" value="<?php echo $access_token_data['id'] ?>">
                                     <div class="col-md-6">
                                         <label for="first_name" class="form-label">First Name <span style="font-size:17px; margin-top: 2rem; color:red; opacity:0.8;">*</span></label>
                                         <input type="text" value="<?php echo $_SESSION['first_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" name="first_name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" id="first_name" required>
@@ -298,7 +302,7 @@ function fetchYearLevelData($pdoConnect, $year_level_id)
                                     </div>
                                     <div class="col-md-6">
                                         <label for="middle_name" class="form-label">Middle Name</label>
-                                        <input type="text" value="<?php echo $_SESSION['middle_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="middle_name" id="middle_name">
+                                        <input type="text" value="<?php echo $_SESSION['middle_name'] ?>" onkeyup="this.value = this.value.toUpperCase();" class="form-control" autocapitalize="on" maxlength="15" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" name="middle_name" id="middle_name" required>
                                         <div class="invalid-feedback">
                                             Please provide a Middle Name.
                                         </div>
