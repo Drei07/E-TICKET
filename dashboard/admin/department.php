@@ -43,12 +43,6 @@ include_once 'header.php';
 					<span class="text">Course Events</span>
 				</a>
 			</li>
-			<li>
-				<a href="sub-admin">
-					<i class='bx bxs-user-plus'></i>
-					<span class="text">Sub-admin</span>
-				</a>
-			</li>
 			<li class="active">
 				<a href="department">
 					<i class='bx bxs-buildings'></i>
@@ -65,6 +59,12 @@ include_once 'header.php';
 				<a href="year-level">
 					<i class='bx bxs-graduation'></i>
 					<span class="text">Year Level</span>
+				</a>
+			</li>
+			<li>
+				<a href="sub-admin">
+					<i class='bx bxs-user-plus'></i>
+					<span class="text">User Account</span>
 				</a>
 			</li>
 			<li>

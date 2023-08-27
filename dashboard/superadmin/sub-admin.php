@@ -7,7 +7,7 @@ include_once 'header.php';
     <?php
     include_once '../../configuration/header.php';
     ?>
-	<title>Sub-Admin</title>
+	<title>User Account</title>
 </head>
 <body>
 
@@ -40,19 +40,6 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="admin">
-                    <i class='bx bxs-user-account'></i>
-					<span class="text">Admin</span>
-				</a>
-			</li>
-			<li class="active">
-				<a href="sub-admin">
-					<i class='bx bxs-user-plus'></i>
-					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-
-			<li>
 				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
@@ -68,6 +55,18 @@ include_once 'header.php';
 				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
+				</a>
+			</li>
+			<li>
+				<a href="admin">
+                    <i class='bx bxs-user-account'></i>
+					<span class="text">Admin</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="sub-admin">
+					<i class='bx bxs-user-plus'></i>
+					<span class="text">User Account</span>
 				</a>
 			</li>
 			<li>
@@ -125,25 +124,25 @@ include_once 'header.php';
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Sub-Admin</h1>
+					<h1>User Account</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a class="active" href="./">Home</a>
 						</li>
 						<li>|</li>
 						<li>
-							<a href="">Sub-Admin</a>
+							<a href="">User Account</a>
 						</li>
 					</ul>
 				</div>
 			</div>
             <div class="modal-button">
-				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add Sub-Admin</button>
+				<button type="button" data-bs-toggle="modal" data-bs-target="#classModal" class="btn-dark"><i class='bx bxs-plus-circle'></i> Add User Account</button>
 			</div>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3><i class='bx bxs-user-account' ></i> List of Sub-Admin</h3>
+						<h3><i class='bx bxs-user-account' ></i> List of User Account</h3>
 					</div>
                     <!-- BODY -->
                     <section class="data-table">
@@ -167,7 +166,7 @@ include_once 'header.php';
 					<div class="modal-content">
 					<div class="header"></div>
 						<div class="modal-header">
-							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-user-account' ></i> Add Sub-Admin</h5>
+							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-user-account' ></i> Add User Account</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">

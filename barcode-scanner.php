@@ -139,7 +139,7 @@ $event_data = $pdoResult->fetch(PDO::FETCH_ASSOC)
                     unset($_SESSION['status']);
                 }
                 ?>
-            }, 2000);
+            }, 1300);
         }
 
         // Function to hide the scanning indicator
@@ -196,7 +196,7 @@ $event_data = $pdoResult->fetch(PDO::FETCH_ASSOC)
                         submitButton.disabled = false;
                     }
                 });
-            }, 2000); // 2 seconds timeout before starting the scanning process
+            }, 1300); // 1.3 seconds timeout before starting the scanning process
         }
 
 

@@ -40,18 +40,6 @@ include_once 'header.php';
 				</a>
 			</li>
 			<li>
-				<a href="admin">
-                    <i class='bx bxs-user-account'></i>
-					<span class="text">Admin</span>
-				</a>
-			</li>
-			<li>
-				<a href="sub-admin">
-					<i class='bx bxs-user-plus'></i>
-					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-			<li>
 				<a href="department">
 				<i class='bx bxs-buildings'></i>
 				<span class="text">Department</span>
@@ -67,6 +55,18 @@ include_once 'header.php';
 				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
 					<span class="text">Year Level</span>
+				</a>
+			</li>
+			<li>
+				<a href="admin">
+                    <i class='bx bxs-user-account'></i>
+					<span class="text">Admin</span>
+				</a>
+			</li>
+			<li>
+				<a href="sub-admin">
+					<i class='bx bxs-user-plus'></i>
+					<span class="text">User Account</span>
 				</a>
 			</li>
 			<li>
@@ -144,6 +144,24 @@ include_once 'header.php';
 					<?php
 								$pdoQuery = "SELECT * FROM 	users WHERE user_type = :user_type";
 								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
+								$pdoResult1->execute(array(":user_type" => 1));
+
+								$count = $pdoResult1->rowCount();
+
+								echo
+								"
+									<h3>$count</h3>
+								";
+							?>
+						<p>Admins</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bx-user-circle'></i>
+					<span class="text">
+					<?php
+								$pdoQuery = "SELECT * FROM 	users WHERE user_type = :user_type";
+								$pdoResult1 = $pdoConnect->prepare($pdoQuery);
 								$pdoResult1->execute(array(":user_type" => 2));
 
 								$count = $pdoResult1->rowCount();
@@ -153,7 +171,7 @@ include_once 'header.php';
 									<h3>$count</h3>
 								";
 							?>
-						<p>Sub-admin</p>
+						<p>User Accounts</p>
 					</span>
 				</li>
 				<li>
@@ -171,7 +189,7 @@ include_once 'header.php';
 									<h3>$count</h3>
 								";
 							?>
-						<p>Department</p>
+						<p>Departments</p>
 					</span>
 				</li>
 				<li>
@@ -189,7 +207,7 @@ include_once 'header.php';
 									<h3>$count</h3>
 								";
 							?>
-						<p>Course</p>
+						<p>Courses</p>
 					</span>
 				</li>
 				<li>
@@ -207,7 +225,7 @@ include_once 'header.php';
 									<h3>$count</h3>
 								";
 							?>
-						<p>Year Level</p>
+						<p>Year Levels</p>
 					</span>
 				</li>
 				<li>

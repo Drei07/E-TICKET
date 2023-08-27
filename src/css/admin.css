@@ -348,6 +348,7 @@ border-right-color: var(--main);
 #content nav .bx.bx-menu {
 	cursor: pointer;
 	color: var(--dark);
+	display: none;
 }
 #content nav .nav-link {
 	font-size: 16px;
@@ -1380,9 +1381,10 @@ border-right-color: var(--main);
 	padding: 5rem 0;
 }
 
-#content main .table-data .order .data-table .table .pagination{
-	margin-left: -9px;
+#content main .table-data .order .data-table .pagination{
 	font-size: 12px;
+	display: flex;
+	justify-content: right;
 }
 
 #content main .table-data .order .data-table .table .page-link{
@@ -1413,6 +1415,15 @@ border-right-color: var(--main);
 	#content nav .nav-link {
 		display: none;
 	}
+	#content nav .bx.bx-menu {
+		display: flex;
+	}
+	#content main .table-data .order .data-table .table .pagination{
+		margin-left: -9px;
+		font-size: 12px;
+		justify-content: left;
+	}
+
 }
 
 /* MODALS */

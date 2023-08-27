@@ -94,12 +94,6 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				</a>
 			</li>
 			<li>
-				<a href="../sub-admin">
-					<i class='bx bxs-user-plus'></i>
-					<span class="text">Sub-admin</span>
-				</a>
-			</li>
-			<li>
 				<a href="../department">
 					<i class='bx bxs-buildings'></i>
 					<span class="text">Department</span>
@@ -115,6 +109,12 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 				<a href="../year-level">
 					<i class='bx bxs-graduation'></i>
 					<span class="text">Year Level</span>
+				</a>
+			</li>
+			<li>
+				<a href="../sub-admin">
+					<i class='bx bxs-user-plus'></i>
+					<span class="text">User Account</span>
 				</a>
 			</li>
 			<li>

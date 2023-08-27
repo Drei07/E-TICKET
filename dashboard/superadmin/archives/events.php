@@ -79,18 +79,6 @@ $user_last_update       = $user_data['updated_at'];
 				</a>
 			</li>
             <li>
-				<a href="admin">
-                    <i class='bx bxs-user-account'></i>
-					<span class="text">Admin</span>
-				</a>
-			</li>
-            <li>
-                <a href="../sub-admin">
-                    <i class='bx bxs-user-plus'></i>
-                    <span class="text">Sub-admin</span>
-                </a>
-            </li>
-            <li>
                 <a href="../department">
                     <i class='bx bxs-buildings'></i>
                     <span class="text">Department</span>
@@ -108,6 +96,18 @@ $user_last_update       = $user_data['updated_at'];
                     <span class="text">Year Level</span>
                 </a>
             </li>
+            <li>
+				<a href="../admin">
+                    <i class='bx bxs-user-account'></i>
+					<span class="text">Admin</span>
+				</a>
+			</li>
+			<li>
+				<a href="../sub-admin">
+					<i class='bx bxs-user-plus'></i>
+					<span class="text">User Account</span>
+				</a>
+			</li>
             <li>
 				<a href="../pdf-files">
 					<i class='bx bxs-file-pdf'></i>

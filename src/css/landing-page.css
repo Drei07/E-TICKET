@@ -147,7 +147,7 @@ header .navbar a{
 
     
 header #logo img{
-    width: 120px;
+    width: 130px;
 }
 
 
@@ -191,6 +191,9 @@ section{
     padding-bottom: 10rem;
     
     
+}
+header #logo img{
+    width:90px;
 }
 }
 
@@ -1383,7 +1386,7 @@ section{
     margin-top: 4rem;
     margin-left: 30rem;
     margin-right: 30rem;
-    margin-bottom: 16rem;
+    margin-bottom: 6rem;
     font-size:5rem;
     color:#000;
     text-align: center;
@@ -1527,6 +1530,11 @@ footer .pre-registration p{
     letter-spacing: 2px;
     font-size: 15px;
     font-weight: bold;
+    background-color: #e438a5;
+ }
+
+ footer .pre-registration a:hover{
+    background-color: #c1328d;
  }
 
  footer .credit{
