@@ -217,7 +217,7 @@ $config = new SystemConfig();
 
         <div class="pre-registration">
             <h3>REGISTER NOW<br>
-                <p>Streamline Your Ticketing Experience</p>
+                <p>Dominican E-cket</p>
             </h3>
             <a href="#" data-bs-toggle="modal" data-bs-target="#pre-registration" class="btn get_ticket">Get Ticket</a>
 
