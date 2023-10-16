@@ -49,6 +49,7 @@ $config = new SystemConfig();
                     <div class="image">
                         <img src="src/img/<?php echo $event_data['event_poster'] ?>" alt="event">
                         <h4><?php echo $event_data['event_name'] ?></h4>
+                        <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
                     </div>
 
             <?php
