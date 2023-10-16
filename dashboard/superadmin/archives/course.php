@@ -185,7 +185,7 @@ $user_last_update       = $user_data['updated_at'];
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search course . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="Search Course . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">

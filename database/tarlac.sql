@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 06, 2023 at 05:23 AM
+-- Generation Time: Oct 16, 2023 at 02:44 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -81,7 +81,7 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`id`, `department_id`, `course`, `educational_attainment`, `status`, `created_at`, `updated_at`) VALUES
-(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE (B.A. POL. SCI)', '2', 'active', '2023-03-24 21:02:10', '2023-07-30 13:41:37'),
+(1, 6, 'BACHELOR OF ARTS IN POLITICAL SCIENCE', '2', 'active', '2023-03-24 21:02:10', '2023-10-16 11:03:04'),
 (2, 4, 'BACHELOR OF ELEMENTARY EDUCATION (BEED)', '2', 'active', '2023-03-25 00:11:32', '2023-06-30 00:15:00'),
 (3, 4, 'BACHELOR OF SECONDARY EDUCATION (BSED)', '2', 'active', '2023-03-25 00:11:57', '2023-06-29 19:05:26'),
 (4, 5, 'BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT', '2', 'active', '2023-03-25 00:12:06', '2023-06-29 19:05:55'),
@@ -107,19 +107,6 @@ CREATE TABLE `course_event` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `course_event`
---
-
-INSERT INTO `course_event` (`id`, `course_id`, `year_level_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 10, 15, 'active', '2023-07-09 07:06:30', NULL),
-(2, 4, 16, 'active', '2023-07-09 07:06:41', NULL),
-(3, 8, 15, 'active', '2023-07-09 11:48:35', NULL),
-(4, 6, 13, 'active', '2023-07-09 12:52:21', '2023-07-09 12:52:48'),
-(5, 10, 13, 'active', '2023-07-09 12:52:57', NULL),
-(6, 10, 14, 'active', '2023-07-09 12:53:15', NULL),
-(7, 10, 16, 'active', '2023-07-09 12:53:27', '2023-07-30 14:10:13');
-
 -- --------------------------------------------------------
 
 --
@@ -140,7 +127,7 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`id`, `department`, `department_logo`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'COLLEGE OF BUSINESS AND ACCOUNTANCY', 'CBA_Logo.png', 'active', '2023-03-24 16:11:57', '2023-07-30 13:42:36'),
+(1, 'COLLEGE OF BUSINESS AND ACCOUNTANCY', 'CBA_Logo.png', 'active', '2023-03-24 16:11:57', '2023-08-15 01:42:12'),
 (2, 'COLLEGE OF COMPUTER STUDIES', 'CCS_Logo.png', 'active', '2023-03-24 16:11:57', '2023-06-28 19:29:46'),
 (3, 'COLLEGE OF CRIMINAL JUSTICE EDUCATION', 'CCJE_Logo.png', 'active', '2023-03-24 16:11:57', '2023-06-28 19:31:08'),
 (4, 'COLLEGE OF EDUCATION', 'CED_Logo.png', 'active', '2023-03-24 16:11:32', '2023-06-28 19:28:58'),
@@ -190,15 +177,6 @@ CREATE TABLE `events` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `events`
---
-
-INSERT INTO `events` (`id`, `event_name`, `event_date`, `event_time`, `event_venue`, `event_max_guest`, `event_rules`, `event_poster`, `event_price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BATTLE OF THE BANDS', '2023-07-12', '17:47:00', 'DCT GYMNASIUM', '400', 'SAMPLE RULES', 'poster.jpg', '120', 'active', '2023-07-09 06:50:25', '2023-07-30 14:07:45'),
-(2, 'MR AND MRS DCT', '2023-07-19', '19:07:00', 'DCT ROOM 203', '', '', 'pageant.jpeg', '120', 'active', '2023-07-09 07:05:34', '2023-07-24 06:34:26'),
-(3, 'SINGING CONTEST', '2023-07-26', '09:26:00', 'OPEN GROUND', '400', 'SIMPLE JUST SING', 'images (1).jpeg', '120', 'active', '2023-07-19 13:24:16', '2023-07-26 11:23:58');
-
 -- --------------------------------------------------------
 
 --
@@ -213,15 +191,6 @@ CREATE TABLE `event_access_key` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `event_access_key`
---
-
-INSERT INTO `event_access_key` (`id`, `event_id`, `access_key`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Y758LRDH9W', 'active', '2023-07-19 13:22:14', NULL),
-(2, 2, 'WUFLRN7WFM', 'active', '2023-07-19 13:22:27', '2023-07-21 09:14:21'),
-(3, 3, 'Cxp6lm98df', 'active', '2023-07-19 13:24:16', '2023-07-20 01:12:26');
 
 -- --------------------------------------------------------
 
@@ -240,15 +209,6 @@ CREATE TABLE `event_per_course` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `event_per_course`
---
-
-INSERT INTO `event_per_course` (`id`, `event_id`, `event_type`, `course_id`, `year_level_id`, `status`, `event_status`, `created_at`, `updated_at`) VALUES
-(1, 1, '1', 10, 16, 'active', 'active', '2023-07-17 05:02:18', '2023-07-30 14:11:33'),
-(2, 3, '1', 10, 16, 'active', 'active', '2023-07-20 03:05:43', '2023-07-30 14:11:43'),
-(3, 2, '2', 10, 16, 'active', 'active', '2023-07-30 14:11:55', '2023-07-30 14:13:42');
 
 -- --------------------------------------------------------
 
@@ -288,7 +248,7 @@ CREATE TABLE `google_recaptcha_api` (
 --
 
 INSERT INTO `google_recaptcha_api` (`Id`, `site_key`, `site_secret_key`, `created_at`, `updated_at`) VALUES
-(1, '6Lf-JsEeAAAAAPwHHG56Bb4kwfboD_eDUmDxtG0k', '6Lf-JsEeAAAAANEiSp7kRn6nmakC9A6vSGdaXxcO', '2023-02-20 00:57:18', '2023-07-01 02:38:18');
+(1, '6LdiQZQhAAAAABpaNFtJpgzGpmQv2FwhaqNj2azh', '6LdiQZQhAAAAAByS6pnNjOs9xdYXMrrW2OeTFlrm', '2023-02-20 00:57:18', '2023-08-13 00:48:04');
 
 -- --------------------------------------------------------
 
@@ -309,18 +269,8 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`id`, `user_id`, `activity`, `created_at`, `updated_at`) VALUES
-(1, 11, 'Has successfully signed in', '2023-07-22 12:43:26', NULL),
-(2, 7, 'Has successfully signed in', '2023-07-22 23:26:54', NULL),
-(3, 11, 'Has successfully signed in', '2023-07-24 01:10:13', NULL),
-(4, 8, 'Has successfully signed in', '2023-07-24 06:36:38', NULL),
-(5, 7, 'Has successfully signed in', '2023-07-24 12:56:21', NULL),
-(6, 7, 'Has successfully signed in', '2023-07-25 23:59:02', NULL),
-(7, 11, 'Has successfully signed in', '2023-07-27 00:12:55', NULL),
-(8, 8, 'Has successfully signed in', '2023-07-27 00:26:13', NULL),
-(9, 7, 'Has successfully signed in', '2023-07-27 02:59:33', NULL),
-(10, 11, 'Has successfully signed in', '2023-07-28 12:30:59', NULL),
-(11, 7, 'Has successfully signed in', '2023-07-28 12:31:18', NULL),
-(12, 8, 'Has successfully signed in', '2023-07-30 14:11:15', NULL);
+(1, 2, 'Has successfully signed in', '2023-10-16 12:43:13', NULL),
+(2, 1, 'Has successfully signed in', '2023-10-16 12:43:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -460,9 +410,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `sex`, `date_of_birth`, `age`, `civil_status`, `phone_number`, `email`, `password`, `profile`, `status`, `tokencode`, `account_status`, `user_type`, `department`, `created_at`, `updated_at`) VALUES
-(7, 'JOSE', 'SANTOS', 'DATU', 'MALE', NULL, NULL, 'MARRIED', NULL, 'admin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', '253b2ddeff678a7865863f6b6e9e2ac5', 'active', '1', NULL, '2023-06-24 16:57:18', '2023-07-22 12:41:36'),
-(8, 'JOSE', 'MANALO', 'CHAN', 'MALE', NULL, NULL, 'SEPERATED', '9628648236', 'superadmin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'fc8d7f19470873a62253fa15ced58885', 'active', '0', NULL, '2023-07-07 08:02:26', '2023-07-22 12:41:53'),
-(11, 'SUB-ADMIN', 'SUB-ADMIN', 'SUB-ADMIN', NULL, NULL, NULL, NULL, '9189328387', 'sub_admin@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'eca83153ed19fd7aeb6f87f5a3ecf810', 'active', '2', 2, '2023-07-08 11:52:59', '2023-07-22 12:43:40');
+(1, 'SUPERADMIN', 'SUPERADMIN', 'SUPERADMIN', 'MALE', NULL, NULL, 'MARRIED', NULL, 'sprdmndominican@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', '253b2ddeff678a7865863f6b6e9e2ac5', 'active', '0', NULL, '2023-06-24 16:57:18', '2023-10-16 12:42:16'),
+(2, 'ADMIN', 'ADMIN', 'ADMIN', 'MALE', NULL, NULL, 'SEPERATED', '9628648236', 'admnecket2023@gmail.com', '42f749ade7f9e195bf475f37a44cafcb', 'profile.png', 'Y', 'fc8d7f19470873a62253fa15ced58885', 'active', '1', NULL, '2023-07-07 08:02:26', '2023-10-16 12:42:51'),
+(13, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'profile.png', 'N', NULL, 'active', NULL, NULL, '2023-10-16 12:41:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -661,7 +611,7 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `course_event`
 --
 ALTER TABLE `course_event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `department`
@@ -679,19 +629,19 @@ ALTER TABLE `email_config`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event_access_key`
 --
 ALTER TABLE `event_access_key`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event_per_course`
 --
 ALTER TABLE `event_per_course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event_registered`
@@ -709,7 +659,7 @@ ALTER TABLE `google_recaptcha_api`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pdf_file`
@@ -739,7 +689,7 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `year_level`

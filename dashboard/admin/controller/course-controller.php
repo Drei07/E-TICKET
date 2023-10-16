@@ -12,14 +12,23 @@ class Course {
         $this->conn = $db;
     }
 
-    //add course
-    public function addCourse($course_name, $department){
+    public function addCourse($course_name, $department) {
+        // Check if the course name already exists within the given department
+        if ($this->isCourseNameExists($course_name, $department)) {
+            $_SESSION['status_title'] = 'Error';
+            $_SESSION['status'] = 'Course with the same name already exists in this department';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+            header('Location: ../course');
+            return; // Exit the function
+        }
+    
         $stmt = $this->runQuery('INSERT INTO course (department_id, course) VALUES (:department_id, :course)');
         $exec = $stmt->execute(array(
             ":department_id"  => $department,
             ":course"         => $course_name,
         ));
-
+    
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Course added successfully';
@@ -31,10 +40,21 @@ class Course {
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../course');
     }
     
+    public function isCourseNameExists($course_name, $department) {
+        $stmt = $this->runQuery('SELECT COUNT(*) FROM course WHERE department_id = :department_id AND course = :course_name');
+        $stmt->execute(array(
+            ":department_id"  => $department,
+            ":course_name"    => $course_name,
+        ));
+        $count = $stmt->fetchColumn();
+    
+        return ($count > 0);
+    }    
+
     //edit course
     public function editCourse($course_id, $course_name, $department) {
         // Check if the course name and department have actually changed
@@ -153,7 +173,7 @@ if (isset($_POST['btn-add-course'])) {
 if (isset($_POST['btn-edit-course'])) {
     $course_id       = $_GET["id"];
     $department      = trim($_POST['department']);
-    $course_name     = trim($_POST['course']);
+    $course_name     = trim($_POST['course_name']);
 
     $edit_course = new Course();
     $edit_course->editCourse($course_id, $course_name, $department );

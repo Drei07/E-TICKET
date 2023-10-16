@@ -12,13 +12,22 @@ class YearLevel {
         $this->conn = $db;
     }
 
-    //add year level
-    public function addyearLevel($year_level_name){
+    public function addYearLevel($year_level_name) {
+        // Check if the year level name already exists
+        if ($this->isYearLevelNameExists($year_level_name)) {
+            $_SESSION['status_title'] = 'Error';
+            $_SESSION['status'] = 'Year level with the same name already exists';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+            header('Location: ../year-level');
+            return; // Exit the function
+        }
+    
         $stmt = $this->runQuery('INSERT INTO year_level (year_level) VALUES (:year_level)');
         $exec = $stmt->execute(array(
             ":year_level"  => $year_level_name
         ));
-
+    
         if ($exec) {
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Year Level added successfully';
@@ -30,9 +39,19 @@ class YearLevel {
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../year-level');
     }
+    
+    public function isYearLevelNameExists($year_level_name) {
+        $stmt = $this->runQuery('SELECT COUNT(*) FROM year_level WHERE year_level = :year_level_name');
+        $stmt->execute(array(
+            ":year_level_name"  => $year_level_name
+        ));
+        $count = $stmt->fetchColumn();
+    
+        return ($count > 0);
+    }    
     
     //edit year level
     public function edityearLevel($year_level_id, $year_level_name) {

@@ -189,7 +189,7 @@ include_once 'header.php';
 						<div class="header"></div>
 						<div class="modal-header">
 							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Add Events</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeButton"></button>
 						</div>
 						<div class="modal-body">
 							<section class="data-form-modals">
@@ -209,7 +209,7 @@ include_once 'header.php';
 												<label for="event_date" class="form-label">Event Date<span> *</span></label>
 												<input type="date" class="form-control" autocomplete="off" name="event_date" id="event_date" required>
 												<div class="invalid-feedback">
-													Please provide a Event Date.
+													Please provide an Event Date.
 												</div>
 											</div>
 
@@ -290,22 +290,21 @@ include_once 'header.php';
 	?>
 
 	<script>
-
 		function setSessionValues(eventId) {
-            fetch('events-details.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'event_id=' + encodeURIComponent(eventId),
-                })
-                .then(response => {
-                    window.location.href = 'events-details';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
+			fetch('events-details.php', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'event_id=' + encodeURIComponent(eventId),
+				})
+				.then(response => {
+					window.location.href = 'events-details';
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
 
 		function searchMandatoryEvents() {
 			var searchInput = document.getElementById('search-input-mandatory').value.trim();

@@ -16,6 +16,16 @@ class Event
     //add event
     public function addEvent($event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_poster, $event_price)
     {
+        // Check if the event name already exists
+        if ($this->isEventNameExists($event_name)) {
+            $_SESSION['status_title'] = 'Error';
+            $_SESSION['status'] = 'Event with the same name already exists';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+            header("Location: ../events");
+            return; // Exit the function
+        }
+    
         $folder = "../../../src/img/" . basename($event_poster);
         chmod($folder, 0755);
         $stmt = $this->runQuery('INSERT INTO events (event_name, event_date, event_time, event_venue, event_max_guest, event_rules, event_poster, event_price) VALUES (:event_name, :event_date, :event_time, :event_venue, :event_max_guest, :event_rules, :event_poster, :event_price)');
@@ -29,10 +39,10 @@ class Event
             ":event_poster" => $event_poster,
             ":event_price" => $event_price,
         ));
-
+    
         if ($exec && move_uploaded_file($_FILES['event_poster']['tmp_name'], $folder)) {
             $lastInsertedId = $this->conn->lastInsertId();
-
+    
             // Generate access key
             function generateAccessKey()
             {
@@ -46,7 +56,7 @@ class Event
                 }
                 return $accessKey;
             }
-
+    
             // Check if access key already exists
             function isAccessKeyExists($accessKey)
             {
@@ -57,22 +67,22 @@ class Event
                 $count = $stmt->fetchColumn();
                 return ($count > 0);
             }
-
+    
             // Generate unique access key
             $accessKey = generateAccessKey();
-
+    
             // Check if access key already exists
             while (isAccessKeyExists($accessKey)) {
                 $accessKey = generateAccessKey();
             }
-
+    
             // Insert into event_access_key table
             $accessKeyStmt = $this->runQuery('INSERT INTO event_access_key (event_id, access_key) VALUES (:event_id, :access_key)');
             $accessKeyStmt->execute(array(
                 ":event_id" => $lastInsertedId,
                 ":access_key" => $accessKey,
             ));
-
+    
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Event added successfully';
             $_SESSION['status_code'] = 'success';
@@ -83,9 +93,20 @@ class Event
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header("Location: ../events");
+    }    
+
+    //Check if event name is exists
+    public function isEventNameExists($event_name)
+        {
+    $stmt = $this->runQuery('SELECT COUNT(*) FROM events WHERE event_name = :event_name');
+    $stmt->execute(array(":event_name" => $event_name));
+    $count = $stmt->fetchColumn();
+
+    return ($count > 0);
     }
+
     // EDIT
     public function editEvent($event_id, $event_name, $event_date, $event_time, $event_venue, $event_max_guest, $event_rules, $event_poster, $event_price)
     {

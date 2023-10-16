@@ -147,7 +147,7 @@ include_once 'header.php';
                     <!-- BODY -->
                     <section class="data-table">
                         <div class="searchBx">
-                            <input type="input" placeholder="search . . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
+                            <input type="input" placeholder="Search Admin. . . . . ." class="search" name="search_box" id="search_box"><button class="searchBtn"><i class="bx bx-search icon"></i></button>
                         </div>
 
                         <div class="table">
@@ -167,7 +167,7 @@ include_once 'header.php';
 					<div class="header"></div>
 						<div class="modal-header">
 							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-user-account' ></i> Add Sub-Admin</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeButton"></button>
 						</div>
 						<div class="modal-body">
 						<section class="data-form-modals">

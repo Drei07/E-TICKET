@@ -147,7 +147,7 @@ include_once 'header.php';
 					<section class="data-table">
 						<div class="info-data">
 							<div class="searchBx">
-								<input type="text" id="search-input" placeholder="Search Course . . . . . ." class="search">
+								<input type="text" id="search-input" placeholder="Search Course Events . . . . . ." class="search">
 								<button class="searchBtn" type="button" onclick="searchCourseEvents()"><i class="bx bx-search icon"></i></button>
 							</div>
 							<?php
@@ -217,7 +217,7 @@ include_once 'header.php';
 						<div class="header"></div>
 						<div class="modal-header">
 							<h5 class="modal-title" id="classModalLabel"><i class='bx bxs-calendar'></i> Add Course Event</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeButton"></button>
 						</div>
 						<div class="modal-body">
 							<section class="data-form-modals">

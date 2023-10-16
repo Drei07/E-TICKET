@@ -197,7 +197,7 @@ $yearLevelId = isset($_SESSION['year_level_id']) ? $_SESSION['year_level_id'] : 
 					<section class="data-table">
 						<div class="info-data">
 							<div class="searchBx">
-								<input type="text" id="search-input" placeholder="Search Course . . . . . ." class="search">
+								<input type="text" id="search-input" placeholder="Search Course Events. . . . . ." class="search">
 								<button class="searchBtn" type="button" onclick="searchCourseEvents()"><i class="bx bx-search icon"></i></button>
 							</div>
 							<?php

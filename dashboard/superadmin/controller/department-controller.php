@@ -14,6 +14,16 @@ class Department {
 
     //add department
     public function addDepartment($department_name, $department_logo){
+        // Check if the department name already exists
+        if ($this->isDepartmentNameExists($department_name)) {
+            $_SESSION['status_title'] = 'Error';
+            $_SESSION['status'] = 'Department with the same name already exists';
+            $_SESSION['status_code'] = 'error';
+            $_SESSION['status_timer'] = 100000;
+            header('Location: ../department');
+            return; // Exit the function
+        }
+    
         $folder = "../../../src/img/" . basename($department_logo);
         chmod($folder, 0755);
         $stmt = $this->runQuery('INSERT INTO department (department, department_logo) VALUES (:department, :department_logo)');
@@ -21,8 +31,8 @@ class Department {
             ":department"       => $department_name,
             ":department_logo"  => $department_logo,
         ));
-
-        if ($exec  && move_uploaded_file($_FILES['avatar']['tmp_name'], $folder)) {
+    
+        if ($exec  && move_uploaded_file($_FILES['department_logo']['tmp_name'], $folder)) {
             $_SESSION['status_title'] = 'Success!';
             $_SESSION['status'] = 'Department added successfully';
             $_SESSION['status_code'] = 'success';
@@ -33,10 +43,18 @@ class Department {
             $_SESSION['status_code'] = 'error';
             $_SESSION['status_timer'] = 100000;
         }
-
+    
         header('Location: ../department');
     }
     
+    public function isDepartmentNameExists($department_name)
+    {
+        $stmt = $this->runQuery('SELECT COUNT(*) FROM department WHERE department = :department_name');
+        $stmt->execute(array(":department_name" => $department_name));
+        $count = $stmt->fetchColumn();
+    
+        return ($count > 0);
+    }  
 //edit department
 public function editDepartment($department_id, $department_name, $department_logo) {
     // Retrieve the current department name from the database
