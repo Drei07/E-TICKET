@@ -49,7 +49,7 @@ $config = new SystemConfig();
                     <div class="image">
                         <img src="src/img/<?php echo $event_data['event_poster'] ?>" alt="event">
                         <h4><?php echo $event_data['event_name'] ?></h4>
-                        <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?></p>
+                        <p>Event Date: <?php echo date('m/d/y', strtotime($event_data['event_date'])); ?> - <?php echo date('h:i A', strtotime($event_data['event_time'])); ?></p>
                     </div>
 
             <?php
@@ -131,12 +131,11 @@ $config = new SystemConfig();
     <!--End of Pre-Registration Modal -->
 
     <footer>
-
-        <div class="pre-registration">
-            <h3>PRE-REGISTERED NOW<br>
-                <p>Streamline Your Ticketing Experience</p>
+    <div class="pre-registration">
+            <h3>REGISTER NOW<br>
+                <p>Dominican E-cket</p>
             </h3>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#pre-registration" class="btn">Get Ticket</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#pre-registration" class="btn get_ticket">Get Ticket</a>
 
         </div>
         <h1 class="credit"> <?php echo $config->getSystemCopyright() ?></h1>

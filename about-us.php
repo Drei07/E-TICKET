@@ -117,10 +117,10 @@ $config = new SystemConfig();
     <footer>
 
         <div class="pre-registration">
-            <h3>PRE-REGISTERED NOW<br>
-                <p>Streamline Your Ticketing Experience</p>
+            <h3>REGISTER NOW<br>
+                <p>Dominican E-cket</p>
             </h3>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#pre-registration" class="btn">Get Ticket</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#pre-registration" class="btn get_ticket">Get Ticket</a>
 
         </div>
         <h1 class="credit"> <?php echo $config->getSystemCopyright() ?></h1>
