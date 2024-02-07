@@ -84,7 +84,7 @@ class SystemSettings {
         header('Location: ../settings');
     }
     //update SMTP
-    public function updateSMTP($email, $smtp)
+    public function updateSMTP($email, $password)
     {
         $stmt = $this->runQuery('UPDATE email_config SET email=:email, password=:password WHERE id =1');
         $exec = $stmt->execute(array(
@@ -144,6 +144,6 @@ if (isset($_POST['btn-update-smtp'])) {
     $password    = trim($_POST['password']);
 
     $systemSettings = new SystemSettings();
-    $systemSettings->updateSMTP($email, $smtp);
+    $systemSettings->updateSMTP($email, $password);
 }
 ?>
