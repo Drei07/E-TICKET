@@ -50,7 +50,7 @@ include_once 'header.php';
 					<i class='bx bxs-book-alt'></i>
 					<span class="text">Course</span>
 				</a>
-			</li>
+			</li>jhsfdgbjkhsdv
 			<li>
 				<a href="year-level">
 					<i class='bx bxs-graduation' ></i>
